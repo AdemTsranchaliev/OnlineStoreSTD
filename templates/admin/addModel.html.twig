@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+
+    <div style="margin: 50px;">
+
+        <h1>Добавяне на МОДЕЛ</h1>
+
+
+        <form action="{{ path('addProduct') }}" method="post" enctype="multipart/form-data">
+
+            <label>Заглавие</label>
+            <input type="text" name="products[title]">
+            <label>Модел №</label>
+            <input type="text" name="products[modelNumber]">
+            <label>Цена</label>
+            <input type="text" name="products[price]">
+            <label>Размери</label>
+            <input type="text" name="products[size]">
+            <label>Цвят</label>
+            <input type="text" name="products[color]">
+            <label>Категория</label>
+            <select name="products[category]">
+                <option value="дамски сандали">дамски сандали</option>
+                <option value="дамски спортни обувки">дамски спортни обувки</option>
+                <option value="дамски ежедневни обувки">дамски ежедневни обувки</option>
+                <option value="дамски боти">дамски боти</option>
+                <option value="дамски ботуши">дамски ботуши</option>
+                <option value="мъжки официални обувки">мъжки официални обувки</option>
+                <option value="мъжки спортни обувки">мъжки спортни обувки</option>
+            </select>
+            <label>Намаление от</label>
+            <input type="text" name="products[discount]">
+            <label>Описание</label>
+            <textarea type="text" name="products[description]"></textarea>
+            <label>Снимка 1</label>
+            <input type="file" name="file[]">
+            <label>Снимка 2</label>
+            <input type="file" name="file[]">
+            <label>Снимка 3</label>
+            <input type="file" name="file[]">
+            <label>Снимка 4</label>
+            <input type="file" name="file[]">
+            <label>Снимка 5</label>
+            <input type="file" name="file[]">
+            <input type="submit">
+
+        </form>
+
+    </div>
+
+{% endblock %}

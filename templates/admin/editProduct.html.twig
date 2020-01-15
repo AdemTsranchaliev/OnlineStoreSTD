@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+
+
+    <div style="margin: 50px;">
+
+        <h1>Редактиране на ПРОДУКТ</h1>
+
+
+        <form action="{{ path('editModel', { 'id':producttoEdit.id}) }}" method="post">
+            <label>Заглавие</label>
+            <input type="text" name="products[title]" value="{{ producttoEdit.title }}">
+            <label>Модел №</label>
+            <input type="text" name="products[modelNumber]" value="{{ producttoEdit.modelNumber }}">
+            <label>Цена</label>
+            <input type="text" name="products[price]"  value="{{ producttoEdit.price }}" >
+            <label>Размери</label>
+
+            <label>Цвят</label>
+            <input type="text" name="products[color]" value="{{ producttoEdit.color }}">
+            <label>Категория</label>
+            <select name="products[category]">
+                <option value="дамски сандали">дамски сандали</option>
+                <option value="дамски спортни обувки">дамски спортни обувки</option>
+                <option value="дамски ежедневни обувки">дамски ежедневни обувки</option>
+                <option value="дамски боти">дамски боти</option>
+                <option value="дамски ботуши">дамски ботуши</option>
+                <option value="мъжки официални обувки">мъжки официални обувки</option>
+                <option value="мъжки спортни обувки">мъжки спортни обувки</option>
+            </select>
+            <label>Намаление от</label>
+
+            <label>Описание</label>
+            <textarea type="text" name="products[description]" >{{ producttoEdit.description }} </textarea>
+            <input type="submit">
+        </form>
+
+    </div>
+
+
+{% endblock %}
