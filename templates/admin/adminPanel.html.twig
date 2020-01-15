@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'login' %}
+
+{% block main %}
+
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                <div class="table100">
+                    <center>
+                        <table>
+                            <thead>
+                            <tr class="table100-head">
+                                <th class="column1">Id</th>
+                                <th class="column2">Модел №</th>
+                                <th class="column3">Цвят</th>
+                                <th class="column4">Цена</th>
+                                <th class="column5">Размери</th>
+                                <th class="column6">Снимки</th>
+                                <th class="column7">Опции</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for model in models %}
+                            <tr>
+                                <td class="column1">{{ model.id }}</td>
+                                <td class="column2">{{ model.modelNumber }}</td>
+                                <td class="column3">{{ model.color }}</td>
+                                <td class="column4">{{ model.price }}</td>
+                                <td class="column5"><a>{{ model.sizes }}</a></td>
+                                <td class="column6"><a>{{ model.id }}.jpg</a></td>
+                                <td class="column7">
+                                    <a class="btn btn-edit btn-sm"
+                                       href="{{ path('editModel',{ 'id':model.id}) }}">Редактирай</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

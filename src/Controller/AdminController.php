@@ -15,15 +15,29 @@ use App\Repository\ProductRepository;
 
 class AdminController extends AbstractController
 {
+
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/adminPanel", name="adminPanel")
+     */
+    public function adminPanel()
+    {
+
+            $models = $this->getDoctrine()->getRepository(Product::class)->findAll();
+            return $this->render("admin/adminPanel.html.twig", ['models' => $models]);
+
+    }
+
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/addProduct", name="addProduct")
      */
     public function addProduct(Request $request)
     {
+        $user = $this->getUser();
         $product = new Product();
         $form = $this->createForm(Products::class, $product);
-        echo var_dump($product);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -34,11 +48,9 @@ class AdminController extends AbstractController
                 }
             }
             $product->setBoughtCounter(0);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-            $img1 = "D:/my_project/public/img/uploads/";
-            $i = 0;
+
+            $img1 = "D:/OnlineStoreSTD/public/img/uploads/";
+
             $img = 0;
             for ($i = 0; $i < count($_FILES['file']['tmp_name']); $i++) {
                 $targetfile = $img1 . $product->getId() . "." . $i . ".jpg";
@@ -47,9 +59,18 @@ class AdminController extends AbstractController
                     $img++;
                 }
             }
-            return $this->render("admin/aa.html.twig");
+            $product->setPhotoCount($img);
+            $product->setIsDetelet(0);
+            $product->setIsPromotion(0);
+            $product->setDiscountPrice(0);
+            $product->setIsShoe(0);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+            return $this->render("admin/addModel.html.twig", ['user' => $user]);
         };
-        return $this->render("admin/addModel.html.twig");
+        return $this->render("admin/addModel.html.twig", ['user' => $user]);
        
     }
     /**

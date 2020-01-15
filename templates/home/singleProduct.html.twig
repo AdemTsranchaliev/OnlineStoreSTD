@@ -22,86 +22,61 @@
                 <div class="col-md-6 product-slider mb-50">
 
                     <div class="flickity flickity-slider-wrap mfp-hover" id="gallery-main">
-
-                        <div class="gallery-cell">
-                            <a href="/img/shop/item_lg_1.jpg" class="lightbox-img">
-                                <img src="/img/uploads/{{ product.id }}.0.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="gallery-cell">
-                            <a href="/img/shop/item_lg_2.jpg" class="lightbox-img">
-                                <img src="/img/uploads/{{ product.id }}.0.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="gallery-cell">
-                            <a href="/img/shop/item_lg_3.jpg" class="lightbox-img">
-                                <img src="/img/shop/item_lg_3.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="gallery-cell">
-                            <a href="/img/shop/item_lg_4.jpg" class="lightbox-img">
-                                <img src="/img/shop/item_lg_4.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="gallery-cell">
-                            <a href="/img/shop/item_lg_5.jpg" class="lightbox-img">
-                                <img src="/img/shop/item_lg_5.jpg" alt="" />
-                            </a>
-                        </div>
+                        {% for i in 0..product.photoCount-1 %}
+                            <div class="gallery-cell">
+                                <a href="/img/uploads/{{ product.id }}.{{ i }}.jpg" class="lightbox-img">
+                                    <img src="/img/uploads/{{ product.id }}.{{ i }}.jpg" alt="" />
+                                </a>
+                            </div>
+                        {% endfor %}
                     </div> <!-- end gallery main -->
 
                     <div class="gallery-thumbs" id="gallery-thumbs">
-                        <div class="gallery-cell">
-                            <img src="/img/shop/item_thumb_1.jpg" alt="" />
-                        </div>
-                        <div class="gallery-cell">
-                            <img src="/img/shop/item_thumb_2.jpg" alt="" />
-                        </div>
-                        <div class="gallery-cell">
-                            <img src="/img/shop/item_thumb_3.jpg" alt="" />
-                        </div>
-                        <div class="gallery-cell">
-                            <img src="/img/shop/item_thumb_4.jpg" alt="" />
-                        </div>
-                        <div class="gallery-cell">
-                            <img src="/img/shop/item_thumb_5.jpg" alt="" />
-                        </div>
+                        {% for i in 0..product.photoCount-1 %}
+                            <div class="gallery-cell">
+                                <img src="/img/uploads/{{ product.id }}.{{ i }}.jpg" alt="" />
+                            </div>
+                        {% endfor %}
                     </div> <!-- end gallery thumbs -->
 
                 </div> <!-- end col img slider -->
 
                 <div class="col-md-6 product-single">
-                    <h1 class="product-single__title uppercase">Casual jacket</h1>
+                    <h1 class="product-single__title uppercase">{{ product.title }}</h1>
 
                     <div class="rating">
                         <a href="#">3 Reviews</a>
                     </div>
 
                     <span class="product-single__price">
-              <ins>
-                <span class="amount">$17.99</span>
-              </ins>
-              <del>
-                <span>$30.00</span>
-              </del>
-            </span>
+                        {%  if not product.isPromotion %}
+                        <ins>
+                          <span class="amount">{{ product.price }}</span>
+                        </ins>
+                        {% else %}
+                        <ins>
+                          <span class="amount" style="color: red">{{ product.discountPrice }}</span>
+                        </ins>
+                        <del>
+                           <span >{{ product.price }}</span>
+                        </del>
+                         {% endif %}
 
                     <div class="colors clearfix">
-                        <span class="colors__label">Color: <span class="colors__label-selected">Fadaed Blue</span></span>
+                        <span class="colors__label">Color: <span class="colors__label-selected">{{ product.color }}</span></span>
                         <a href="#" class="colors__item colors__item--selected blue"></a>
                         <a href="#" class="colors__item black"></a>
                         <a href="#" class="colors__item pink"></a>
+                         <a href="#" class="colors__item red"></a>
                     </div>
 
                     <div class="size-quantity clearfix">
                         <div class="size">
                             <label>Size</label>
                             <select name="size" id="size__select" class="size__select">
-                                <option value="xs">XS</option>
-                                <option value="s">S</option>
-                                <option value="m">M</option>
-                                <option value="l">L</option>
-                                <option value="xl">XL</option>
+                                {% for siz in size %}
+                                    <option value="{{ siz }}">{{ siz }}</option>
+                                {% endfor %}
                             </select>
                         </div>
 
@@ -135,18 +110,18 @@
                     <div class="product_meta">
                         <ul>
                             <li>
-                                <span class="product-code">Product Code: <span>111763</span></span>
+                                <span class="product-code">Product Code: <span>{{ product.modelNumber }}</span></span>
                             </li>
                             <li>
                                 <span class="product-material">Material: <span>Cotton 100%</span></span>
                             </li>
                             <li>
-                                <span class="product-country">Country: <span>Made in Canada</span></span>
+                                <span class="product-country">Country: <span>Made in Bulgaria</span></span>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- Accordion -->
+                        <!-- Accordion -->
                     <div class="accordion mb-50" id="accordion">
                         <div class="accordion__panel">
                             <div class="accordion__heading" id="headingOne">
@@ -155,7 +130,7 @@
                             </div>
                             <div id="collapseOne" class="collapse show" data-parent="#accordion" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="accordion__body">
-                                    Namira is a very slick and clean e-commerce template with endless possibilities. Creating an awesome clothes store with this Theme is easy than you can imagine.
+                                   {{ product.description }}
                                 </div>
                             </div>
                         </div>

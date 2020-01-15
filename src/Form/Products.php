@@ -4,8 +4,10 @@
 namespace App\Form;
 
 use App\Entity\Product;
+
+
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -18,13 +20,15 @@ class Products extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('title',TextType::class)
             ->add('modelNumber',TextType::class)
             ->add('color',TextType::class)
             ->add('price',TextType::class)
             ->add('category',TextType::class)
             ->add('boughtCounter',TextType::class)
             ->add('description',TextType::class)
-            ->add('title',TextareaType::class);
+            ->add('Sizes',TextType::class)
+            ->add('description',TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

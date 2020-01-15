@@ -69,8 +69,19 @@ class HomeController extends AbstractController
         if ($product === null) {
             return $this->render('commonFiles/404.html.twig');
         }
+        $sizeAndNumber = $product->getSizes();
+        $sizeAndNumber = explode(" ", $sizeAndNumber);
+        $sizeAndNumber = array_filter(array_map('trim', $sizeAndNumber));
+        $size = Array();
+        $similar = Array();
+        foreach ($sizeAndNumber as $item) {
+            $test = explode('-', $item);
+            if ($test[1] != 0) {
+                array_push($size, $test[0]);
+            }
+        }
 
-        return $this->render('home/singleProduct.html.twig', ['product' => $product]);
+        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size]);
     }
 
 

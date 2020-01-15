@@ -183,7 +183,12 @@
             </li>
 
             <li>
-                <a href="#" class="sidenav__menu-link">Sign In</a>
+                {% if app.user %}
+                    <a href="#" class="sidenav__menu-link">{{ app.user.email }}</a>
+
+                {% else %}
+                    <a href="#" class="sidenav__menu-link">Sign In</a>
+                {% endif %}
             </li>
         </ul>
     </nav>
@@ -232,8 +237,11 @@
                     <div class="top-bar__right">
 
                         <!-- Sign In -->
+                        {% if app.user %}
+                        <a href="login.html" class="top-bar__item top-bar__sign-in" id="top-bar__sign-in"><i class="ui-user"></i>{{ app.user.email }}/<a href="{{ path('app_logout') }}">Logout</a></a>
+                        {% else %}
                         <a href="login.html" class="top-bar__item top-bar__sign-in" id="top-bar__sign-in"><i class="ui-user"></i>Sign In</a>
-
+{% endif %}
                         <!-- Wishlist -->
                         <a href="#" class="top-bar__item"><i class="ui-heart"></i></a>
 
@@ -318,7 +326,30 @@
                     <!-- Nav-wrap -->
                     <nav class="flex-child nav__wrap d-none d-lg-block">
                         <ul class="nav__menu">
+                            {% if app.user %}
+                            <li class="nav__dropdown">
+                                <a href="">Начало</a>
+                            </li>
 
+                            <li class="nav__dropdown">
+                                <a href="">Админ панел</a>
+                            </li>
+
+                            <li class="nav__dropdown">
+                                <a href="{{ path('addProduct') }}">Добави модел</a>
+                            </li>
+                            <li class="nav__dropdown">
+                                <a href="">НОВИ</a>
+                            </li>
+                            <li class="nav__dropdown">
+                                <a href="">ИЗПЪЛНЕНИ</a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    ИЗХОД
+                                </a>
+                            </li>
+                            {% else %}
                             <li class="nav__dropdown active">
                                 <a href="catalog.html">Men</a>
                                 <ul class="nav__dropdown-menu">
@@ -419,7 +450,7 @@
                                     <li><a href="404.html">404</a></li>
                                 </ul>
                             </li>
-
+{% endif %}
                         </ul> <!-- end menu -->
 
                     </nav> <!-- end nav-wrap -->
@@ -515,6 +546,7 @@
                             <div class="widget widget_nav_menu">
                                 <h4 class="widget-title white">information</h4>
                                 <ul>
+
                                     <li><a href="#">Our Stores</a></li>
                                     <li><a href="#">Careers</a></li>
                                     <li><a href="#">Delivery Info</a></li>
