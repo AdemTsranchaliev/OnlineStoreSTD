@@ -6,9 +6,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\src\Form;
+
 use App\Entity\Product;
 use App\Form\Products;
 use App\Repository\ProductRepository;
@@ -17,7 +17,7 @@ class AdminController extends AbstractController
 {
 
     /**
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/adminPanel", name="adminPanel")
      */
     public function adminPanel()
