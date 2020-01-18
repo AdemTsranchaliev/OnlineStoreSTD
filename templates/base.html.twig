@@ -176,7 +176,7 @@
                     <li><a href="checkout.html" class="sidenav__menu-link">Checkout</a></li>
                     <li><a href="about.html" class="sidenav__menu-link">About</a></li>
                     <li><a href="contact.html" class="sidenav__menu-link">Contact</a></li>
-                    <li><a href="login.html" class="sidenav__menu-link">Login</a></li>
+                    <li><a  href="{{ path('app_login') }}" class="sidenav__menu-link">Login</a></li>
                     <li><a href="faq.html" class="sidenav__menu-link">FAQ</a></li>
                     <li><a href="404.html" class="sidenav__menu-link">404</a></li>
                 </ul>
@@ -238,9 +238,9 @@
 
                         <!-- Sign In -->
                         {% if app.user %}
-                        <a href="login.html" class="top-bar__item top-bar__sign-in" id="top-bar__sign-in"><i class="ui-user"></i>{{ app.user.email }}/<a href="{{ path('app_logout') }}">Logout</a></a>
+                        <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email }}/<a href="{{ path('app_logout') }}">Logout</a></a>
                         {% else %}
-                        <a href="login.html" class="top-bar__item top-bar__sign-in" id="top-bar__sign-in"><i class="ui-user"></i>Sign In</a>
+                        <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in"><i class="ui-user"></i>Sign In</a>
 {% endif %}
                         <!-- Wishlist -->
                         <a href="#" class="top-bar__item"><i class="ui-heart"></i></a>
@@ -319,7 +319,7 @@
                     </button> <!-- end mobile menu button -->
 
                     <!-- Logo -->
-                    <a href="index.html" class="logo">
+                    <a  href="{{ path('index') }}" class="logo">
                         <img class="logo__img" src="/img/logo_light.png" alt="logo">
                     </a>
 
@@ -351,73 +351,55 @@
                             </li>
                             {% else %}
                             <li class="nav__dropdown active">
-                                <a href="catalog.html">Men</a>
+                                <a href="catalog.html">Мъжки</a>
                                 <ul class="nav__dropdown-menu">
-                                    <li><a href="#">T-shirt</a></li>
-                                    <li><a href="#">Hoodie &amp; Jackets</a></li>
-                                    <li><a href="#">Suits</a></li>
-                                    <li><a href="#">Shorts</a></li>
+                                    <li><a href="#">спортни обувки</a></li>
+                                    <li><a href="#">официални обувки</a></li>
+
                                 </ul>
                             </li>
 
                             <li class="nav__dropdown">
-                                <a href="catalog.html">Women</a>
+                                <a href="catalog.html">дамски</a>
                                 <ul class="nav__dropdown-menu">
-                                    <li><a href="#">Underwear</a></li>
-                                    <li><a href="#">Hipster</a></li>
-                                    <li><a href="#">Dress</a></li>
-                                    <li><a href="#">Hoodie &amp; Jackets</a></li>
-                                    <li><a href="#">Tees</a></li>
+                                    <li><a href="#">спортни обувки</a></li>
+                                    <li><a href="#">...</a></li>
+                                    <li><a href="#">...</a></li>
+                                    <li><a href="#">...</a></li>
+                                    <li><a href="#">...</a></li>
                                 </ul>
                             </li>
 
                             <li class="nav__dropdown">
-                                <a href="catalog.html">Accessories</a>
+                                <a href="catalog.html">Аксесоари</a>
                                 <ul class="nav__dropdown-menu nav__megamenu">
                                     <li>
                                         <div class="nav__megamenu-wrap">
                                             <div class="row">
 
-                                                <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">All accessories</a>
-                                                    <ul class="nav__megamenu-list">
-                                                        <li><a href="#">Wallets</a></li>
-                                                        <li><a href="#">Scarfs</a></li>
-                                                        <li><a href="#">Belts</a></li>
-                                                        <li><a href="#">Shoes</a></li>
-                                                    </ul>
-                                                </div>
 
                                                 <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">for her</a>
+                                                    <a href="#" class="nav__megamenu-title">за нея</a>
                                                     <ul class="nav__megamenu-list">
-                                                        <li><a href="#">Underwear</a></li>
-                                                        <li><a href="#">Hipster</a></li>
+                                                        <li><a href="#">колани</a></li>
+                                                        <li><a href="#">гривни</a></li>
                                                         <li><a href="#">Dress</a></li>
-                                                        <li><a href="#">Hoodie &amp; Jackets</a></li>
-                                                        <li><a href="#">Tees</a></li>
+                                                        <li><a href="#">...</a></li>
+                                                        <li><a href="#">...</a></li>
                                                     </ul>
                                                 </div>
 
                                                 <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">for him</a>
+                                                    <a href="#" class="nav__megamenu-title">за него</a>
                                                     <ul class="nav__megamenu-list">
-                                                        <li><a href="#">T-shirt</a></li>
-                                                        <li><a href="#">Hoodie &amp; Jackets</a></li>
-                                                        <li><a href="#">Suits</a></li>
-                                                        <li><a href="#">Shorts</a></li>
+                                                        <li><a href="#">портфейли</a></li>
+                                                        <li><a href="#">гривни</a></li>
+                                                        <li><a href="#">колани</a></li>
+                                                        <li><a href="#">...</a></li>
                                                     </ul>
                                                 </div>
 
-                                                <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">watches</a>
-                                                    <ul class="nav__megamenu-list">
-                                                        <li><a href="#">Smart Watches</a></li>
-                                                        <li><a href="#">Diving Watches</a></li>
-                                                        <li><a href="#">Sport Watches</a></li>
-                                                        <li><a href="#">Classic Watches</a></li>
-                                                    </ul>
-                                                </div>
+
 
                                                 <div class="col nav__megamenu-item">
                                                     <a href="#"><img src="/img/shop/megamenu_banner.png" alt=""></a>

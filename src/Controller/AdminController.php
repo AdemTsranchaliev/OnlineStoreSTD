@@ -3,6 +3,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -53,9 +55,7 @@ class AdminController extends AbstractController
 
             $img = 0;
             for ($i = 0; $i < count($_FILES['file']['tmp_name']); $i++) {
-                $targetfile = $img1 . $product->getId() . "." . $i . ".jpg";
                 if ($_FILES['file']['tmp_name'][$i] != '') {
-                    move_uploaded_file($_FILES['file']['tmp_name'][$img], $targetfile);
                     $img++;
                 }
             }
@@ -64,10 +64,19 @@ class AdminController extends AbstractController
             $product->setIsPromotion(0);
             $product->setDiscountPrice(0);
             $product->setIsShoe(0);
-
+            $categor = $this->getDoctrine()->getRepository(Category::class)->find(1);
+            $product->setCategoryId($categor);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
+            $img = 0;
+            for ($i = 0; $i < count($_FILES['file']['tmp_name']); $i++) {
+                $targetfile = $img1 . $product->getId() . "." . $i . ".jpg";
+                if ($_FILES['file']['tmp_name'][$i] != '') {
+                    move_uploaded_file($_FILES['file']['tmp_name'][$img], $targetfile);
+                    $img++;
+                }
+            }
             return $this->render("admin/addModel.html.twig", ['user' => $user]);
         };
         return $this->render("admin/addModel.html.twig", ['user' => $user]);

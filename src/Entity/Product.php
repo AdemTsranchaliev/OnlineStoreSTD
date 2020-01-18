@@ -81,6 +81,12 @@ class Product
      */
     private $isShoe;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $categoryId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -238,6 +244,18 @@ class Product
     public function setIsShoe(bool $isShoe): self
     {
         $this->isShoe = $isShoe;
+
+        return $this;
+    }
+
+    public function getCategoryId(): ?Category
+    {
+        return $this->categoryId;
+    }
+
+    public function setCategoryId(?Category $categoryId): self
+    {
+        $this->categoryId = $categoryId;
 
         return $this;
     }

@@ -2,6 +2,8 @@
 
 
 namespace App\Controller;
+
+use App\Entity\Category;
 use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +20,7 @@ class HomeController extends AbstractController
             $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
             $bestSellers = Array();
             $lastOnes = Array();
-            while (count($bestSellers) != 6) {
+            while (count($bestSellers) != 2) {
                 $max = 0;
                 $shoes = new Product();
                 foreach ($products as $pr) {
@@ -32,7 +34,7 @@ class HomeController extends AbstractController
                 unset($products[array_search($shoes, $products)]);
             }
             $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-            while (count($lastOnes) != 6) {
+            while (count($lastOnes) != 2) {
                 $max = 0;
                 $shoes = new Product();
                 foreach ($products as $pr) {
@@ -50,13 +52,30 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @param $categoryName
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/catalog", name="catalog")
+     * @Route("/catalog/{categoryName}", name="catalog")
      */
-    public function catalog()
+    public function catalog($categoryName)
     {
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $category=new Category();
+        foreach ($categories as $value)
+        {
+            if (strcmp($categoryName, $value->getName()) == 0)
+            {
+                $category=$value;
+                break;
+            }
+        }
+        if ($category->getId()==null)
+        {
+            return $this->render('commonFiles/404.html.twig');
+        }
 
-        return $this->render('home/index.html.twig');
+
+
+        return $this->render('home/catalog.html.twig',['products'=>$category->getProduct()]);
     }
 
     /**
