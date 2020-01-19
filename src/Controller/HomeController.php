@@ -20,7 +20,7 @@ class HomeController extends AbstractController
             $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
             $bestSellers = Array();
             $lastOnes = Array();
-            while (count($bestSellers) != 2) {
+            while (count($bestSellers) != 6) {
                 $max = 0;
                 $shoes = new Product();
                 foreach ($products as $pr) {
@@ -34,7 +34,7 @@ class HomeController extends AbstractController
                 unset($products[array_search($shoes, $products)]);
             }
             $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-            while (count($lastOnes) != 2) {
+            while (count($lastOnes) != 6) {
                 $max = 0;
                 $shoes = new Product();
                 foreach ($products as $pr) {

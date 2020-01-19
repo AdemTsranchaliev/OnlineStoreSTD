@@ -45,9 +45,9 @@
                         <div class="col-md col-sm-6 product">
                             <div class="product__img-holder">
                                 <a href="single-product.html" class="product__link">
-                                    <img src="img/uploads/{{ product.id }}.0.jpg" alt="" class="product__img">
+                                    <img src="/img/uploads/{{ product.id }}.0.jpg" alt="" class="product__img">
                                     {% if product.photoCount>1 %}
-                                    <img src="img/uploads/{{ product.id }}.1.jpg" alt="" class="product__img-back">
+                                    <img src="/img/uploads/{{ product.id }}.1.jpg" alt="" class="product__img-back">
                                     {% endif %}
                                 </a>
                                 <div class="product__actions">
@@ -64,13 +64,13 @@
 
                             <div class="product__details">
                                 <h3 class="product__title">
-                                    <a href="single-product.html">Joeby Tailored Trouser</a>
+                                    <a href="single-product.html">{{ product.title }}</a>
                                 </h3>
                             </div>
 
                             <span class="product__price">
                   <ins>
-                    <span class="amount">{{ product.price }}</span>
+                    <span class="amount">{{ (product.price)|number_format(2) }} лв.</span>
                   </ins>
                 </span>
                         </div> <!-- end product -->
