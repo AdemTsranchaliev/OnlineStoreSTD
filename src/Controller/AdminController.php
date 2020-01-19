@@ -25,8 +25,8 @@ class AdminController extends AbstractController
     public function adminPanel()
     {
 
-            $models = $this->getDoctrine()->getRepository(Product::class)->findAll();
-            return $this->render("admin/adminPanel.html.twig", ['models' => $models]);
+        $models = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        return $this->render("admin/adminPanel.html.twig", ['models' => $models]);
 
     }
 
@@ -49,6 +49,7 @@ class AdminController extends AbstractController
                     return $this->redirectToRoute('profile');
                 }
             }
+
             $product->setBoughtCounter(0);
 
             $img1 = "D:/OnlineStoreSTD/public/img/uploads/";
@@ -64,8 +65,24 @@ class AdminController extends AbstractController
             $product->setIsPromotion(0);
             $product->setDiscountPrice(0);
             $product->setIsShoe(0);
-            $categor = $this->getDoctrine()->getRepository(Category::class)->find(1);
-            $product->setCategoryId($categor);
+
+
+
+            $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
+
+            $op=new Category();
+            foreach ($categories as $value)
+            {
+                if (strcmp($product->getCategory(), $value->getName()) == 0)
+                {
+                    $op=$value;
+                    break;
+                }
+            }
+
+
+            $product->setCategoryId($op);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -80,7 +97,7 @@ class AdminController extends AbstractController
             return $this->render("admin/addModel.html.twig", ['user' => $user]);
         };
         return $this->render("admin/addModel.html.twig", ['user' => $user]);
-       
+
     }
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -90,28 +107,28 @@ class AdminController extends AbstractController
     public function editModel(Request $request, $id)
     {
 
-            $user = $this->getUser();
-            $product = new Product();
-            $form = $this->createForm(Products::class, $product);
-            $form->handleRequest($request);
+        $user = $this->getUser();
+        $product = new Product();
+        $form = $this->createForm(Products::class, $product);
+        $form->handleRequest($request);
 
-            $producttoEdit = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        $producttoEdit = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
-            if ($form->isSubmitted()) {
-                $producttoEdit->setTitle($product->getTitle());
-                $producttoEdit->setModelNumber($product->getModelNumber());
-                $producttoEdit->setColor($product->getColor());
+        if ($form->isSubmitted()) {
+            $producttoEdit->setTitle($product->getTitle());
+            $producttoEdit->setModelNumber($product->getModelNumber());
+            $producttoEdit->setColor($product->getColor());
 
-                $producttoEdit->setPrice($product->getPrice());
-                $producttoEdit->setCategory($product->getCategory());
+            $producttoEdit->setPrice($product->getPrice());
+            $producttoEdit->setCategory($product->getCategory());
 
-                $producttoEdit->setDescription($product->getDescription());
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($producttoEdit);
-                $em->flush();
-                return $this->redirectToRoute("user_profile");
-            };
-            return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit, 'user' => $user]);
+            $producttoEdit->setDescription($product->getDescription());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($producttoEdit);
+            $em->flush();
+            return $this->redirectToRoute("user_profile");
+        };
+        return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit, 'user' => $user]);
 
     }
 

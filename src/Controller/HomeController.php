@@ -53,7 +53,7 @@ class HomeController extends AbstractController
 
     /**
      * @param $categoryName
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
      * @Route("/catalog/{categoryName}", name="catalog")
      */
     public function catalog($categoryName)

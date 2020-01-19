@@ -1,7 +1,7 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Вход!{% endblock %}
 
 {% block body %}
     <div class="sign-in-popup">
@@ -11,30 +11,26 @@
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
-
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
                 <form method="post">
-                    <label for="sign-in-input">Username or email address <abbr class="required" title="required">*</abbr></label>
+                    <label for="sign-in-input">Email: <abbr class="required" title="required">*</abbr></label>
                     <input type="email" value="{{ last_username }}" name="email" id="sign-in-input" class="form-control" required autofocus>
-                    <label for="sign-in-password">Password <abbr class="required" title="required">*</abbr></label>
+                    <label for="sign-in-password">Парола: <abbr class="required" title="required">*</abbr></label>
                     <input type="password" name="password" id="sign-in-password" class="form-control" required>
                     <div class="checkbox mb-3">
                         <input type="checkbox" id="ship-to-different-address-checkbox"
                                class="input-checkbox"  name="_remember_me"value="1">
-                        <label for="ship-to-different-address-checkbox" class="checkbox">Remember me</label>
+                        <label for="ship-to-different-address-checkbox" class="checkbox">Запомни ме</label>
                     </div>
                     <input type="hidden" name="_csrf_token"
                            value="{{ csrf_token('authenticate') }}"
                     >
                     <input type="submit" name="sign-in" value="Sign In" class="btn btn-md btn-dark btn-button">
 
-                    <a href="#" class="sign-in-popup__forgot-password">Forgot Password?</a>
+                    <a href="#" class="sign-in-popup__forgot-password">Забравена парола?</a>
                 </form>
             </div>
             <div class="col-md-6 mb-30">
-                <h3>Register</h3>
+                <h3>Регистрация:</h3>
                 <form action="">
                     <label for="register-input">Email address <abbr class="required" title="required">*</abbr></label>
                     <input type="text" name="email" id="register-input">

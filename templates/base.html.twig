@@ -238,10 +238,10 @@
 
                         <!-- Sign In -->
                         {% if app.user %}
-                        <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email }}/<a href="{{ path('app_logout') }}">Logout</a></a>
+                            <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email }}/<a href="{{ path('app_logout') }}">Logout</a></a>
                         {% else %}
-                        <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in"><i class="ui-user"></i>Sign In</a>
-{% endif %}
+                            <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in"><i class="ui-user"></i>Sign In</a>
+                        {% endif %}
                         <!-- Wishlist -->
                         <a href="#" class="top-bar__item"><i class="ui-heart"></i></a>
 
@@ -327,112 +327,112 @@
                     <nav class="flex-child nav__wrap d-none d-lg-block">
                         <ul class="nav__menu">
                             {% if app.user %}
-                            <li class="nav__dropdown">
-                                <a href="">Начало</a>
-                            </li>
+                                <li class="nav__dropdown">
+                                    <a href="">Начало</a>
+                                </li>
 
-                            <li class="nav__dropdown">
-                                <a href="">Админ панел</a>
-                            </li>
+                                <li class="nav__dropdown">
+                                    <a href="">Админ панел</a>
+                                </li>
 
-                            <li class="nav__dropdown">
-                                <a href="{{ path('addProduct') }}">Добави модел</a>
-                            </li>
-                            <li class="nav__dropdown">
-                                <a href="">НОВИ</a>
-                            </li>
-                            <li class="nav__dropdown">
-                                <a href="">ИЗПЪЛНЕНИ</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    ИЗХОД
-                                </a>
-                            </li>
+                                <li class="nav__dropdown">
+                                    <a href="{{ path('addProduct') }}">Добави модел</a>
+                                </li>
+                                <li class="nav__dropdown">
+                                    <a href="">НОВИ</a>
+                                </li>
+                                <li class="nav__dropdown">
+                                    <a href="">ИЗПЪЛНЕНИ</a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        ИЗХОД
+                                    </a>
+                                </li>
                             {% else %}
-                            <li class="nav__dropdown active">
-                                <a href="catalog.html">Мъжки</a>
-                                <ul class="nav__dropdown-menu">
-                                    <li><a href="#">спортни обувки</a></li>
-                                    <li><a href="#">официални обувки</a></li>
+                                <li class="nav__dropdown active">
+                                    <a href="catalog.html">Мъжки</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <li><a href="{{ path('catalog',{ 'categoryName':'manSportShoes'}) }}">спортни обувки</a></li>
+                                        <li><a href="{{ path('catalog',{ 'categoryName':'manOfficialShoes'}) }}">официални обувки</a></li>
 
-                                </ul>
-                            </li>
+                                    </ul>
+                                </li>
 
-                            <li class="nav__dropdown">
-                                <a href="catalog.html">дамски</a>
-                                <ul class="nav__dropdown-menu">
-                                    <li><a href="#">спортни обувки</a></li>
-                                    <li><a href="#">...</a></li>
-                                    <li><a href="#">...</a></li>
-                                    <li><a href="#">...</a></li>
-                                    <li><a href="#">...</a></li>
-                                </ul>
-                            </li>
+                                <li class="nav__dropdown">
+                                    <a href="catalog.html">дамски</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenSportShoes'}) }}">спортни обувки</a></li>
+                                        <li><a href="#">...</a></li>
+                                        <li><a href="#">...</a></li>
+                                        <li><a href="#">...</a></li>
+                                        <li><a href="#">...</a></li>
+                                    </ul>
+                                </li>
 
-                            <li class="nav__dropdown">
-                                <a href="catalog.html">Аксесоари</a>
-                                <ul class="nav__dropdown-menu nav__megamenu">
-                                    <li>
-                                        <div class="nav__megamenu-wrap">
-                                            <div class="row">
+                                <li class="nav__dropdown">
+                                    <a href="catalog.html">Аксесоари</a>
+                                    <ul class="nav__dropdown-menu nav__megamenu">
+                                        <li>
+                                            <div class="nav__megamenu-wrap">
+                                                <div class="row">
 
 
-                                                <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">за нея</a>
-                                                    <ul class="nav__megamenu-list">
-                                                        <li><a href="#">колани</a></li>
-                                                        <li><a href="#">гривни</a></li>
-                                                        <li><a href="#">Dress</a></li>
-                                                        <li><a href="#">...</a></li>
-                                                        <li><a href="#">...</a></li>
-                                                    </ul>
+                                                    <div class="col nav__megamenu-item">
+                                                        <a href="#" class="nav__megamenu-title">за нея</a>
+                                                        <ul class="nav__megamenu-list">
+                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">колани</a></li>
+                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">гривни</a></li>
+                                                            <li><a href="#">...</a></li>
+                                                            <li><a href="#">...</a></li>
+                                                            <li><a href="#">...</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="col nav__megamenu-item">
+                                                        <a href="#" class="nav__megamenu-title">за него</a>
+                                                        <ul class="nav__megamenu-list">
+                                                            <li><a href="{{ path('catalog',{ 'categoryName':'wallets'}) }}">портфейли</a></li>
+                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">гривни</a></li>
+                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">колани</a></li>
+                                                            <li><a href="#">...</a></li>
+                                                        </ul>
+                                                    </div>
+
+
+
+                                                    <div class="col nav__megamenu-item">
+                                                        <a href="#"><img src="/img/shop/megamenu_banner.png" alt=""></a>
+                                                    </div>
+
                                                 </div>
-
-                                                <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">за него</a>
-                                                    <ul class="nav__megamenu-list">
-                                                        <li><a href="#">портфейли</a></li>
-                                                        <li><a href="#">гривни</a></li>
-                                                        <li><a href="#">колани</a></li>
-                                                        <li><a href="#">...</a></li>
-                                                    </ul>
-                                                </div>
-
-
-
-                                                <div class="col nav__megamenu-item">
-                                                    <a href="#"><img src="/img/shop/megamenu_banner.png" alt=""></a>
-                                                </div>
-
                                             </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                                        </li>
+                                    </ul>
+                                </li>
 
-                            <li class="nav__dropdown">
-                                <a href="#">News</a>
-                                <ul class="nav__dropdown-menu">
-                                    <li><a href="blog-standard.html">Blog Standard</a></li>
-                                    <li><a href="blog-single.html">Single Post</a></li>
-                                </ul>
-                            </li>
+                                <li class="nav__dropdown">
+                                    <a href="#">News</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <li><a href="blog-standard.html">Blog Standard</a></li>
+                                        <li><a href="blog-single.html">Single Post</a></li>
+                                    </ul>
+                                </li>
 
-                            <li class="nav__dropdown">
-                                <a href="contact.html">Pages</a>
-                                <ul class="nav__dropdown-menu">
-                                    <li><a href="catalog.html">Catalog</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="faq.html">FAQ</a></li>
-                                    <li><a href="404.html">404</a></li>
-                                </ul>
-                            </li>
-{% endif %}
+                                <li class="nav__dropdown">
+                                    <a href="contact.html">Pages</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <li><a href="catalog.html">Catalog</a></li>
+                                        <li><a href="single-product.html">Single Product</a></li>
+                                        <li><a href="cart.html">Cart</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="about.html">About</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                        <li><a href="faq.html">FAQ</a></li>
+                                        <li><a href="404.html">404</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
                         </ul> <!-- end menu -->
 
                     </nav> <!-- end nav-wrap -->
@@ -469,11 +469,11 @@
 
 
 
-        {% block body %}
+    {% block body %}
 
-                    {% block main %}{% endblock %}
+        {% block main %}{% endblock %}
 
-        {% endblock %}
+    {% endblock %}
 
     {% block footer %}
         <!-- Footer -->
@@ -569,19 +569,19 @@
         </div>
     {% endblock %}
     {% block javascripts %}
-        <script src="{{ asset('/js/jquery.min.js') }}"></script>
-        <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('/js/easing.min.js') }}"></script>
-        <script src="{{ asset('/js/jquery.magnific-popup.min.js') }}"></script>
-        <script src="{{ asset('/js/owl-carousel.min.js') }}"></script>
-        <script src="{{ asset('/js/flickity.pkgd.min.js') }}"></script>
-        <script src="{{ asset('/js/modernizr.min.js') }}"></script>
-        <script src="{{ asset('http://maps.google.com/maps/api/js?key=AIzaSyB25gBtcmj-6mFmckZBxpCl7QTwBCHdt2A') }}"></script>
-        <script src="{{ asset('/js/gmap3.min.js') }}"></script>
-        <script src="{{ asset('/js/scripts.js') }}"></script>
+    <script src="{{ asset('/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/js/easing.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('/js/owl-carousel.min.js') }}"></script>
+    <script src="{{ asset('/js/price-slider.js') }}"></script>
+    <script src="{{ asset('/js/flickity.pkgd.min.js') }}"></script>
+    <script src="{{ asset('/js/modernizr.min.js') }}"></script>
+    <script src="{{ asset('http://maps.google.com/maps/api/js?key=AIzaSyB25gBtcmj-6mFmckZBxpCl7QTwBCHdt2A') }}"></script>
+    <script src="{{ asset('/js/gmap3.min.js') }}"></script>
+    <script src="{{ asset('/js/scripts.js') }}"></script>
 
-        </script>
     {% endblock %}
-</main>
-</body>
-</html>
+    </main>
+    </body>
+    </html>
