@@ -104,12 +104,18 @@
                     </div>
 
                     <span class="product__price">
-              <ins>
-                <span class="amount">$15.99</span>
-              </ins>
-              <del>
-                <span>$27.00</span>
-              </del>
+                  {%  if not product.isPromotion %}
+                      <ins>
+                          <span class="amount">{{ (product.price)|number_format(2) }} лв.</span>
+                        </ins>
+                        {% else %}
+                      <ins>
+                          <span class="amount" style="color: red">{{ (product.discountPrice)|number_format(2) }} лв.</span>
+                        </ins>
+                      <del>
+                           <span >{{ (product.price)|number_format(2) }} лв.</span>
+                        </del>
+                  {% endif %}
             </span>
                 </div> <!-- end product -->
                 {% endfor %}

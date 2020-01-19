@@ -62,7 +62,7 @@ class HomeController extends AbstractController
         $category=new Category();
         foreach ($categories as $value)
         {
-            if (strcmp($categoryName, $value->getName()) == 0)
+            if (strcmp($categoryName, $value->getTag()) == 0)
             {
                 $category=$value;
                 break;

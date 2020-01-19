@@ -28,6 +28,11 @@ class Category
      */
     private $product;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $tag;
+
     public function __construct()
     {
         $this->product = new ArrayCollection();
@@ -77,6 +82,18 @@ class Category
                 $product->setCategoryId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTag(): ?string
+    {
+        return $this->tag;
+    }
+
+    public function setTag(string $tag): self
+    {
+        $this->tag = $tag;
 
         return $this;
     }

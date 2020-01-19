@@ -74,7 +74,7 @@ class AdminController extends AbstractController
             $op=new Category();
             foreach ($categories as $value)
             {
-                if (strcmp($product->getCategory(), $value->getName()) == 0)
+                if (strcmp($product->getCategory(), $value->getTag()) == 0)
                 {
                     $op=$value;
                     break;
@@ -118,15 +118,16 @@ class AdminController extends AbstractController
             $producttoEdit->setTitle($product->getTitle());
             $producttoEdit->setModelNumber($product->getModelNumber());
             $producttoEdit->setColor($product->getColor());
-
             $producttoEdit->setPrice($product->getPrice());
             $producttoEdit->setCategory($product->getCategory());
-
+            $producttoEdit->setSizes($product->getSizes());
+            $producttoEdit->setDiscountPrice($product->getDiscountPrice());
+            $producttoEdit->setIsPromotion($product->getIsPromotion());
             $producttoEdit->setDescription($product->getDescription());
             $em = $this->getDoctrine()->getManager();
             $em->persist($producttoEdit);
             $em->flush();
-            return $this->redirectToRoute("user_profile");
+            return $this->redirectToRoute("adminPanel");
         };
         return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit, 'user' => $user]);
 

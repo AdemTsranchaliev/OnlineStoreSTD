@@ -6,6 +6,7 @@ namespace App\Form;
 use App\Entity\Product;
 
 
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,6 +29,8 @@ class Products extends AbstractType
             ->add('boughtCounter',TextType::class)
             ->add('description',TextType::class)
             ->add('Sizes',TextType::class)
+            ->add('isPromotion',CheckboxType::class)
+            ->add('discountPrice',TextType::class)
             ->add('description',TextareaType::class);
     }
 

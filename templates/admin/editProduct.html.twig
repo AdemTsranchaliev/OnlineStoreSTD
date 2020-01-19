@@ -20,17 +20,31 @@
 
             <label>Цвят</label>
             <input type="text" name="products[color]" value="{{ producttoEdit.color }}">
+            <label>Размери-наличност</label>
+            <input type="text" name="products[Sizes]" value="{{ producttoEdit.Sizes }}">
             <label>Категория</label>
-            <select name="products[category]">
-                <option value="дамски сандали">дамски сандали</option>
-                <option value="дамски спортни обувки">дамски спортни обувки</option>
-                <option value="дамски ежедневни обувки">дамски ежедневни обувки</option>
-                <option value="дамски боти">дамски боти</option>
-                <option value="дамски ботуши">дамски ботуши</option>
-                <option value="мъжки официални обувки">мъжки официални обувки</option>
-                <option value="мъжки спортни обувки">мъжки спортни обувки</option>
+            <select name="products[category]" >
+                <option value="womenSportShoes">дамски спортни обувки</option>
+                <option value="manSportShoes">мъжки спортни обувки</option>
+                <option value="manOfficialShoes">мъжки официални обувки</option>
+                <option value="womenBracelet">дамски гривни</option>
+                <option value="manBelts">мъжки колани</option>
+                <option value="wallets">портфейли</option>
+                <option value="manBracelet">мъжки гривни</option>
             </select>
-            <label>Намаление от</label>
+            <label>Промоция</label>
+            <div class="checkbox mb-3">
+                {% if producttoEdit.isPromotion %}
+                <input type="checkbox" id="ship-to-different-address-checkbox"
+                       class="input-checkbox"  name="products[isPromotion]"value="1" checked>
+                {% else %}
+                <input type="checkbox" id="ship-to-different-address-checkbox"
+                       class="input-checkbox"  name="products[isPromotion]"value="1">
+                {% endif %}
+                <label for="ship-to-different-address-checkbox" class="checkbox">В промоция</label>
+            </div>
+            <label>Намалено от:</label>
+            <input type="text" name="products[discountPrice]" value="{{ producttoEdit.discountPrice }}">
 
             <label>Описание</label>
             <textarea type="text" name="products[description]" >{{ producttoEdit.description }} </textarea>
