@@ -13,7 +13,7 @@
                     <a href="index.html">Women</a>
                 </li>
                 <li class="active">
-                    Casual Jacket
+                    {{ product.category }}
                 </li>
             </ol>
 
@@ -61,7 +61,7 @@
                            <span >{{ (product.price)|number_format(2) }} лв.</span>
                         </del>
                          {% endif %}
-
+                        <form action="{{ path('singleProduct', { 'id':product.id} )}}" method="post" id="sendSubmitForBuying">
                     <div class="colors clearfix">
                         <span class="colors__label">Цвят: <span class="colors__label-selected">{{ product.color }} </span></span>
                         <a href="#" class="colors__item colors__item--selected blue"></a>
@@ -72,8 +72,10 @@
 
                     <div class="size-quantity clearfix">
                         <div class="size">
-                            <label>Размери</label>
-                            <select name="size" id="size__select" class="size__select">
+                            <label>Налични размери</label>
+                            <label style="display: none; color: red" id="warningSize">*Изберете номер</label>
+                            <select name="size__select" id="size__select" class="size__select">
+                                  <option value="Избери...">Избери...</option>
                                 {% for siz in size %}
                                     <option value="{{ siz }}">{{ siz }}</option>
                                 {% endfor %}
@@ -83,6 +85,7 @@
                         <div class="quantity">
                             <label>Количество</label>
                             <select name="quantity" id="quantity__select" class="quantity__select">
+                                  <option value="Избери...">Избери...</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -100,10 +103,10 @@
                             </a>
                         </div>
                         <div class="col">
-                            <a href="#" class="btn btn-lg btn-dark product-single__add-to-wishlist">
+                            <button type="submit"  href="{{ path('buy',{ 'id':product.id}) }}" class="btn btn-lg btn-dark product-single__add-to-wishlist">
                                 <i class="ui-heart"></i>
                                 <span>Купи сега</span>
-                            </a>
+                            </button>
                         </div>
                     </div>
 
@@ -120,7 +123,7 @@
                             </li>
                         </ul>
                     </div>
-
+</form>
                         <!-- Accordion -->
                     <div class="accordion mb-50" id="accordion">
                         <div class="accordion__panel">
