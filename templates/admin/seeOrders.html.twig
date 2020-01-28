@@ -21,9 +21,9 @@
                     <thead>
                     <tr>
                         <th class="product-name" >Данни</th>
-                        <th class="product-price" >Продукт</th>
-                        <th class="product-quantity">Цена</th>
-                        <th class="product-subtotal" colspan="2">Total</th>
+                        <th class="product-price" >Продукт №</th>
+                        <th class="product-quantity">Състояние</th>
+                        <th class="product-subtotal" >ДЕТАЙЛИ</th>
 
                     </tr>
                     </thead>
@@ -46,13 +46,16 @@
                             </td>
                             <td class="product-quantity">
                                 <div class="quantity buttons_added">
-                                    <input type="button" value="-" class="minus">
-                                    <input type="number" step="1" min="0" value="1" title="Qty" class="input-text qty text">
-                                    <input type="button" value="+" class="plus">
+                                    {% if not order.confirmed %}
+                                    <span class="amount" style="color: red">НЕПОТВЪРДЕНА</span>
+                                    {% else %}
+                                        <span class="amount" style="color: green">ПОТВЪРДЕНА</span>
+                                        {% endif %}
                                 </div>
                             </td>
                             <td class="product-subtotal">
-                                <span class="amount">$1250.00</span>
+                                <a class="btn btn-edit btn-sm"
+                                   href="{{ path('editModel',{ 'id':order.id}) }}">ВИЖ</a>
                             </td>
 
                             <td class="product-remove">

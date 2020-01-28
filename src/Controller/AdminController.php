@@ -138,7 +138,7 @@ class AdminController extends AbstractController
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/seeOrders", name="seeOrders")
      */
-    public function seeOrder(Request $request)
+    public function seeOrders(Request $request)
     {
 
             $orders = $this->getDoctrine()->getRepository(OrderProduct::class)->findAll();
@@ -151,6 +151,38 @@ class AdminController extends AbstractController
 
 
             return $this->render("admin/seeOrders.html.twig", ['orders' => $newOrders]);
+
+    }
+
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/seeOrder/{id}", name="seeOrder")
+     * @param $id
+     */
+    public function seeOrder(Request $request, $id)
+    {
+
+            $order = $this->getDoctrine()->getRepository(OrderProduct::class)->find($id);
+
+
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+                echo var_dump($order);
+                if($order->getConfirmed())
+                {
+                    $order->setConfirmed(true);
+                }
+                else
+                {
+                    $order->setNewOrArchived(true);
+                }
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($order);
+                $em->flush();
+
+            }
+            return $this->render("admin/seeOrder.html.twig", ['order' => $order]);
 
     }
 
