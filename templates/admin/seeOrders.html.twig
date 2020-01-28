@@ -7,16 +7,38 @@
     <!-- Page Title -->
     <section class="page-title text-center">
         <div class="container">
-            <h1 class=" heading page-title__title">Нови поръчки</h1>
+            <h1 class=" heading page-title__title">{{ title }}</h1>
         </div>
     </section> <!-- end page title -->
-
 
     <!-- Cart -->
     <section class="section-wrap cart pt-50 pb-40">
         <div class="container relative">
 
             <div class="table-wrap">
+
+                <tr class="cart_item">
+
+                    <td class="product-price">
+                        <a class="btn btn-edit btn-sm"
+                           href="{{ path('seeOrders',{ 'func':'all'}) }}">ВСИЧКИ</a>
+                    </td>
+                    <td class="product-price">
+                        <a class="btn btn-edit btn-sm"
+                           href="{{ path('seeOrders',{ 'func':'archived'}) }}">ИЗПЪЛНЕНИ</a>
+                    </td>
+
+                    <td class="product-subtotal">
+                        <a class="btn btn-edit btn-sm"
+                           href="{{ path('seeOrders',{ 'func':'confirmed'}) }}">ПОТВЪРДЕНИ</a>
+                    </td>
+
+                    <td class="product-remove">
+                        <a class="btn btn-edit btn-sm"
+                           href="{{ path('seeOrders',{ 'func':'new'}) }}">НОВИ</a>
+                    </td>
+                </tr>
+
                 <table class="shop_table cart table">
                     <thead>
                     <tr>
@@ -28,6 +50,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     {% for order in orders %}
                         <tr class="cart_item">
 
@@ -46,16 +69,20 @@
                             </td>
                             <td class="product-quantity">
                                 <div class="quantity buttons_added">
-                                    {% if not order.confirmed %}
+                                    {% if order.confirmed==0 %}
                                     <span class="amount" style="color: red">НЕПОТВЪРДЕНА</span>
-                                    {% else %}
-                                        <span class="amount" style="color: green">ПОТВЪРДЕНА</span>
-                                        {% endif %}
+                                    {% endif %}
+                                    {% if order.confirmed==1 and order.newOrArchived==0 %}
+                                        <span class="amount" style="color: yellow">НЕПОТВЪРДЕНА</span>
+                                    {% endif %}
+                                    {% if order.confirmed==1 and order.newOrArchived==1 %}
+                                        <span class="amount" style="color: green">ИЗПЪЛНЕНА</span>
+                                    {% endif %}
                                 </div>
                             </td>
                             <td class="product-subtotal">
                                 <a class="btn btn-edit btn-sm"
-                                   href="{{ path('editModel',{ 'id':order.id}) }}">ВИЖ</a>
+                                   href="{{ path('seeOrder',{ 'id':order.id}) }}">ВИЖ</a>
                             </td>
 
                             <td class="product-remove">
@@ -67,10 +94,7 @@
 
                     {% endfor %}
 
-
-                    <p>
-                        <input type="submit" name="calc_shipping" value="Update Totals" class="btn btn-md btn-dark btn-button">
-                    </p>
+                    </tbody>
             </div> <!-- end col shipping calculator -->
 
             <div class="col-lg-4">

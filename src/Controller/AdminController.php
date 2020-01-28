@@ -136,21 +136,51 @@ class AdminController extends AbstractController
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/seeOrders", name="seeOrders")
+     * @Route("/seeOrders/{func}", name="seeOrders")
+     * @param $func
      */
-    public function seeOrders(Request $request)
+    public function seeOrders(Request $request,$func)
     {
 
-            $orders = $this->getDoctrine()->getRepository(OrderProduct::class)->findAll();
-            $newOrders = Array();
+        $orders = $this->getDoctrine()->getRepository(OrderProduct::class)->findAll();
+        $newOrders = Array();
+        $title='';
+        if (strcmp($func,'all')==0)
+        {
+            $newOrders=$orders;
+            $title='ВСИЧКИ ПОРЪЧКИ';
+        }
+        if (strcmp($func,'archived')==0)
+        {
             foreach ($orders as $order) {
-                if ($order->getNewOrArchived() === false) {
+                if ($order->getNewOrArchived() === true) {
                     array_push($newOrders, $order);
                 }
             }
+            $title='ИЗПЪЛНЕНИ ПОРЪЧКИ';
+        }
+        if (strcmp($func,'new')==0)
+        {
+            foreach ($orders as $order) {
+                if ($order->getConfirmed() === false) {
+                    array_push($newOrders, $order);
+                }
+            }
+            $title='НОВИ ПОРЪЧКИ';
+        }
+        if (strcmp($func,'confirmed')==0)
+        {
+            foreach ($orders as $order) {
+                if ($order->getConfirmed() === true&&$order->getNewOrArchived() === false) {
+                    array_push($newOrders, $order);
+                }
+            }
+            $title='ПОТВЪРДЕНИ ПОРЪЧКИ';
+        }
 
 
-            return $this->render("admin/seeOrders.html.twig", ['orders' => $newOrders]);
+
+        return $this->render("admin/seeOrders.html.twig", ['orders' => $newOrders,'title'=>$title]);
 
     }
 
@@ -162,27 +192,27 @@ class AdminController extends AbstractController
     public function seeOrder(Request $request, $id)
     {
 
-            $order = $this->getDoctrine()->getRepository(OrderProduct::class)->find($id);
+        $order = $this->getDoctrine()->getRepository(OrderProduct::class)->find($id);
 
 
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-                echo var_dump($order);
-                if($order->getConfirmed())
-                {
-                    $order->setConfirmed(true);
-                }
-                else
-                {
-                    $order->setNewOrArchived(true);
-                }
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($order);
-                $em->flush();
-
+            if($order->getConfirmed()==0)
+            {
+                $order->setConfirmed(true);
             }
-            return $this->render("admin/seeOrder.html.twig", ['order' => $order]);
+            else
+            {
+                $order->setNewOrArchived(true);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($order);
+            $em->flush();
+
+        }
+        return $this->render("admin/seeOrder.html.twig", ['order' => $order]);
 
     }
 

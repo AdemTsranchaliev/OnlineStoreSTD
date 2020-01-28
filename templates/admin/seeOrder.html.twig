@@ -175,13 +175,13 @@
                         <ul class="payment_methods methods">
 
                             <li class="payment_method_bacs">
-                                {% if order.confirmed %}
+                                {% if order.confirmed==0 %}
                                     <span class="amount" style="color: red">НЕПОТВЪРДЕНА</span>
                                 {% else %}
                                     <span class="amount" style="color: green">ПОТВЪРДЕНА</span>
                                 {% endif %}
                             <li class="payment_method_bacs">
-                                {% if order.newOrArchived %}
+                                {% if order.newOrArchived==0 %}
                                     <span class="amount" style="color: gold">НЕИЗПЪЛНЕНА</span>
                                 {% else %}
                                     <span class="amount" style="color: green">ИЗПЪЛНЕНА</span>
@@ -191,12 +191,12 @@
                             </li>
                         </ul>
                         <div class="form-row place-order">
-                            {% if order.confirmed %}
+                            {% if order.confirmed ==0%}
                                 <input type="submit"
                                        class="btn btn-lg btn-color btn-button"
                                        value="ПОТВЪРДИ">
                             {% endif %}
-                            {% if not order.newOrArchived and order.confirmed%}
+                            {% if  order.confirmed==1 and order.newOrArchived==0%}
                                 <input type="submit"
                                        class="btn btn-lg btn-color btn-button"
                                        value="ИЗПЪЛНИ">

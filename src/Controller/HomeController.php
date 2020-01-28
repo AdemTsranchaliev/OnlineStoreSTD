@@ -91,6 +91,7 @@ class HomeController extends AbstractController
             return $this->render('commonFiles/404.html.twig');
         }
         if (isset($_POST['size__select'])) {
+
             $s = $_POST['size__select'];
             return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s]);
         }
