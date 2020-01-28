@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\OrderProduct;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -130,6 +131,26 @@ class AdminController extends AbstractController
             return $this->redirectToRoute("adminPanel");
         };
         return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit, 'user' => $user]);
+
+    }
+
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/seeOrders", name="seeOrders")
+     */
+    public function seeOrder(Request $request)
+    {
+
+            $orders = $this->getDoctrine()->getRepository(OrderProduct::class)->findAll();
+            $newOrders = Array();
+            foreach ($orders as $order) {
+                if ($order->getNewOrArchived() === false) {
+                    array_push($newOrders, $order);
+                }
+            }
+
+
+            return $this->render("admin/seeOrders.html.twig", ['orders' => $newOrders]);
 
     }
 

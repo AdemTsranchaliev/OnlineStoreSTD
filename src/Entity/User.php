@@ -38,7 +38,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="userId")
+     * @ORM\OneToMany(targetEntity="OrderProduct", mappedBy="userId")
      */
     private $orders;
 
@@ -128,14 +128,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Order[]
+     * @return Collection|OrderProduct[]
      */
     public function getOrders(): Collection
     {
         return $this->orders;
     }
 
-    public function addOrder(Order $order): self
+    public function addOrder(OrderProduct $order): self
     {
         if (!$this->orders->contains($order)) {
             $this->orders[] = $order;
@@ -145,7 +145,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeOrder(OrderProduct $order): self
     {
         if ($this->orders->contains($order)) {
             $this->orders->removeElement($order);

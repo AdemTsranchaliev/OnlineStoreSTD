@@ -4,9 +4,10 @@
 
 {% block main %}
 
+    <!-- Page Title -->
     <section class="page-title text-center">
         <div class="container">
-            <h1 class=" heading page-title__title">Админ панел</h1>
+            <h1 class=" heading page-title__title">Нови поръчки</h1>
         </div>
     </section> <!-- end page title -->
 
@@ -19,30 +20,29 @@
                 <table class="shop_table cart table">
                     <thead>
                     <tr>
-                        <th class="product-name" colspan="2">Product</th>
-                        <th class="product-price">Price</th>
-                        <th class="product-quantity">Quantity</th>
+                        <th class="product-name" >Данни</th>
+                        <th class="product-price" >Продукт</th>
+                        <th class="product-quantity">Цена</th>
                         <th class="product-subtotal" colspan="2">Total</th>
 
                     </tr>
                     </thead>
                     <tbody>
-                    {% for model in models %}
+                    {% for order in orders %}
                         <tr class="cart_item">
-                            <td class="product-thumbnail">
-                                <a href="#">
-                                    <img src="/img/uploads/{{ model.id }}.0.jpg" alt="">
-                                </a>
-                            </td>
+
                             <td class="product-name">
-                                <a href="#">{{ model.title }}</a>
+                                <a href="#">{{ order.name }} {{ order.surname }}</a>
                                 <ul>
-                                    <li>Size: {{ model.Sizes }}</li>
-                                    <li>Color: White</li>
+                                    <li>Тел. {{ order.phone }}</li>
+                                    <li>град: {{ order.populatedPlace }}</li>
                                 </ul>
                             </td>
                             <td class="product-price">
-                                <span class="amount">{{ model.price }}</span>
+
+
+                                <span>{{ order.product.modelNumber }}</span>
+
                             </td>
                             <td class="product-quantity">
                                 <div class="quantity buttons_added">
@@ -51,11 +51,10 @@
                                     <input type="button" value="+" class="plus">
                                 </div>
                             </td>
-
                             <td class="product-subtotal">
-                                <a class="btn btn-edit btn-sm"
-                                   href="{{ path('editModel',{ 'id':model.id}) }}">Редактирай</a>
+                                <span class="amount">$1250.00</span>
                             </td>
+
                             <td class="product-remove">
                                 <a href="#" class="remove" title="Remove this item">
                                     <i class="ui-close"></i>
@@ -77,24 +76,8 @@
 
                     <table class="table shop_table">
                         <tbody>
-                        <tr class="cart-subtotal">
 
-                            <td>
 
-                            </td>
-                        </tr>
-                        <tr class="shipping">
-
-                            <td>
-
-                            </td>
-                        </tr>
-                        <tr class="order-total">
-
-                            <td>
-
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
 

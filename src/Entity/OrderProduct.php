@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
  */
-class Order
+class OrderProduct
 {
     /**
      * @ORM\Id()
@@ -81,6 +81,8 @@ class Order
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;
+
+
 
     public function getId(): ?int
     {
@@ -242,4 +244,6 @@ class Order
 
         return $this;
     }
+
+
 }

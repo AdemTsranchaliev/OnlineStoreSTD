@@ -90,7 +90,7 @@ class Product
     private $categoryId;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="OrderProduct", mappedBy="product")
      */
     private $orders;
 
@@ -273,14 +273,14 @@ class Product
     }
 
     /**
-     * @return Collection|Order[]
+     * @return Collection|OrderProduct[]
      */
     public function getOrders(): Collection
     {
         return $this->orders;
     }
 
-    public function addOrder(Order $order): self
+    public function addOrder(OrderProduct $order): self
     {
         if (!$this->orders->contains($order)) {
             $this->orders[] = $order;
@@ -290,7 +290,7 @@ class Product
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeOrder(OrderProduct $order): self
     {
         if ($this->orders->contains($order)) {
             $this->orders->removeElement($order);
