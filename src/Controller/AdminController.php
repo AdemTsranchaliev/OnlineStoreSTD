@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
+use Symfony\Flex\Response;
 use App\Entity\Product;
 use App\Form\Products;
 use App\Repository\ProductRepository;
@@ -214,6 +214,94 @@ class AdminController extends AbstractController
         }
         return $this->render("admin/seeOrder.html.twig", ['order' => $order]);
 
+    }
+
+    /**
+     * @Route("/student/ajax")
+     */
+    public function ajaxAction(Request $request) {
+        $students = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findAll();
+$temp=array();
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+
+            $command=$_POST['command'];
+            if(strcmp($command,"default-sorting"))
+            {
+
+            }
+            if(strcmp($command,"price-low-to-high"))
+            {
+
+            }
+            if(strcmp($command,"price-high-to-low"))
+            {
+
+            }
+            if(strcmp($command,"by-popularity"))
+            {
+
+            }
+            if(strcmp($command,"date"))
+            {
+
+            }
+
+            $foo = [];
+
+            $ready='';
+            foreach ($students as $prd) {
+
+
+                $ready.="<div class=\"col-md col-sm-6 product\">
+                            <div class=\"product__img-holder\">
+                                <a href=\"\singleProduct".$prd->getId()."\" class=\"product__link\">
+                                    <img src=\"/img/uploads/".$prd->getId().".0.jpg\" alt=\"\" class=\"product__img\" id=\"img_1B\">
+                                    {% if product.photoCount>1 %}
+                                    <img src=\"/img/uploads/".$prd->getId().".1.jpg\" alt=\"\" class=\"product__img-back\" id=\"img_1S\">
+                                    {% endif %}
+                                </a>
+                                <div class=\"product__actions\">
+                                    <a href=\"quickview.html\" class=\"product__quickview\">
+                                        <i class=\"ui-eye\"></i>
+                                        <span>Quick View</span>
+                                    </a>
+                                    <a href=\"#\" class=\"product__add-to-wishlist\">
+                                        <i class=\"ui-heart\"></i>
+                                        <span>Wishlist</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class=\"product__details\">
+                                <h3 class=\"product__title\">
+                                    <a href=\"\singleProduct".$prd->getId()."\">".$prd->getTitle()."</a>
+                                </h3>
+                            </div>
+
+                            <span class=\"product__price\">
+                  <ins>
+                    <span class=\"amount\">".($prd->getPrice())."лв.</span>
+                  </ins>
+                </span>
+                        </div> <!-- end product -->";
+
+
+
+
+
+                array_push($foo, (object)[
+                    'id' => $prd->getId(),
+                    'title' => $prd->getTitle()
+
+                ]);
+            }
+            file_put_contents('C:\Users\Asus\Desktop\untitled1\text.txt', json_encode($foo));
+            return new Response($ready);
+        } else {
+            return $this->render('student/ajax.html.twig');
+        }
     }
 
 }

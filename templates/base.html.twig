@@ -528,6 +528,7 @@
                     <div class="row">
                         <div class="col-md-6 text-sm-center">
               <span class="copyright">
+
                 &copy; 2017 Namira Theme. Made by <a href="http://deothemes.com">DeoThemes</a>
               </span>
                         </div>
@@ -549,10 +550,36 @@
         </div>
     {% endblock %}
     {% block javascripts %}
+        <script src="{{ asset('/js/jquery-2.2.4.min.js') }}"></script>
+        <script>
+            $(document).ready(function(){
+                $("#sorting").on("change", function(event){
+
+                    var adem = $('#sorting')[0];
+
+                    $.ajax({
+                        url:        '/student/ajax',
+                        type:       'POST',
+                        dataType:   'html',
+                        data: {'command':$("#sorting :selected").val()},
+                        async:      true,
+
+                        success: function(data, status) {
+                            alert(data.responseText);
+
+                        },
+                        error : function(xhr, textStatus, errorThrown) {
+                            alert('Ajax request failed.');
+                        }
+                    });
+                });
+            });
+        </script>
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
     <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/js/easing.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.magnific-popup.min.js') }}"></script>
+
     <script src="{{ asset('/js/owl-carousel.min.js') }}"></script>
     <script src="{{ asset('/js/price-slider.js') }}"></script>
     <script src="{{ asset('/js/flickity.pkgd.min.js') }}"></script>
@@ -561,7 +588,8 @@
     <script src="{{ asset('/js/gmap3.min.js') }}"></script>
     <script src="{{ asset('/js/scripts.js') }}"></script>
     <script src="{{ asset('/js/custom.js') }}"></script>
-    {% endblock %}
+
+{% endblock %}
     </main>
     </body>
     </html>
