@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'login' %}
+
+{% block main %}
+
+    <!-- Page Title -->
+    <section class="page-title text-center">
+        <div class="container">
+            <h1 class=" heading page-title__title">Потребители</h1>
+        </div>
+    </section> <!-- end page title -->
+
+    <!-- Cart -->
+    <section class="section-wrap cart pt-50 pb-40">
+        <div class="container relative">
+
+            <div class="table-wrap">
+
+                <table class="shop_table cart table">
+                    <thead>
+                    <tr>
+                        <th class="product-name" >Име</th>
+                        <th class="product-price" >Email</th>
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for user in users %}
+                        <tr class="cart_item">
+
+                            <td class="product-name">
+                                <span>{{ user.name }}</span>
+
+                            </td>
+                            <td class="product-price">
+                                <span>{{ user.email }}</span>
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+            </div> <!-- end col shipping calculator -->
+
+            <div class="col-lg-4">
+                <div class="cart_totals">
+
+
+                    <table class="table shop_table">
+                        <tbody>
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div> <!-- end col cart totals -->
+
+        </div> <!-- end row -->
+
+
+        </div> <!-- end container -->
+    </section> <!-- end cart -->
+
+{% endblock %}

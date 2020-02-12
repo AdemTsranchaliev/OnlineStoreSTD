@@ -4,11 +4,15 @@
 namespace App\Controller;
 use App\Entity\OrderProduct;
 use App\Entity\Product;
+use App\Entity\User;
 use App\Form\Orders;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints\DateTime;
+
 
 class UserController extends AbstractController
 {
@@ -18,8 +22,9 @@ class UserController extends AbstractController
      * @param $number
      */
     public
-    function buy($id,Request $request)
+    function buy($id,Request $request,\DateTimeInterface $date = null)
     {
+        $securityContext = $this->container->get('security.authorization_checker');
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
         if ($product === null) {
@@ -32,7 +37,7 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            echo var_dump($_SESSION['name']);
+
             $searchForProduct=$_POST['productId'];
             $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
             $product=new Product();
@@ -82,7 +87,49 @@ class UserController extends AbstractController
 
             return $this->render('user/succesfullOrder.html.twig');
         }
-        return $this->render('user/buyProduct.html.twig', ['price' => intval($price), 'product' => $product]);
+
+        $user=new User();
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $user= $this->getUser();
+        }
+        return $this->render('user/buyProduct.html.twig', ['price' => intval($price), 'product' => $product,'user'=>$user]);
+
+    }
+
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/myInformation", name="myInformation")
+     */
+    public function myInformation(Request $request)
+    {
+        $user = $this->getUser();
+
+
+        return $this->render("user/myInformation.html.twig",['user'=>$user]);
+
+    }
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/myOrders", name="myOrders")
+     */
+    public function myOrders(Request $request)
+    {
+        $user = $this->getUser();
+
+
+        return $this->render("user/myOrders.html.twig",['orders'=>$user->getOrders()]);
+
+    }
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/changePassword", name="changePassword")
+     */
+    public function changePassword(Request $request)
+    {
+        $user = $this->getUser();
+
+
+        return $this->render("user/myOrders.html.twig",['orders'=>$user->getOrders()]);
 
     }
 

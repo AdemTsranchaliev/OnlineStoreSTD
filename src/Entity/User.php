@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -41,6 +42,36 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="OrderProduct", mappedBy="userId")
      */
     private $orders;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $surname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $populatedPlace;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $office;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phone;
 
 
     public function __construct()
@@ -154,6 +185,78 @@ class User implements UserInterface
                 $order->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPopulatedPlace(): ?string
+    {
+        return $this->populatedPlace;
+    }
+
+    public function setPopulatedPlace(?string $populatedPlace): self
+    {
+        $this->populatedPlace = $populatedPlace;
+
+        return $this;
+    }
+
+    public function getOffice(): ?string
+    {
+        return $this->office;
+    }
+
+    public function setOffice(?string $office): self
+    {
+        $this->office = $office;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
 
         return $this;
     }

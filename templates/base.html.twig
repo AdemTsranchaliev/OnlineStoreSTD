@@ -187,7 +187,7 @@
                     <a href="#" class="sidenav__menu-link">{{ app.user.email }}</a>
 
                 {% else %}
-                    <a href="#" class="sidenav__menu-link">Sign In</a>
+                    <a href="#" class="sidenav__menu-link">Вход</a>
                 {% endif %}
             </li>
         </ul>
@@ -226,7 +226,20 @@
 
                         <!-- Sign In -->
                         {% if app.user %}
-                            <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email }}/<a href="{{ path('app_logout') }}">Изход</a></a>
+
+                            <li class="top-bar__language">
+                            <a  href="#" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email }}</a>
+                            <div class="top-bar__language-dropdown">
+                                <ul>
+                                    <li><a href="{{ path('myOrders') }}">Моите поръчки</a></li>
+                                    <li><a href="{{ path('myInformation') }}">Моята информация</a></li>
+                                    <li><a href="{{ path('app_logout') }}">Смяна на парола</a></li>
+                                    <li><a href="{{ path('app_logout') }}">Изход</a></li>
+
+                                </ul>
+                            </div>
+                            </li>
+
                         {% else %}
                             <a  href="{{ path('app_login') }}" class="top-bar__item top-bar__sign-in"><i class="ui-user"></i>Вход</a>
                         {% endif %}
@@ -314,35 +327,8 @@
                     <!-- Nav-wrap -->
                     <nav class="flex-child nav__wrap d-none d-lg-block">
                         <ul class="nav__menu">
-                            {% if app.user %}
-                                <li class="nav__dropdown">
-                                    <a href="{{ path('index') }}">Начало</a>
-                                </li>
 
-                                <li class="nav__dropdown">
-                                    <a href="{{ path('adminPanel') }}">Админ панел</a>
-                                </li>
 
-                                <li class="nav__dropdown">
-                                    <a href="{{ path('addProduct') }}">Добави модел</a>
-                                </li>
-                                <li class="nav__dropdown">
-                                    <a href="{{ path('seeOrders',{ 'func':'new'}) }}">Поръчки</a>
-                                </li>
-                                <li class="nav__dropdown">
-                                    <a href="contact.html">Страници</a>
-                                    <ul class="nav__dropdown-menu">
-                                        <li><a href="catalog.html">Catalog</a></li>
-                                        <li><a href="single-product.html">Single Product</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="faq.html">FAQ</a></li>
-                                        <li><a href="404.html">404</a></li>
-                                    </ul>
-                                </li>
-                            {% else %}
                                 <li class="nav__dropdown active">
                                     <a href="catalog.html">Мъжки</a>
                                     <ul class="nav__dropdown-menu">
@@ -356,10 +342,7 @@
                                     <a href="catalog.html">дамски</a>
                                     <ul class="nav__dropdown-menu">
                                         <li><a href="{{ path('catalog',{ 'categoryName':'womenSportShoes'}) }}">спортни обувки</a></li>
-                                        <li><a href="#">...</a></li>
-                                        <li><a href="#">...</a></li>
-                                        <li><a href="#">...</a></li>
-                                        <li><a href="#">...</a></li>
+
                                     </ul>
                                 </li>
 
@@ -376,9 +359,7 @@
                                                         <ul class="nav__megamenu-list">
                                                             <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">колани</a></li>
                                                             <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">гривни</a></li>
-                                                            <li><a href="#">...</a></li>
-                                                            <li><a href="#">...</a></li>
-                                                            <li><a href="#">...</a></li>
+
                                                         </ul>
                                                     </div>
 
@@ -388,7 +369,7 @@
                                                             <li><a href="{{ path('catalog',{ 'categoryName':'wallets'}) }}">портфейли</a></li>
                                                             <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">гривни</a></li>
                                                             <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">колани</a></li>
-                                                            <li><a href="#">...</a></li>
+
                                                         </ul>
                                                     </div>
 
@@ -411,7 +392,19 @@
                                         <li><a href="blog-single.html">Single Post</a></li>
                                     </ul>
                                 </li>
+                            {% if is_granted('ROLE_ADMIN')%}
 
+                                <li class="nav__dropdown">
+                                    <a href="#">Управление</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <li><a href="{{ path('adminPanel') }}">Продукти</a></li>
+                                        <li><a href="{{ path('addProduct') }}">Добави модел</a></li>
+                                        <li><a href="{{ path('seeOrders',{ 'func':'new'}) }}">Поръчки</a></li>
+                                        <li><a href="{{ path('seeUsers') }}">Потребители</a></li>
+
+
+                                    </ul>
+                                </li>
                             {% endif %}
                         </ul> <!-- end menu -->
 
@@ -421,7 +414,7 @@
                     <!-- Search -->
                     <div class="flex-child nav__search d-none d-lg-block">
                         <form method="get" class="nav__search-form">
-                            <input type="search" class="nav__search-input" placeholder="Search">
+                            <input type="search" class="nav__search-input" placeholder="Търси...">
                             <button type="submit" class="nav__search-submit">
                                 <i class="ui-search"></i>
                             </button>
@@ -561,11 +554,11 @@
                         url:        '/student/ajax',
                         type:       'POST',
                         dataType:   'html',
-                        data: {'command':$("#sorting :selected").val()},
+                        data: {'command':$("#sorting :selected").val(),'categoryName':$("#categoryName").text()},
                         async:      true,
 
                         success: function(data, status) {
-                            alert(data.responseText);
+                            $("#divSort").replaceWith(data);
 
                         },
                         error : function(xhr, textStatus, errorThrown) {

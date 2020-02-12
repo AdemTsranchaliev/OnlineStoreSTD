@@ -19,15 +19,16 @@
                 <table class="shop_table cart table">
                     <thead>
                     <tr>
-                        <th class="product-name" colspan="2">Product</th>
-                        <th class="product-price">Price</th>
-                        <th class="product-quantity">Quantity</th>
-                        <th class="product-subtotal" colspan="2">Total</th>
+                        <th class="product-name" colspan="2">Продукт</th>
+                        <th class="product-price">Цена</th>
+                        <th class="product-quantity">Промоция</th>
+                        <th class="product-subtotal" colspan="2">Редактиране</th>
 
                     </tr>
                     </thead>
                     <tbody>
                     {% for model in models %}
+                        {% if model.isDetelet ==0 %}
                         <tr class="cart_item">
                             <td class="product-thumbnail">
                                 <a href="#">
@@ -46,9 +47,14 @@
                             </td>
                             <td class="product-quantity">
                                 <div class="quantity buttons_added">
-                                    <input type="button" value="-" class="minus">
-                                    <input type="number" step="1" min="0" value="1" title="Qty" class="input-text qty text">
-                                    <input type="button" value="+" class="plus">
+                                    {% if model.isPromotion==0 %}
+                                        <span class="amount" style="color: green">Не е в промоция</span>
+
+                                    {% else %}
+
+                                        <span class="amount" style="color: red">В промоция</span>
+
+                                    {% endif %}
                                 </div>
                             </td>
 
@@ -56,19 +62,12 @@
                                 <a class="btn btn-edit btn-sm"
                                    href="{{ path('editModel',{ 'id':model.id}) }}">Редактирай</a>
                             </td>
-                            <td class="product-remove">
-                                <a href="#" class="remove" title="Remove this item">
-                                    <i class="ui-close"></i>
-                                </a>
-                            </td>
-                        </tr>
 
+                        </tr>
+                       {% endif %}
                     {% endfor %}
 
 
-                    <p>
-                        <input type="submit" name="calc_shipping" value="Update Totals" class="btn btn-md btn-dark btn-button">
-                    </p>
             </div> <!-- end col shipping calculator -->
 
             <div class="col-lg-4">

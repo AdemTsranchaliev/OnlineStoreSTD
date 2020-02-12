@@ -9,21 +9,23 @@
         <h1>Редактиране на ПРОДУКТ</h1>
 
 
-        <form action="{{ path('editModel', { 'id':producttoEdit.id}) }}" method="post">
+        <form action="{{ path('editModel', { 'id':producttoEdit.id}) }}" method="post" id="editProduct">
             <label>Заглавие</label>
-            <input type="text" name="products[title]" value="{{ producttoEdit.title }}">
+            <label style="display: none; color: red" id="productToEditTitle">Това поле е задължително</label>
+            <input type="text" id="productToEditTitle" name="products[title]" value="{{ producttoEdit.title }}">
             <label>Модел №</label>
-            <input type="text" name="products[modelNumber]" value="{{ producttoEdit.modelNumber }}">
+            <input type="text" id="productToEditModelNumber" name="products[modelNumber]" value="{{ producttoEdit.modelNumber }}">
             <label>Цена</label>
-            <input type="text" name="products[price]"  value="{{ producttoEdit.price }}" >
+            <input type="text"id="productToEditPrice" name="products[price]"  value="{{ producttoEdit.price }}" >
             <label>Размери</label>
 
             <label>Цвят</label>
-            <input type="text" name="products[color]" value="{{ producttoEdit.color }}">
+            <input type="text" id="productToEditColor" name="products[color]" value="{{ producttoEdit.color }}">
             <label>Размери-наличност</label>
-            <input type="text" name="products[Sizes]" value="{{ producttoEdit.Sizes }}">
+            <input type="text" id="productToEditSizes" name="products[Sizes]" value="{{ producttoEdit.Sizes }}">
             <label>Категория</label>
             <select name="products[category]" >
+                <option value="{{ producttoEdit.categoryId.tag }}" selected>{{ producttoEdit.categoryId.name }}</option>
                 <option value="womenSportShoes">дамски спортни обувки</option>
                 <option value="manSportShoes">мъжки спортни обувки</option>
                 <option value="manOfficialShoes">мъжки официални обувки</option>
@@ -44,13 +46,17 @@
                 <label for="ship-to-different-address-checkbox" class="checkbox">В промоция</label>
             </div>
             <label>Намалено от:</label>
-            <input type="text" name="products[discountPrice]" value="{{ producttoEdit.discountPrice }}">
+            <input type="text" id="productToEditDiscount" name="products[discountPrice]" value="{{ producttoEdit.discountPrice }}">
 
             <label>Описание</label>
             <textarea type="text" name="products[description]" >{{ producttoEdit.description }} </textarea>
-            <input type="submit">
+            <input type="submit" value="Редактирай">
         </form>
-
+    <hr style="solid-color: red">
+        <form action="{{ path('deleteModel')}}" method="post" id="deleteModel">
+            <input type="hidden" value="{{ producttoEdit.Id }}" id="deleteModelId" name="deleteModelId">
+          <input type="submit" value="Изтрий" style="color: red">
+        </form>
     </div>
 
 

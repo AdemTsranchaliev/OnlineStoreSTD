@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'login' %}
+
+{% block main %}
+
+    <!-- Page Title -->
+    <section class="page-title text-center">
+        <div class="container">
+            <h1 class=" heading page-title__title">Моите поръчки</h1>
+        </div>
+    </section> <!-- end page title -->
+
+    <!-- Cart -->
+    <section class="section-wrap cart pt-50 pb-40">
+        <div class="container relative">
+
+            <div class="table-wrap">
+
+
+
+                <table class="shop_table cart table">
+                    <thead>
+                    <tr>
+                        <th class="product-name" >Данни</th>
+                        <th class="product-price" >Продукт №</th>
+                        <th class="product-quantity">Състояние</th>
+                        <th class="product-subtotal" >ДЕТАЙЛИ</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for order in orders %}
+                        <tr class="cart_item">
+
+                            <td class="product-name">
+                                <a href="#">{{ order.name }} {{ order.surname }}</a>
+                                <ul>
+                                    <li>Тел. {{ order.phone }}</li>
+                                    <li>град: {{ order.populatedPlace }}</li>
+                                </ul>
+                            </td>
+                            <td class="product-price">
+
+
+                                <span>{{ order.product.modelNumber }}</span>
+
+                            </td>
+                            <td class="product-quantity">
+                                <div class="quantity buttons_added">
+                                    {% if order.confirmed==0 %}
+                                        <span class="amount" style="color: red">НЕПОТВЪРДЕНА</span>
+                                    {% endif %}
+                                    {% if order.confirmed==1 and order.newOrArchived==0 %}
+                                        <span class="amount" style="color: yellow">НЕПОТВЪРДЕНА</span>
+                                    {% endif %}
+                                    {% if order.confirmed==1 and order.newOrArchived==1 %}
+                                        <span class="amount" style="color: green">ИЗПЪЛНЕНА</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="product-subtotal">
+                                <a class="btn btn-edit btn-sm"
+                                   href="{{ path('seeOrder',{ 'id':order.id}) }}">ВИЖ</a>
+                            </td>
+
+                            <td class="product-remove">
+                                <a href="#" class="remove" title="Remove this item">
+                                    <i class="ui-close"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+            </div> <!-- end col shipping calculator -->
+
+            <div class="col-lg-4">
+                <div class="cart_totals">
+
+
+                    <table class="table shop_table">
+                        <tbody>
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div> <!-- end col cart totals -->
+
+        </div> <!-- end row -->
+
+
+        </div> <!-- end container -->
+    </section> <!-- end cart -->
+
+{% endblock %}

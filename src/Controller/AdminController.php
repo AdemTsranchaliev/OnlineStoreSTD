@@ -5,13 +5,14 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\OrderProduct;
+use App\Entity\User;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Flex\Response;
+use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Product;
 use App\Form\Products;
 use App\Repository\ProductRepository;
@@ -28,6 +29,18 @@ class AdminController extends AbstractController
 
         $models = $this->getDoctrine()->getRepository(Product::class)->findAll();
         return $this->render("admin/adminPanel.html.twig", ['models' => $models]);
+
+    }
+
+    /**
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/seeUsers", name="seeUsers")
+     */
+    public function seeUsers()
+    {
+
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+        return $this->render("admin/seeUsers.html.twig", ['users' => $users]);
 
     }
 
@@ -107,13 +120,17 @@ class AdminController extends AbstractController
      */
     public function editModel(Request $request, $id)
     {
+        $producttoEdit = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
-        $user = $this->getUser();
+         if ($producttoEdit==null)
+         {
+             return $this->render("commonFiles/404.html.twig");
+         }
+
         $product = new Product();
         $form = $this->createForm(Products::class, $product);
         $form->handleRequest($request);
 
-        $producttoEdit = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
         if ($form->isSubmitted()) {
             $producttoEdit->setTitle($product->getTitle());
@@ -125,12 +142,16 @@ class AdminController extends AbstractController
             $producttoEdit->setDiscountPrice($product->getDiscountPrice());
             $producttoEdit->setIsPromotion($product->getIsPromotion());
             $producttoEdit->setDescription($product->getDescription());
+
+            $category = $this->getDoctrine()->getRepository(Category::class)-> findOneBy(array('tag' => $product->getCategory()));
+
+            $producttoEdit->setCategoryId($category);
             $em = $this->getDoctrine()->getManager();
             $em->persist($producttoEdit);
             $em->flush();
             return $this->redirectToRoute("adminPanel");
         };
-        return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit, 'user' => $user]);
+        return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit]);
 
     }
 
@@ -217,51 +238,142 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/deleteModel", name="deleteModel")
+     * @param $id
+     */
+    public function deleteModel()
+    {
+       if (isset($_POST['deleteModelId']))
+       {
+           $model = $this->getDoctrine()->getRepository(Product::class)->find($_POST['deleteModelId']);
+
+           $model->setIsDetelet(1);
+           $em = $this->getDoctrine()->getManager();
+           $em->persist($model);
+           $em->flush();
+
+
+       }
+
+        return $this->redirect("adminPanel");
+
+    }
+
+
+    /**
      * @Route("/student/ajax")
      */
     public function ajaxAction(Request $request) {
-        $students = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->findAll();
-$temp=array();
+
+
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
 
             $command=$_POST['command'];
-            if(strcmp($command,"default-sorting"))
-            {
+            $category=$_POST['categoryName'];
 
+            $arr=[];
+            $categories = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->findAll();
+
+            foreach ($categories as $prd) {
+
+                if (strcmp($category, $prd->getName()) == 0) {
+                    $arr = $prd->getProduct();
+                    break;
+                }
             }
-            if(strcmp($command,"price-low-to-high"))
+            if(strcmp($command,"price-low-to-high")==0)
             {
+                for ($i = 0; $i < count($arr); $i++) {
 
+                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
+                    {
+                        if( $arr[$j]->getPrice() < $arr[$j+1]->getPrice() )
+                        {
+                            $temp = $arr[$j];
+                            $arr[$j]=$arr[$j+1];
+                            $arr[$j+1]=$temp;
+
+                        }
+
+                    }
+
+                }
             }
-            if(strcmp($command,"price-high-to-low"))
+            if(strcmp($command,"price-high-to-low")==0)
             {
+                for ($i = 0; $i < count($arr); $i++) {
 
+                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
+                    {
+                        if( $arr[$j]->getPrice() > $arr[$j+1]->getPrice() )
+                        {
+                            $temp = $arr[$j];
+                            $arr[$j]=$arr[$j+1];
+                            $arr[$j+1]=$temp;
+
+                        }
+
+                    }
+
+                }
             }
-            if(strcmp($command,"by-popularity"))
+            if(strcmp($command,"by-popularity")==0)
             {
+                for ($i = 0; $i < count($arr); $i++) {
 
+                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
+                    {
+                        if( $arr[$j]->getBoughtCounter() < $arr[$j+1]->getBoughtCounter() )
+                        {
+                            $temp = $arr[$j];
+                            $arr[$j]=$arr[$j+1];
+                            $arr[$j+1]=$temp;
+
+                        }
+
+                    }
+
+                }
             }
-            if(strcmp($command,"date"))
+            if(strcmp($command,"date")==0)
             {
+                for ($i = 0; $i < count($arr); $i++) {
 
+                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
+                    {
+                        if( $arr[$j]->getId() < $arr[$j+1]->getId() )
+                        {
+                            $temp = $arr[$j];
+                            $arr[$j]=$arr[$j+1];
+                            $arr[$j+1]=$temp;
+
+                        }
+
+                    }
+
+                }
             }
 
-            $foo = [];
 
             $ready='';
-            foreach ($students as $prd) {
 
+            $ready.=" <div class=\"row row-8\" id=\"divSort\">";
 
-                $ready.="<div class=\"col-md col-sm-6 product\">
+            $i=1;
+            foreach ($arr as $prd) {
+
+                $ready.="   <div class=\"col-md-4 col-sm-6 product\" >
                             <div class=\"product__img-holder\">
                                 <a href=\"\singleProduct".$prd->getId()."\" class=\"product__link\">
-                                    <img src=\"/img/uploads/".$prd->getId().".0.jpg\" alt=\"\" class=\"product__img\" id=\"img_1B\">
-                                    {% if product.photoCount>1 %}
-                                    <img src=\"/img/uploads/".$prd->getId().".1.jpg\" alt=\"\" class=\"product__img-back\" id=\"img_1S\">
-                                    {% endif %}
-                                </a>
+                                    <img src=\"/img/uploads/".$prd->getId().".0.jpg\" alt=\"\" class=\"product__img\" id=\"img_1B\" height=\"400px\"> ";
+                              if ($prd->getPhotoCount()>1)
+                              {
+                                  $ready.="  <img src=\"/img/uploads/".$prd->getId().".1.jpg\" alt=\"\" class=\"product__img-back\" id=\"img_1S\" height=\"400px\">";
+                              }
+                           $ready.="    </a>
                                 <div class=\"product__actions\">
                                     <a href=\"quickview.html\" class=\"product__quickview\">
                                         <i class=\"ui-eye\"></i>
@@ -276,28 +388,25 @@ $temp=array();
 
                             <div class=\"product__details\">
                                 <h3 class=\"product__title\">
-                                    <a href=\"\singleProduct".$prd->getId()."\">".$prd->getTitle()."</a>
+                                    <a href=\"\singleProduct\\".$prd->getId()."\">".$prd->getTitle()."</a>
                                 </h3>
                             </div>
 
                             <span class=\"product__price\">
                   <ins>
-                    <span class=\"amount\">".($prd->getPrice())."лв.</span>
+                    <span class=\"amount\">".(number_format($prd->getPrice(), 2))."лв.</span>
                   </ins>
                 </span>
                         </div> <!-- end product -->";
+                if($i%4==0)
+                {
+                    $ready.=" <div class=\"w-100\"></div>";
+                }
+                $i++;
 
-
-
-
-
-                array_push($foo, (object)[
-                    'id' => $prd->getId(),
-                    'title' => $prd->getTitle()
-
-                ]);
             }
-            file_put_contents('C:\Users\Asus\Desktop\untitled1\text.txt', json_encode($foo));
+            $ready.=" </div>";
+            file_put_contents('C:\Users\Asus\Desktop\untitled1\text.txt', $ready);
             return new Response($ready);
         } else {
             return $this->render('student/ajax.html.twig');

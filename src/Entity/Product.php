@@ -44,7 +44,7 @@ class Product
     private $boughtCounter;
 
     /**
-     * @ORM\Column(type="string", length=2000)
+     * @ORM\Column(type="string", length=2000, nullable=true)
      */
     private $description;
 
@@ -69,7 +69,7 @@ class Product
     private $isPromotion;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $discountPrice;
 
@@ -128,12 +128,12 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
@@ -169,7 +169,7 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -229,7 +229,7 @@ class Product
         return $this->discountPrice;
     }
 
-    public function setDiscountPrice(float $discountPrice): self
+    public function setDiscountPrice(?float $discountPrice): self
     {
         $this->discountPrice = $discountPrice;
 

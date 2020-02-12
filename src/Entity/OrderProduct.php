@@ -52,7 +52,7 @@ class OrderProduct
     private $phone;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $orderOn;
 
@@ -83,7 +83,10 @@ class OrderProduct
     private $product;
 
 
-
+    public function __construct()
+    {
+        $this->orderOn = new \DateTime();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -178,7 +181,7 @@ class OrderProduct
         return $this->orderOn;
     }
 
-    public function setOrderOn(\DateTimeInterface $orderOn): self
+    public function setOrderOn(\DateTime $orderOn): self
     {
         $this->orderOn = $orderOn;
 

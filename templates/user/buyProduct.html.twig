@@ -30,7 +30,7 @@
                                             <br>
                                             <label style="display: none; color: red" id="warning1">Това поле е
                                                 задължително</label>
-                                            <input type="text" class="input-text" placeholder value
+                                            <input type="text" class="input-text" placeholder value="{{ user.name }}"
                                                    name="orders[name]" id="billing_first_name">
 
                                         </p>
@@ -44,7 +44,7 @@
                                             <br>
                                             <label style="display: none; color: red" id="warning2">Това поле е
                                                 задължително</label>
-                                            <input type="text" class="input-text" placeholder value
+                                            <input type="text" class="input-text" placeholder value="{{ user.surname }}"
                                                    name="orders[surname]" id="billing_last_name">
                                         </p>
                                     </div>
@@ -76,7 +76,7 @@
                                         <br>
                                         <label style="display: none; color: red" id="warning4">Това поле е
                                             задължително</label>
-                                        <input type="text" class="input-text" placeholder="Town / City" value
+                                        <input type="text" class="input-text" placeholder="Town / City" value="{{ user.populatedPlace }}"
                                                name="orders[populatedPlace]" id="billing_city">
                                     </p>
 
@@ -103,7 +103,7 @@
                                         задължително</label>
                                     <p class="form-row form-row-wide address-field" id="billing_address_2_field">
                                         <input type="text" class="input-text"
-                                               placeholder="напр. кватрал, улица, номер, вход... " value
+                                               placeholder="напр. кватрал, улица, номер, вход... " value="{{ user.address }}"
                                                name="orders[address]" id="billing_address_2">
                                     </p>
                                 </div>
@@ -120,7 +120,11 @@
                                             задължително</label>
                                         <select name="orders[populatedPlace]" id="ademss2"
                                                 class="country_to_state country_select" title="Country *">
-                                            <option selected="selected">Избери...</option>
+                                            {% if  user.populatedPlace is empty %}
+                                                <option selected="selected">Избери...</option>
+                                            {% else %}
+                                                <option selected="selected">{{ user.populatedPlace }}</option>
+                                            {% endif %}
                                             <option id="2932">2932 Абланица</option>
                                             <option id="7538">7538 Айдемир</option>
                                             <option id="8500">8500 Айтос</option>
@@ -351,7 +355,7 @@
                                                 задължително</label>
                                             <label style="display: none; color: red" id="warning9Reg">Неправилен
                                                 номер</label>
-                                            <input type="text" class="input-text" placeholder value
+                                            <input type="text" class="input-text" placeholder value="{{ user.phone }}"
                                                    name="orders[phone]"
                                                    id="billing_phone">
                                         </p>
@@ -367,7 +371,7 @@
                                                 имейл</label>
                                             <label style="display: none; color: red" id="warning10">Това поле е
                                                 задължително</label>
-                                            <input type="text" class="input-text" placeholder value
+                                            <input type="text" class="input-text" placeholder value="{{ user.email }}"
                                                    name="orders[email]"
                                                    id="billing_email">
                                         </p>

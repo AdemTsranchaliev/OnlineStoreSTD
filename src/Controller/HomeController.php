@@ -5,6 +5,8 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
+
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -20,33 +22,41 @@ class HomeController extends AbstractController
             $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
             $bestSellers = Array();
             $lastOnes = Array();
-            while (count($bestSellers) != 6) {
-                $max = 0;
-                $shoes = new Product();
-                foreach ($products as $pr) {
-                    $num = $pr->getBoughtCounter();
-                    if (intval($num) >= $max) {
 
-                        $shoes = $pr;
-                    }
-                }
-                array_push($bestSellers, $shoes);
-                unset($products[array_search($shoes, $products)]);
-            }
-            $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-            while (count($lastOnes) != 6) {
-                $max = 0;
-                $shoes = new Product();
-                foreach ($products as $pr) {
-                    $num = $pr->getId();
-                    if (intval($num) >= $max) {
+             for ($i = 0; $i < count($products); $i++)
+             {
+                 for ($j = 0; $j < count($products) - $i - 1; $j++)
+                 {
+                     if( $products[$j]->getBoughtCounter() < $products[$j+1]->getBoughtCounter() )
+                     {
+                         $temp = $products[$j];
+                         $products[$j]=$products[$j+1];
+                         $products[$j+1]=$temp;
+                     }
+                 }
+             }
 
-                        $shoes = $pr;
-                    }
+        for ($i = 0; $i < 6; $i++)
+        {
+            array_push($bestSellers, $products[$i]);
+        }
+
+        for ($i = 0; $i < count($products); $i++)
+        {
+            for ($j = 0; $j < count($products) - $i - 1; $j++)
+            {
+                if( $products[$j]->getId() < $products[$j+1]->getId() )
+                {
+                    $temp = $products[$j];
+                    $products[$j]=$products[$j+1];
+                    $products[$j+1]=$temp;
                 }
-                array_push($lastOnes, $shoes);
-                unset($products[array_search($shoes, $products)]);
             }
+        }
+        for ($i = 0; $i < 6; $i++)
+        {
+            array_push($lastOnes, $products[$i]);
+        }
             return $this->render('home/index.html.twig', ['lastOnes' => $lastOnes, 'bestSellers' => $bestSellers]);
 
     }
@@ -75,7 +85,7 @@ class HomeController extends AbstractController
 
 
 
-        return $this->render('home/catalog.html.twig',['products'=>$category->getProduct()]);
+        return $this->render('home/catalog.html.twig',['products'=>$category->getProduct(),'category'=>$category->getName()]);
     }
 
     /**
@@ -93,22 +103,30 @@ class HomeController extends AbstractController
         if (isset($_POST['size__select'])) {
 
             $s = $_POST['size__select'];
-            return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s]);
+            $securityContext = $this->container->get('security.authorization_checker');
+
+
+            $user= $this->getUser();
+            if ($user==null)
+            {
+                $user=new User();
+            }
+            return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s,'user'=>$user]);
         }
         $sizeAndNumber = $product->getSizes();
         $sizeAndNumber = explode(" ", $sizeAndNumber);
         $sizeAndNumber = array_filter(array_map('trim', $sizeAndNumber));
         $size = Array();
-        $similar = Array();
+
         foreach ($sizeAndNumber as $item) {
             $test = explode('-', $item);
             if ($test[1] != 0) {
                 array_push($size, $test[0]);
             }
         }
+        $similar = $this->getDoctrine()->getRepository(Category::class)->findOneBy(array('tag'=>$product->getCategoryId()->getTag()));
 
-        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size]);
+        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar->getProduct()]);
     }
-
 
 }
