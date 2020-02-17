@@ -73,11 +73,17 @@ class User implements UserInterface
      */
     private $phone;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ShoppingCart", mappedBy="user")
+     */
+    private $shoppingCarts;
+
 
     public function __construct()
     {
         $this->role = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->shoppingCarts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,6 +263,37 @@ class User implements UserInterface
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShoppingCart[]
+     */
+    public function getShoppingCarts(): Collection
+    {
+        return $this->shoppingCarts;
+    }
+
+    public function addShoppingCart(ShoppingCart $shoppingCart): self
+    {
+        if (!$this->shoppingCarts->contains($shoppingCart)) {
+            $this->shoppingCarts[] = $shoppingCart;
+            $shoppingCart->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShoppingCart(ShoppingCart $shoppingCart): self
+    {
+        if ($this->shoppingCarts->contains($shoppingCart)) {
+            $this->shoppingCarts->removeElement($shoppingCart);
+            // set the owning side to null (unless already changed)
+            if ($shoppingCart->getUser() === $this) {
+                $shoppingCart->setUser(null);
+            }
+        }
 
         return $this;
     }

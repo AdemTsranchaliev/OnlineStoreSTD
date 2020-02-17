@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\OrderProduct;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Form\Changeinfo;
 use App\Form\Orders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,10 @@ class UserController extends AbstractController
     function buy($id,Request $request,\DateTimeInterface $date = null)
     {
         $securityContext = $this->container->get('security.authorization_checker');
-
+        $user=new User();
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $user= $this->getUser();
+        }
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
         if ($product === null) {
             return $this->render("commonFiles/404.html.twig");
@@ -78,6 +82,10 @@ class UserController extends AbstractController
 
             $order->setNewOrArchived(false);
             $order->setConfirmed(false);
+            $order->setUserId($user);
+
+
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($order);
@@ -88,10 +96,7 @@ class UserController extends AbstractController
             return $this->render('user/succesfullOrder.html.twig');
         }
 
-        $user=new User();
-        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $user= $this->getUser();
-        }
+
         return $this->render('user/buyProduct.html.twig', ['price' => intval($price), 'product' => $product,'user'=>$user]);
 
     }
@@ -103,7 +108,14 @@ class UserController extends AbstractController
     public function myInformation(Request $request)
     {
         $user = $this->getUser();
+        $form = $this->createForm(Changeinfo::class, $user);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+        }
 
         return $this->render("user/myInformation.html.twig",['user'=>$user]);
 
@@ -120,17 +132,6 @@ class UserController extends AbstractController
         return $this->render("user/myOrders.html.twig",['orders'=>$user->getOrders()]);
 
     }
-    /**
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/changePassword", name="changePassword")
-     */
-    public function changePassword(Request $request)
-    {
-        $user = $this->getUser();
 
-
-        return $this->render("user/myOrders.html.twig",['orders'=>$user->getOrders()]);
-
-    }
 
 }

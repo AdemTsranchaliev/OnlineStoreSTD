@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -49,5 +50,35 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/changePassword", name="changePassword")
+     */
+    public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator)
+    {
+        $user = $this->getUser();
+
+
+        if(isset($_POST['oldPassword']))
+        {
+            $tempUser=new User();
+
+
+            $encoded = $passwordEncoder->encodePassword($tempUser, $_POST['oldPassword']);
+            $tempUser->setPassword($encoded);
+
+            $match = $passwordEncoder->isPasswordValid($user, $tempUser->getPassword());
+            echo var_dump($user);
+            echo var_dump($match);
+            echo var_dump( $_POST['oldPassword']);
+            echo var_dump($encoded);
+        }
+
+
+
+        return $this->render("user/changePassword.html.twig");
+
     }
 }

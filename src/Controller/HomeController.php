@@ -85,7 +85,7 @@ class HomeController extends AbstractController
 
 
 
-        return $this->render('home/catalog.html.twig',['products'=>$category->getProduct(),'category'=>$category->getName()]);
+        return $this->render('home/catalog.html.twig',['products'=>$category->getProduct(),'category'=>$category->getName(),'allCategories'=>$categories]);
     }
 
     /**
@@ -95,7 +95,11 @@ class HomeController extends AbstractController
     public function singleProduct($id)
     {
 
+        if (!isset($_COOKIE['_SC_KO']))
+        {
+            setcookie('_SC_KO',bin2hex(random_bytes(10)),time() + (86400 * 30),'/');
 
+        }
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
         if ($product === null) {
             return $this->render('commonFiles/404.html.twig');
@@ -103,9 +107,6 @@ class HomeController extends AbstractController
         if (isset($_POST['size__select'])) {
 
             $s = $_POST['size__select'];
-            $securityContext = $this->container->get('security.authorization_checker');
-
-
             $user= $this->getUser();
             if ($user==null)
             {

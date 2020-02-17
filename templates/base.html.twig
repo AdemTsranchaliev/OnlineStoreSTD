@@ -548,10 +548,9 @@
             $(document).ready(function(){
                 $("#sorting").on("change", function(event){
 
-                    var adem = $('#sorting')[0];
 
                     $.ajax({
-                        url:        '/student/ajax',
+                        url:        '/ajaxSort',
                         type:       'POST',
                         dataType:   'html',
                         data: {'command':$("#sorting :selected").val(),'categoryName':$("#categoryName").text()},
@@ -559,6 +558,28 @@
 
                         success: function(data, status) {
                             $("#divSort").replaceWith(data);
+
+                        },
+                        error : function(xhr, textStatus, errorThrown) {
+                            alert('Ajax request failed.');
+                        }
+                    });
+                });
+            });
+            $(document).ready(function(){
+                $("#addToCart").on("click", function(event){
+
+                    var adem = $('#sorting')[0];
+
+                    $.ajax({
+                        url:        '/ajaxAddToCart',
+                        type:       'POST',
+                        dataType:   'html',
+                        data: {'id':$("#productId").val(),'sizeProduct':$("select#sizeSelected :selected").val()},
+                        async:      true,
+
+                        success: function(data, status) {
+                            alert( data);
 
                         },
                         error : function(xhr, textStatus, errorThrown) {

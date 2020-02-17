@@ -169,10 +169,12 @@
                         </tr>
                         </tbody>
                     </table>
-
+                    {% if is_granted('ROLE_ADMIN') %}
                     <div id="payment" class="ecommerce-checkout-payment">
                         <h2 class="uppercase">СЪСТОЯНИЕ</h2>
                         <ul class="payment_methods methods">
+
+
 
                             <li class="payment_method_bacs">
                                 {% if order.confirmed==0 %}
@@ -189,6 +191,8 @@
 
                             </li>
                             </li>
+
+
                         </ul>
                         <div class="form-row place-order">
                             {% if order.confirmed ==0%}
@@ -203,7 +207,7 @@
                             {% endif %}
 
                         </div>
-
+                       {% endif %}
                     </div>
                 </div>
             </div> <!-- end order review -->

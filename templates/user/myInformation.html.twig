@@ -7,14 +7,14 @@
         <div class="col-lg-15" id="customer_details">
             <div>
                 <h2 class="uppercase mb-30">Редактиране на лична информация</h2>
-                <form >
+                <form method="post" action="{{ path('myInformation')}}">
                 <div class="row">
                     <div class="col-md-6">
                         <p class="form-row form-row-first validate-required ecommerce-invalid ecommerce-invalid-required-field" id="billing_first_name_field">
                             <label for="billing_first_name">Име
                                 <abbr class="required" title="required">*</abbr>
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.name }}" name="billing_first_name" id="billing_first_name">
+                            <input type="text" class="input-text" placeholder value="{{ user.name }}" name="changeinfo[name]" id="billing_first_name">
                         </p>
                     </div>
                     <div class="col-md-6">
@@ -22,7 +22,7 @@
                             <label for="billing_last_name">Фамилия
                                 <abbr class="required" title="required">*</abbr>
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.surname }}" name="billing_last_name" id="billing_last_name">
+                            <input type="text" class="input-text" placeholder value="{{ user.surname }}" name="changeinfo[surname]" id="billing_last_name">
                         </p>
                     </div>
                 </div> <!-- end name / last name -->
@@ -32,7 +32,7 @@
                     <label for="billing_country">Град/село
                         <abbr class="required" title="required">*</abbr>
                     </label>
-                    <select name="orders[populatedPlace]" id="ademss2"
+                    <select name="changeinfo[populatedPlace]" id="ademss2"
                             class="country_to_state country_select" title="Country *">
                         {% if  user.populatedPlace is empty %}
                             <option selected="selected">Избери...</option>
@@ -250,7 +250,7 @@
                     <label for="billing_address_1">Address
                         <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Street address" value="{{ user.address }}" name="billing_address_1" id="billing_address_1">
+                    <input type="text" class="input-text" placeholder="Street address" value="{{ user.address }}" name="changeinfo[address]" id="billing_address_1">
                 </p>
 
 
@@ -260,7 +260,7 @@
                             <label for="billing_phone">Phone
                                 <abbr class="required" title="required">*</abbr>
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.phone }}" name="billing_phone" id="billing_phone">
+                            <input type="text" class="input-text" placeholder value="{{ user.phone }}" name="changeinfo[phone]" id="billing_phone">
                         </p>
                     </div>
                     <div class="col-md-6">
@@ -268,7 +268,7 @@
                             <label for="billing_email">Email Address
                                 <abbr class="required" title="required">*</abbr>
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.email }}" name="billing_email" id="billing_email">
+                            <input type="text" class="input-text" placeholder value="{{ user.email }}" name="changeinfo[email]" id="billing_email">
                         </p>
                     </div>
                 </div>

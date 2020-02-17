@@ -368,10 +368,10 @@ class AdminController extends AbstractController
                 $ready.="   <div class=\"col-md-4 col-sm-6 product\" >
                             <div class=\"product__img-holder\">
                                 <a href=\"\singleProduct".$prd->getId()."\" class=\"product__link\">
-                                    <img src=\"/img/uploads/".$prd->getId().".0.jpg\" alt=\"\" class=\"product__img\" id=\"img_1B\" height=\"400px\"> ";
+                                    <img src=\"/img/uploads/".$prd->getId().".0.jpg\" alt=\"\" class=\"product__img\" id=\"img_1B\" height=\"300px\"> ";
                               if ($prd->getPhotoCount()>1)
                               {
-                                  $ready.="  <img src=\"/img/uploads/".$prd->getId().".1.jpg\" alt=\"\" class=\"product__img-back\" id=\"img_1S\" height=\"400px\">";
+                                  $ready.="  <img src=\"/img/uploads/".$prd->getId().".1.jpg\" alt=\"\" class=\"product__img-back\" id=\"img_1S\" height=\"300px\">";
                               }
                            $ready.="    </a>
                                 <div class=\"product__actions\">
@@ -398,10 +398,7 @@ class AdminController extends AbstractController
                   </ins>
                 </span>
                         </div> <!-- end product -->";
-                if($i%4==0)
-                {
-                    $ready.=" <div class=\"w-100\"></div>";
-                }
+
                 $i++;
 
             }

@@ -94,9 +94,15 @@ class Product
      */
     private $orders;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ShoppingCart", mappedBy="cartProduct")
+     */
+    private $shoppingCarts;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->shoppingCarts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -298,6 +304,34 @@ class Product
             if ($order->getProduct() === $this) {
                 $order->setProduct(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShoppingCart[]
+     */
+    public function getShoppingCarts(): Collection
+    {
+        return $this->shoppingCarts;
+    }
+
+    public function addShoppingCart(ShoppingCart $shoppingCart): self
+    {
+        if (!$this->shoppingCarts->contains($shoppingCart)) {
+            $this->shoppingCarts[] = $shoppingCart;
+            $shoppingCart->addCartProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShoppingCart(ShoppingCart $shoppingCart): self
+    {
+        if ($this->shoppingCarts->contains($shoppingCart)) {
+            $this->shoppingCarts->removeElement($shoppingCart);
+            $shoppingCart->removeCartProduct($this);
         }
 
         return $this;

@@ -37,7 +37,7 @@
                     </div> <!-- end gallery thumbs -->
 
                 </div> <!-- end col img slider -->
-
+                <input type="hidden" id="productId" value="{{ product.id }}">
                 <div class="col-md-6 product-single">
                     <h1 class="product-single__title uppercase">{{ product.title }}</h1>
 
@@ -72,12 +72,14 @@
                         <div class="size">
                             <label>Налични размери</label>
                             <label style="display: none; color: red" id="warningSize">*Изберете номер</label>
-                            <select name="size__select" id="size__select" class="size__select">
+
+                            <select id="sizeSelected" class="size__select" name="size__select">
                                   <option value="Избери...">Избери...</option>
                                 {% for siz in size %}
                                     <option value="{{ siz }}">{{ siz }}</option>
                                 {% endfor %}
                             </select>
+
                         </div>
                         {% endif %}
                         <div class="quantity">
@@ -95,7 +97,7 @@
 
                     <div class="row row-10 product-single__actions clearfix">
                         <div class="col">
-                            <a href="#" class="btn btn-lg btn-color product-single__add-to-cart">
+                            <a href="#" class="btn btn-lg btn-color product-single__add-to-cart" id="addToCart">
                                 <i class="ui-bag"></i>
                                 <span>Добави към количка</span>
                             </a>

@@ -6,8 +6,8 @@
 {% block body %}
     <div class="sign-in-popup">
         <div class="row">
-            <div class="col-md-6 mb-30">
-                <h3>Sign In</h3>
+            <div class="col-md-12 mb-30">
+                <h3>Вход</h3>
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
@@ -24,25 +24,9 @@
                     <input type="hidden" name="_csrf_token"
                            value="{{ csrf_token('authenticate') }}"
                     >
-                    <input type="submit" name="sign-in" value="Sign In" class="btn btn-md btn-dark btn-button">
+                    <input type="submit" name="sign-in" value="ВХОД" class="btn btn-md btn-dark btn-button">
 
                     <a href="#" class="sign-in-popup__forgot-password">Забравена парола?</a>
-                </form>
-            </div>
-            <div class="col-md-6 mb-30">
-                <h3>Регистрация:</h3>
-                <form action="">
-                    <label for="register-input">Email address <abbr class="required" title="required">*</abbr></label>
-                    <input type="text" name="email" id="register-input">
-
-                    <label for="password">Password <abbr class="required" title="required">*</abbr></label>
-                    <input type="password" name="password" id="register-password">
-                    <div class="checkbox mb-3">
-                        <input type="checkbox" id="ship-to-different-address-checkbox"
-                               class="input-checkbox" name="ship_to_different_address" value="1">
-                        <label for="ship-to-different-address-checkbox" class="checkbox">Remember me</label>
-                    </div>
-                    <input type="submit" name="register" value="Register" class="btn btn-md btn-dark btn-button">
                 </form>
             </div>
         </div>
