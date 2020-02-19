@@ -22,6 +22,7 @@ class AdminController extends AbstractController
 
     /**
      * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/adminPanel", name="adminPanel")
      */
     public function adminPanel()
@@ -46,6 +47,7 @@ class AdminController extends AbstractController
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/addProduct", name="addProduct")
      */
     public function addProduct(Request $request)
@@ -116,6 +118,7 @@ class AdminController extends AbstractController
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/editModel/{id}", name="editModel")
      */
     public function editModel(Request $request, $id)
@@ -157,6 +160,7 @@ class AdminController extends AbstractController
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/seeOrders/{func}", name="seeOrders")
      * @param $func
      */
@@ -207,7 +211,7 @@ class AdminController extends AbstractController
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/seeOrder/{id}", name="seeOrder")
+     * @Route("/seeOrderAdmin/{id}", name="seeOrderAdmin")
      * @param $id
      */
     public function seeOrder(Request $request, $id)
@@ -216,7 +220,10 @@ class AdminController extends AbstractController
         $order = $this->getDoctrine()->getRepository(OrderProduct::class)->find($id);
 
 
-
+        if ($order==null)
+        {
+            return $this->render("commonFiles/404.html.twig");
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             if($order->getConfirmed()==0)

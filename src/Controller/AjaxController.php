@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\ShoppingCart;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -129,16 +130,7 @@ class AjaxController extends AbstractController
                     $ready.="  <img src=\"/img/uploads/".$prd->getId().".1.jpg\" alt=\"\" class=\"product__img-back\" id=\"img_1S\" height=\"300px\">";
                 }
                 $ready.="    </a>
-                                <div class=\"product__actions\">
-                                    <a href=\"quickview.html\" class=\"product__quickview\">
-                                        <i class=\"ui-eye\"></i>
-                                        <span>Quick View</span>
-                                    </a>
-                                    <a href=\"#\" class=\"product__add-to-wishlist\">
-                                        <i class=\"ui-heart\"></i>
-                                        <span>Wishlist</span>
-                                    </a>
-                                </div>
+                                
                             </div>
 
                             <div class=\"product__details\">
@@ -299,5 +291,28 @@ class AjaxController extends AbstractController
             return new Response($id);
         }
 
+    }
+
+    /**
+     * @Route("/checkIfMailExists")
+     */
+    public function checkIfMailExists(Request $request)
+    {
+
+
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+
+            $email=$_POST['email'];
+            $emailExist=$this->getDoctrine()->getRepository(User::class)->findOneBy(array('email'=>$email));
+
+            if ($emailExist==null)
+            {
+                return new Response("no");
+            }
+            else
+            {
+                return new Response("yes");
+            }
+        }
     }
 }

@@ -8,20 +8,26 @@
         <h1>Добавяне на МОДЕЛ</h1>
 
 
-        <form action="{{ path('addProduct') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ path('addProduct') }}" method="post" enctype="multipart/form-data" id="addModel">
 
             <label>Заглавие</label>
-            <input type="text" name="products[title]">
+            <label style="display: none; color: red" id="addProductNameWarning">*Това поле е задължително</label>
+            <input  type="text" name="products[title]" id="addProductName">
             <label>Модел №</label>
-            <input type="text" name="products[modelNumber]">
+            <label style="display: none; color: red" id="addProductModelNumberWarning">*Това поле е задължително</label>
+            <input type="text" name="products[modelNumber]" id="addProductModelNumber">
             <label>Цена</label>
-            <input type="text" name="products[price]">
+            <label style="display: none; color: red" id="addProductPriceWarning">*Това поле е задължително</label>
+            <input type="text" name="products[price]" id="addProductPrice">
             <label>Размери</label>
             <input type="text" name="products[Sizes]">
             <label>Цвят</label>
-            <input type="text" name="products[color]">
+            <label style="display: none; color: red" id="addProductColorWarning">*Това поле е задължително</label>
+            <input type="text" name="products[color]" id="addProductColor">
             <label>Категория</label>
-            <select name="products[category]">
+            <label style="display: none; color: red" id="addProductCategoryWarning">*Това поле е задължително</label>
+            <select name="products[category]" id="addProductCategory">
+                <option value="choice">Изберете...</option>
                 <option value="womenSportShoes">дамски спортни обувки</option>
                 <option value="manSportShoes">мъжки спортни обувки</option>
                 <option value="manOfficialShoes">мъжки официални обувки</option>

@@ -7,32 +7,38 @@
         <div class="col-lg-15" id="customer_details">
             <div>
                 <h2 class="uppercase mb-30">Редактиране на лична информация</h2>
-                <form method="post" action="{{ path('myInformation')}}">
+                <form method="post" action="{{ path('myInformation')}}" id="changeInfo">
                 <div class="row">
                     <div class="col-md-6">
                         <p class="form-row form-row-first validate-required ecommerce-invalid ecommerce-invalid-required-field" id="billing_first_name_field">
                             <label for="billing_first_name">Име
-                                <abbr class="required" title="required">*</abbr>
+
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.name }}" name="changeinfo[name]" id="billing_first_name">
+                            <label style="display: none; color: red" id="changeInfoNameWarning">*Това поле е задължително</label>
+                            <input type="text" class="input-text" placeholder value="{{ user.name }}" name="changeinfo[name]" id="changeInfoName">
                         </p>
                     </div>
                     <div class="col-md-6">
                         <p class="form-row form-row-last validate-required ecommerce-invalid ecommerce-invalid-required-field" id="billing_last_name_field">
                             <label for="billing_last_name">Фамилия
-                                <abbr class="required" title="required">*</abbr>
+
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.surname }}" name="changeinfo[surname]" id="billing_last_name">
+                            <label style="display: none; color: red" id="changeInfoSurnameWarning">*Това поле е задължително</label>
+                            <input type="text" class="input-text" placeholder value="{{ user.surname }}" name="changeinfo[surname]" id="changeInfoSurname">
                         </p>
                     </div>
                 </div> <!-- end name / last name -->
 
 
-                <p class="form-row form-row-wide address-field update_totals_on_change validate-required ecommerce-validated" id="billing_country_field">
+                <p class="form-row form-row-wide address-field update_totals_on_change validate-required ecommerce-validated" id="changeInfoTown">
                     <label for="billing_country">Град/село
-                        <abbr class="required" title="required">*</abbr>
+
                     </label>
-                    <select name="changeinfo[populatedPlace]" id="ademss2"
+                    <div>
+                    <label style="display: none; color: red" id="changeInfoTownWarning">*Това поле е задължително</label>
+                    </div>
+
+                    <select name="changeinfo[populatedPlace]" id="changeInfoTown"
                             class="country_to_state country_select" title="Country *">
                         {% if  user.populatedPlace is empty %}
                             <option selected="selected">Избери...</option>
@@ -247,33 +253,38 @@
 
 
                 <p class="form-row form-row-wide address-field validate-required ecommerce-invalid ecommerce-invalid-required-field" id="billing_address_1_field">
-                    <label for="billing_address_1">Address
-                        <abbr class="required" title="required">*</abbr>
+                    <label for="billing_address_1">
+                        Адрес
                     </label>
-                    <input type="text" class="input-text" placeholder="Street address" value="{{ user.address }}" name="changeinfo[address]" id="billing_address_1">
+                    <label style="display: none; color: red" id="changeInfoAddressWarning">*Това поле е задължително</label>
+                    <input type="text" class="input-text" placeholder="Street address" value="{{ user.address }}" name="changeinfo[address]" id="changeInfoAddress">
                 </p>
-
+                    <input type="hidden" id="inCheck" value="no">
 
                 <div class="row">
                     <div class="col-md-6">
                         <p class="form-row form-row-last validate-required validate-phone" id="billing_phone_field">
-                            <label for="billing_phone">Phone
-                                <abbr class="required" title="required">*</abbr>
+                            <label for="billing_phone">
+                                Телефон
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.phone }}" name="changeinfo[phone]" id="billing_phone">
+                            <label style="display: none; color: red" id="changeInfoPhoneWarningInvalid">*Невалиден телефонен номер</label>
+                            <input type="text" class="input-text" placeholder value="{{ user.phone }}" name="changeinfo[phone]" id="changeInfoPhone">
                         </p>
                     </div>
                     <div class="col-md-6">
                         <p class="form-row form-row-first validate-required validate-email" id="billing_email_field">
-                            <label for="billing_email">Email Address
-                                <abbr class="required" title="required">*</abbr>
+
+                            <label for="billing_email">
+                                Email Address
                             </label>
-                            <input type="text" class="input-text" placeholder value="{{ user.email }}" name="changeinfo[email]" id="billing_email">
+
+                            <label style="display: none; color: red" id="changeInfoEmailWarning">*Това поле е задължително</label>
+                            <input type="text" class="input-text" placeholder value="{{ user.email }}" name="changeinfo[email]" id="changeInfoEmail" disabled="disabled">
                         </p>
                     </div>
                 </div>
                     <input type="submit"
-                           class="btn btn-lg " id="sendddd"
+                           class="btn btn-lg "
                            value="Редактирай">
                 </form>
             </div>

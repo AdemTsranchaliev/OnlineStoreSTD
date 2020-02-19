@@ -106,8 +106,8 @@ $('#billing_phone').blur(function () {
         }
     }
 
-
 });
+
 
 
 $('input#billing_email').blur(function () {
@@ -208,8 +208,8 @@ $("#checkOut").submit(function (e) {
 })
 ;
 $("#sendSubmitForBuying").submit(function (e) {
-    var conceptName = $('#size__select').find(":selected").text();
-    if (conceptName == "Избери...") {
+    var conceptName = $('#sizeSelected').find(":selected").text();
+    if (conceptName === "Избери...") {
         $('#warningSize').show();
         e.preventDefault();
     }
@@ -252,4 +252,433 @@ $(document).ready( function(){
         });
 });
 
+$('#registration_form_name').blur(function () {
 
+    if ($(this).val().length == 0) {
+
+        $('#registerNameWarning').show();
+
+    }
+    else
+    {
+        $('#registerNameWarning').hide();
+    }
+});
+$('#registration_form_surname').blur(function () {
+
+    if ($(this).val().length == 0) {
+
+        $('#registerSurnameWarning').show();
+
+    }
+    else
+    {
+        $('#registerSurnameWarning').hide();
+    }
+});
+$('#registration_form_email').blur(function () {
+
+    if ($(this).val().length == 0) {
+
+        $('#registerEmailWarning').show();
+
+    }
+    else
+    {
+        $('#registerEmailWarning').hide();
+        var strEmail = new RegExp('.+@.+');
+        if (!strEmail.test($('input#registration_form_email').val())) {
+
+
+            $('#registerEmailWarningInvalid').show();
+        }
+        else {
+            $('#registerEmailWarningInvalid').hide();
+        }
+    }
+});
+$('#registration_form_plainPassword').blur(function () {
+
+    if ($(this).val().length == 0) {
+        $('#registerPasswordWarningValidation').hide();
+        $('#registerPasswordWarning').show();
+
+    }
+    else
+    {
+        $('#registerPasswordWarning').hide();
+        var strPassword = new RegExp("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$");
+        if (!strPassword.test($('#registration_form_plainPassword').val())) {
+
+
+            $('#registerPasswordWarningValidation').show();
+        }
+        else {
+            $('#registerPasswordWarningValidation').hide();
+        }
+    }
+});
+
+$('#registerPasswordRepeat').blur(function () {
+
+    if ($(this).val() === $('#registration_form_plainPassword').val())
+    {
+        $('#registerPasswordRepeatWarning').hide();
+    }
+    else
+    {
+        $('#registerPasswordRepeatWarning').show();
+    }
+});
+
+$("#registrationForm").submit(function (e) {
+    var checker=0;
+    if (!$.trim($('#registration_form_name').val())) {
+        $('#registerNameWarning').show();
+        checker++;
+    }
+    if (!$.trim($('#registration_form_surname').val())) {
+        $('#registerSurnameWarning').show();
+        checker++;
+    }
+    if (!$.trim($('#registration_form_email').val())) {
+        $('#registerEmailWarning').show();
+        checker++;
+    }
+    if (!$.trim($('#registration_form_plainPassword').val())) {
+        $('#registerPasswordWarning').show();
+        checker++;
+    }
+    var strEmail2 = new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$');
+    if (!strEmail2.test($('#registration_form_plainPassword').val())) {
+
+        checker++;
+        $('#registerPasswordWarningValidation').show();
+    }
+    else {
+        $('#registerPasswordWarningValidation').hide();
+    }
+
+    if ($('input#ship-to-different-address-checkbox').is(":checked") == false) {
+        $('#agreeTermsWarning').show();
+        checker++;
+    }
+    if ($('input#ship-to-different-address-checkbox').is(":checked") == true) {
+        $('#agreeTermsWarning').hide();
+
+    }
+    if ($('#registerPasswordRepeat').val() === $('#registration_form_plainPassword').val())
+    {
+
+        $('#registerPasswordRepeatWarning').hide();
+    }
+    else
+    {
+        checker++;
+        $('#registerPasswordRepeatWarning').show();
+    }
+    if (checker!=0)
+    {
+        e.preventDefault();
+    }
+    if ($('#emCheck').val() === "no") {
+        e.preventDefault();
+        $.ajax({
+            url: '/checkIfMailExists',
+            type: 'POST',
+            dataType: 'html',
+            data: {'email': $("#registration_form_email").val()},
+            async: true,
+
+            success: function (data, status) {
+                if (data === "yes") {
+
+                    $("#registerPasswordWarningExist").show();
+
+                }
+                else {
+                    $("#registerPasswordWarningExist").hide();
+                    $('#emCheck').val("yes");
+                    $('#registrationForm').submit();
+                }
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    }
+})
+;
+$('#changeInfoName').blur(function () {
+
+    if ($(this).val().length == 0) {
+
+        $('#changeInfoNameWarning').show();
+
+    }
+    else
+    {
+        $('#changeInfoNameWarning').hide();
+    }
+});
+$('#changeInfoSurname').blur(function () {
+
+    if ($(this).val().length == 0) {
+
+        $('#changeInfoSurnameWarning').show();
+
+    }
+    else
+    {
+        $('#changeInfoSurnameWarning').hide();
+    }
+});
+//$('#changeInfoTown').blur(function () {
+//
+//    if ($(this).val().length == 0) {
+//
+//     //   $('#changeInfoTownWarning').show();
+//
+//    }
+//    else
+//    {
+//        $('#changeInfoTownWarning').hide();
+//    }
+//});
+$('#changeInfoEmail').blur(function () {
+
+    if ($(this).val().length == 0) {
+
+        $('#changeInfoEmailWarning').show();
+
+    }
+    else
+    {
+        $('#changeInfoEmailWarning').hide();
+        var strEmail = new RegExp('.+@.+');
+        if (!strEmail.test($('input#changeInfoName').val())) {
+
+            $('#changeInfoEmailWarningInvalid').show();
+        }
+        else {
+            $('#changeInfoEmailWarningInvalid').hide();
+        }
+    }
+});
+
+$('#changeInfoPhone').blur(function () {
+
+    var strPhone = new RegExp('^((08)|(\\+3598))[789]\\d{7}$');
+    if (!strPhone.test($('#changeInfoPhone').val()) && $.trim($('#changeInfoPhone').val())) {
+        $('#changeInfoPhoneWarningInvalid').show();
+    }
+    else
+    {
+        $('#changeInfoPhoneWarningInvalid').hide();
+    }
+
+});
+
+//$('#changeInfoEmail').blur(function () {
+//
+//    if ($(this).val().length == 0) {
+//
+//        $('#changeInfoEmailWarning').show();
+//
+//    }
+//    else
+//    {
+//        $('#changeInfoEmailWarning').hide();
+//        var strEmail = new RegExp('.+@.+');
+//        if (!strEmail.test($('input#changeInfoName').val())) {
+//
+//            $('#changeInfoEmailWarningInvalid').show();
+//        }
+//        else {
+//            $('#changeInfoEmailWarningInvalid').hide();
+//        }
+//    }
+//}); //
+
+
+
+//$('#changeInfoAddress').blur(function () {
+//
+//    if ($(this).val().length == 0) {
+//
+//        $('#changeInfoAddressWarning').show();
+//
+//    }
+//    else
+//    {
+//        $('#changeInfoAddressWarning').hide();
+//    }
+//});
+//$('#changeInfoPhone').blur(function () {
+//
+//    if ($(this).val().length == 0) {
+//
+//        $('#changeInfoPhoneWarning').show();
+//
+//    }
+//    else
+//    {
+//        $('#changeInfoPhoneWarning').hide();
+//    }
+//});
+
+$("#changeInfo").submit(function (e) {
+    if ($("#changeInfoName").val().length == 0) {
+
+        $('#changeInfoNameWarning').show();
+        e.preventDefault();
+
+    }
+    else
+    {
+        $('#changeInfoNameWarning').hide();
+    }
+    if ($("#changeInfoSurname").val().length == 0) {
+
+        $('#changeInfoSurnameWarning').show();
+        e.preventDefault();
+
+    }
+    else
+    {
+        $('#changeInfoSurnameWarning').hide();
+    }
+    var strPhone = new RegExp('^((08)|(\\+3598))[789]\\d{7}$');
+    if (!strPhone.test($('#changeInfoPhone').val()) && $.trim($('#changeInfoPhone').val())) {
+        $('#changeInfoPhoneWarningInvalid').show();
+        e.preventDefault();
+    }
+    else
+    {
+        $('#changeInfoPhoneWarningInvalid').hide();
+    }
+
+});
+
+
+$('#addProductName').blur(function () {
+
+    if ($("#addProductName").val().length == 0) {
+
+        $('#addProductNameWarning').show();
+
+
+    }
+    else
+    {
+        $('#addProductNameWarning').hide();
+    }
+
+});
+$('#addProductModelNumber').blur(function () {
+
+    if ($("#addProductModelNumber").val().length == 0) {
+
+        $('#addProductModelNumberWarning').show();
+
+    }
+    else
+    {
+        $('#addProductModelNumberWarning').hide();
+    }
+
+});
+$('#addProductPrice').blur(function () {
+
+    if ($("#addProductPrice").val().length == 0) {
+
+        $('#addProductPriceWarning').show();
+
+
+    }
+    else
+    {
+        $('#addProductPriceWarning').hide();
+    }
+
+});
+$('#addProductColor').blur(function () {
+
+    if ($("#addProductColor").val().length == 0) {
+
+        $('#addProductColorWarning').show();
+
+
+    }
+    else
+    {
+        $('#addProductColorWarning').hide();
+    }
+});
+$('#addProductCategory').blur(function () {
+
+    if ($("#addProductCategory").val().length == 0) {
+
+        $('#changeInfoNameWarning').show();
+
+
+    }
+    else
+    {
+        $('#changeInfoNameWarning').hide();
+    }
+
+});
+$("#addModel").submit(function (e) {
+    if ($("#addProductName").val().length == 0) {
+
+        $('#addProductNameWarning').show();
+        e.preventDefault();
+    }
+    else
+    {
+        $('#addProductNameWarning').hide();
+    }
+    if ($("#addProductModelNumber").val().length == 0) {
+
+        $('#addProductModelNumberWarning').show();
+        e.preventDefault();
+    }
+    else
+    {
+        $('#addProductModelNumberWarning').hide();
+    }
+    if ($("#addProductPrice").val().length == 0) {
+
+        $('#addProductPriceWarning').show();
+        e.preventDefault();
+
+    }
+    else
+    {
+        $('#addProductPriceWarning').hide();
+    }
+    if ($("#addProductPrice").val().length == 0) {
+
+        $('#addProductPriceWarning').show();
+        e.preventDefault();
+
+    }
+    else
+    {
+        $('#addProductPriceWarning').hide();
+    }
+    if ($("#addProductColor").val().length == 0) {
+
+        $('#addProductColorWarning').show();
+        e.preventDefault();
+
+    }
+    else
+    {
+        $('#addProductColorWarning').hide();
+    }
+
+
+});

@@ -41,9 +41,6 @@
                 <div class="col-md-6 product-single">
                     <h1 class="product-single__title uppercase">{{ product.title }}</h1>
 
-                    <div class="rating">
-                        <a href="#">3 Reviews</a>
-                    </div>
 
                     <span class="product-single__price">
                         {%  if not product.isPromotion %}
@@ -61,10 +58,7 @@
                         <form action="{{ path('singleProduct', { 'id':product.id} )}}" method="post" id="sendSubmitForBuying">
                     <div class="colors clearfix">
                         <span class="colors__label">Цвят: <span class="colors__label-selected">{{ product.color }} </span></span>
-                        <a href="#" class="colors__item colors__item--selected blue"></a>
-                        <a href="#" class="colors__item black"></a>
-                        <a href="#" class="colors__item pink"></a>
-                         <a href="#" class="colors__item red"></a>
+
                     </div>
 
                     <div class="size-quantity clearfix">
@@ -123,12 +117,12 @@
                             </li>
                         </ul>
                     </div>
-</form>
+                    </form>
                         <!-- Accordion -->
                     <div class="accordion mb-50" id="accordion">
                         <div class="accordion__panel">
                             <div class="accordion__heading" id="headingOne">
-                                <a data-toggle="collapse" href="#collapseOne" class="accordion__link accordion--is-open" aria-expanded="true" aria-controls="collapseOne">Description<span class="accordion__toggle">&nbsp;</span>
+                                <a data-toggle="collapse" href="#collapseOne" class="accordion__link accordion--is-open" aria-expanded="true" aria-controls="collapseOne">Описание<span class="accordion__toggle">&nbsp;</span>
                                 </a>
                             </div>
                             <div id="collapseOne" class="collapse show" data-parent="#accordion" role="tabpanel" aria-labelledby="headingOne">
@@ -140,7 +134,7 @@
 
                         <div class="accordion__panel">
                             <div class="accordion__heading" id="headingTwo">
-                                <a data-toggle="collapse" href="#collapseTwo" class="accordion__link accordion--is-closed" aria-expanded="false" aria-controls="collapseTwo">Information<span class="accordion__toggle">&nbsp;</span>
+                                <a data-toggle="collapse" href="#collapseTwo" class="accordion__link accordion--is-closed" aria-expanded="false" aria-controls="collapseTwo">Информация<span class="accordion__toggle">&nbsp;</span>
                                 </a>
                             </div>
                             <div id="collapseTwo" class="collapse" data-parent="#accordion" role="tabpanel" aria-labelledby="headingTwo">
@@ -165,45 +159,7 @@
                             </div>
                         </div>
 
-                        <div class="accordion__panel">
-                            <div class="accordion__heading" id="headingThree">
-                                <a data-toggle="collapse" href="#collapseThree" class="accordion__link accordion--is-closed" aria-expanded="false" aria-controls="collapseThree">Reviews<span class="accordion__toggle">&nbsp;</span>
-                                </a>
-                            </div>
-                            <div id="collapseThree" class="collapse" data-parent="#accordion" role="tabpanel" aria-labelledby="headingThree">
-                                <div class="accordion__body">
-                                    <div class="reviews">
-                                        <ul class="reviews__list">
-                                            <li class="reviews__list-item">
-                                                <div class="reviews__body">
-                                                    <div class="reviews__content">
-                                                        <p class="reviews__author"><strong>Alexander Samokhin</strong> - May 6, 2017 at 12:48 pm</p>
-                                                        <div class="rating">
-                                                            <a href="#"></a>
-                                                        </div>
-                                                        <p>This template is so awesome. I didn’t expect so many features inside. E-commerce pages are very useful, you can launch your online store in few seconds. I will rate 5 stars.</p>
-                                                    </div>
-                                                </div>
-                                            </li>
 
-                                            <li class="reviews__list-item">
-                                                <div class="reviews__body">
-                                                    <div class="reviews__content">
-                                                        <p class="reviews__author"><strong>Christopher Robins</strong> - May 7, 2014 at 12:48 pm</p>
-                                                        <div class="rating">
-                                                            <a href="#"></a>
-                                                        </div>
-                                                        <p>This template is so awesome. I didn’t expect so many features inside. E-commerce pages are very useful, you can launch your online store in few seconds. I will rate 5 stars.</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                        </ul>
-                                    </div> <!--  end reviews -->
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- end accordion -->
 
                 </div> <!-- end col product description -->
             </div> <!-- end row -->
@@ -235,16 +191,7 @@
                                 <img src="/img/uploads/{{ simProduct.id }}.1.jpg" alt="" class="product__img-back" id="img_1S" >
                             {% endif %}
                         </a>
-                        <div class="product__actions">
-                            <a href="quickview.html" class="product__quickview">
-                                <i class="ui-eye"></i>
-                                <span>Quick View</span>
-                            </a>
-                            <a href="#" class="product__add-to-wishlist">
-                                <i class="ui-heart"></i>
-                                <span>Wishlist</span>
-                            </a>
-                        </div>
+
                     </div>
 
                     <div class="product__details">

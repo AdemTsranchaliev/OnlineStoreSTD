@@ -133,5 +133,60 @@ class UserController extends AbstractController
 
     }
 
+    /**
+     * @Route("/forgottenPassword", name="forgottenPassword")
+     */
+    public function forgottenPassword(Request $request)
+    {
+
+
+
+        return $this->render("user/forgottenPassword.html.twig");
+
+    }
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/seeOrder/{id}", name="seeOrder")
+     * @param $id
+     */
+    public function seeOrder(Request $request, $id)
+    {
+
+        $order = $this->getDoctrine()->getRepository(OrderProduct::class)->find($id);
+
+        $user = $this->getUser();
+        if ($order==null)
+        {
+            return $this->render('commonFiles/404.html.twig');
+        }
+        if ($order->getUserId()==null)
+        {
+            return $this->render('commonFiles/404.html.twig');
+        }
+        if ($order->getUserId()->getId()!=$user->getId())
+        {
+            return $this->redirect('myOrders');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            if($order->getConfirmed()==0)
+            {
+                $order->setConfirmed(true);
+            }
+            else
+            {
+                $order->setNewOrArchived(true);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($order);
+            $em->flush();
+
+        }
+        return $this->render("admin/seeOrder.html.twig", ['order' => $order]);
+
+    }
+
 
 }

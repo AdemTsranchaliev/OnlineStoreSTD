@@ -1,12 +1,13 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Вход!{% endblock %}
+{% block title %}Вход{% endblock %}
 
 {% block body %}
     <div class="sign-in-popup">
         <div class="row">
             <div class="col-md-12 mb-30">
+                <label><a href="{{ path('app_register') }}">Нямате профил? Регистрирайте се сега ТУК!</a></label>
                 <h3>Вход</h3>
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -26,7 +27,7 @@
                     >
                     <input type="submit" name="sign-in" value="ВХОД" class="btn btn-md btn-dark btn-button">
 
-                    <a href="#" class="sign-in-popup__forgot-password">Забравена парола?</a>
+                    <a href="{{ path('forgottenPassword') }}" class="sign-in-popup__forgot-password">Забравена парола?</a>
                 </form>
             </div>
         </div>

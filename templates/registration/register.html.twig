@@ -10,9 +10,44 @@
         <div class="col-md-12 mb-30">
             <h3>Регистрация</h3>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
+    {{ form_start(registrationForm, {'attr': {'id': 'registrationForm'}}) }}
+
+            <label style="display: none; color: red" id="registerNameWarning">*Това поле е задължително</label>
+            {{ form_row(registrationForm.name,{'label': 'Име'}) }}
+
+            <label style="display: none; color: red" id="registerSurnameWarning">*Това поле е задължително</label>
+
+            {{ form_row(registrationForm.surname,{'label': 'Фамилия'}) }}
+
+            <label style="display: none; color: red" id="registerEmailWarning">*Това поле е задължително</label>
+            <label style="display: none; color: red" id="registerEmailWarningInvalid">*Невалиден Email</label>
+            <label style="display: none; color: red" id="registerPasswordWarningExist">*Имейлът, който сте въвели вече съществува!</label>
+            {{ form_row(registrationForm.email,{'label': 'Email'}) }}
+
+            <label style="display: none; color: red" id="registerPasswordWarning">*Това поле е задължително</label>
+
+            <label style="display: none; color: red" id="registerPasswordWarningValidation">*Паролата трябва да е поне 8 знака, да съдържа поне една цифра, малка и голяма буква</label>
+            {{ form_row(registrationForm.plainPassword,{'label': 'Парола'}) }}
+
+            <div>
+                <label style="display: none; color: red" id="registerPasswordRepeatWarning">*Паролите не съвпадат</label>
+            </div>
+
+            <label for="registration_form_plainPassword" class="required">Повторете парола</label>
+
+            <input type="password" id="registerPasswordRepeat" name="registerPasswordRepeat" required="required">
+
+
+            <input type="hidden" id="emCheck" value="no">
+            <label style="display: none; color: red" id="registerPasswordWarning">*Това поле е задължително</label>
+            <label style="display: none; color: red" id="agreeTermsWarning">*Трябва да се съгласите с условията за да продължите</label>
+            <div class="checkbox mb-3">
+
+                <input type="checkbox" id="ship-to-different-address-checkbox"
+                       class="input-checkbox"  name="_remember_me"value="1">
+                <label for="ship-to-different-address-checkbox" class="checkbox">Съгласявам се с условията на STD</label>
+            </div>
+
 
         <button class="btn btn-md btn-dark btn-button">Регистрирай се</button>
     {{ form_end(registrationForm) }}
