@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\ShoppingCart;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
@@ -49,9 +49,24 @@ class RegistrationController extends AbstractController
                 'main' // firewall name in security.yaml
             );
         }
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
 
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render('registration/register.html.twig', [
+                    'registrationForm' => $form->createView(),'productsCart'=>$shoppingCart
+                ]);
+
+            }
+
+        }
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+            'registrationForm' => $form->createView(),'productsCart'=>null
         ]);
     }
 

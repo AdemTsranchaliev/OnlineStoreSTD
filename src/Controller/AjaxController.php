@@ -182,7 +182,7 @@ class AjaxController extends AbstractController
             $product=$this->getDoctrine()->getRepository(Product::class)->find($id);
 
 
-
+            $response='';
 
             if($shoppingCart==null)
             {
@@ -195,6 +195,52 @@ class AjaxController extends AbstractController
                 $shoppingCart->setModelSize($size);
                 $shoppingCart->setPrice($product->getPrice());
                 $shoppingCart->setQuantity(1);
+                $response.="   <div class=\"nav-cart__dropdown \">
+                                    <div class=\"nav-cart__items .overflow-auto\" style=\"overflow : scroll; height: 370px\">
+                                                <div class=\"nav-cart__item clearfix\">
+                                                    <div class=\"nav-cart__img\">
+                                                        <a href=\"#\">
+                                                            <img src=\"/img/uploads/".$product->getId().".0.jpg\" height=\"100\" width=\"60\">
+                                                        </a>
+                                                    </div>
+                                                    <div class=\"nav-cart__title\">
+                                                        <a href=\"#\">
+                                                           ".$product->getTitle()."
+                                                        </a>
+                                                        <div class=\"nav-cart__price\">
+                                                            <span>1 x</span>
+                                                            <span>".$product->getPrice()." лв</span>
+                                                        </div>
+                                                        <div class=\"nav-cart__price\">
+                                                            <span>Размер: </span>
+                                                            <span>".$size."</span>
+                                                        </div>
+                                                        <div class=\"nav-cart__price\">
+                                                            <span>Общо: </span>
+                                                            <span>".$product->getPrice()." лв</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class=\"nav-cart__remove\">
+                                                        <a href=\"#\"><i class=\"ui-close\"></i></a>
+                                                    </div>
+                                                </div>
+                                                  <div id='insertCartProductHere'>
+
+                                    </div>
+                                    </div> <!-- end cart items -->
+                                    
+                                 
+
+                                    <div class=\"nav-cart__summary\">
+                                        <span>Общо: </span>
+                                        <span class=\"nav-cart__total-price\" id='totalPrice'>".$product->getPrice()." лв </span>
+                                    </div>
+
+                                    <div class=\"nav-cart__actions mt-20\">
+                                        <a href=\"shop-cart.html\" class=\"btn btn-md btn-light\"><span>View Cart</span></a>
+                                        <a href=\"shop-checkout.html\" class=\"btn btn-md btn-color mt-10\"><span>Proceed to Checkout</span></a>
+                                    </div>
+                                </div>";
 
             }
             else {
@@ -209,6 +255,34 @@ class AjaxController extends AbstractController
                     $shoppingCart->setPrice($product->getPrice());
                     $shoppingCart->setQuantity(1);
                     $shoppingCart->setProductId($product->getId());
+                    $response.="   
+                                                <div class=\"nav-cart__item clearfix\">
+                                                    <div class=\"nav-cart__img\">
+                                                        <a href=\"#\">
+                                                            <img src=\"/img/uploads/".$product->getId().".0.jpg\" height=\"100\" width=\"60\">
+                                                        </a>
+                                                    </div>
+                                                    <div class=\"nav-cart__title\">
+                                                        <a href=\"#\">
+                                                           ".$product->getTitle()."
+                                                        </a>
+                                                        <div class=\"nav-cart__price\">
+                                                            <span>1 x</span>
+                                                            <span>".$product->getPrice()." лв</span>
+                                                        </div>
+                                                        <div class=\"nav-cart__price\">
+                                                            <span>Размер: </span>
+                                                            <span>".$size."</span>
+                                                        </div>
+                                                        <div class=\"nav-cart__price\">
+                                                            <span>Общо: </span>
+                                                            <span>".$product->getPrice()." лв</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class=\"nav-cart__remove\">
+                                                        <a href=\"#\"><i class=\"ui-close\"></i></a>
+                                                    </div>
+                                                </div>";
                 }
                 else
                 {
@@ -222,7 +296,7 @@ class AjaxController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($shoppingCart);
             $em->flush();
-            return new Response($id);
+            return new Response($response);
         }
 
     }

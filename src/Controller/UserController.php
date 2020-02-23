@@ -2,6 +2,7 @@
 
 
 namespace App\Controller;
+use App\Entity\ShoppingCart;
 use App\Entity\OrderProduct;
 use App\Entity\Product;
 use App\Entity\User;
@@ -79,13 +80,39 @@ class UserController extends AbstractController
             $em->persist($order);
             $em->flush();
 
+            if (isset($_COOKIE['_SC_KO']))
+            {
+                $cookie=$_COOKIE['_SC_KO'];
+
+                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
 
 
-            return $this->render('user/succesfullOrder.html.twig');
+                if ($shoppingCart!=null)
+                {
+                    return $this->render('user/succesfullOrder.html.twig',['productsCart'=>$shoppingCart]);
+
+                }
+
+            }
+
+            return $this->render('user/succesfullOrder.html.twig',['productsCart'=>null]);
         }
 
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
 
-        return $this->render('user/buyProduct.html.twig', ['price' => intval($price), 'product' => $product,'user'=>$user]);
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render('user/buyProduct.html.twig', ['price' => intval($price), 'product' => $product,'user'=>$user,'productsCart'=>$shoppingCart]);
+
+            }
+
+        }
+        return $this->render('user/buyProduct.html.twig', ['price' => intval($price), 'product' => $product,'user'=>$user,'productsCart'=>null]);
 
     }
 
@@ -104,8 +131,20 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
         }
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
 
-        return $this->render("user/myInformation.html.twig",['user'=>$user]);
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("user/myInformation.html.twig",['user'=>$user,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("user/myInformation.html.twig",['user'=>$user,'productsCart'=>null]);
 
     }
     /**
@@ -116,8 +155,20 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
 
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
 
-        return $this->render("user/myOrders.html.twig",['orders'=>$user->getOrders()]);
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("user/myOrders.html.twig",['orders'=>$user->getOrders(),'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("user/myOrders.html.twig",['orders'=>$user->getOrders(),'productsCart'=>$shoppingCart]);
 
     }
 
@@ -128,8 +179,22 @@ class UserController extends AbstractController
     {
 
 
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
 
-        return $this->render("user/forgottenPassword.html.twig");
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+
+                return $this->render("user/forgottenPassword.html.twig",['productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("user/forgottenPassword.html.twig",['productsCart'=>null]);
+
 
     }
     /**
@@ -172,7 +237,20 @@ class UserController extends AbstractController
             $em->flush();
 
         }
-        return $this->render("admin/seeOrder.html.twig", ['order' => $order]);
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("admin/seeOrder.html.twig",['productsCart'=>$shoppingCart,'order' => $order]);
+            }
+
+        }
+        return $this->render("admin/seeOrder.html.twig",['productsCart'=>null,'order' => $order]);
 
     }
 

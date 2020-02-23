@@ -72,7 +72,7 @@ class HomeController extends AbstractController
             }
 
         }
-        return $this->render('home/index.html.twig', ['lastOnes' => $lastOnes, 'bestSellers' => $bestSellers]);
+        return $this->render('home/index.html.twig', ['lastOnes' => $lastOnes, 'bestSellers' => $bestSellers,'productsCart'=>null]);
 
     }
 
@@ -99,8 +99,20 @@ class HomeController extends AbstractController
         }
 
 
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
 
-        return $this->render('home/catalog.html.twig',['products'=>$category->getProduct(),'category'=>$category->getName(),'allCategories'=>$categories]);
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render('home/catalog.html.twig',['products'=>$category->getProduct(),'category'=>$category->getName(),'allCategories'=>$categories,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render('home/catalog.html.twig',['products'=>$category->getProduct(),'category'=>$category->getName(),'allCategories'=>$categories,'productsCart'=>null]);
     }
 
     /**
@@ -127,7 +139,20 @@ class HomeController extends AbstractController
             {
                 $user=new User();
             }
-            return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s,'user'=>$user]);
+            if (isset($_COOKIE['_SC_KO']))
+            {
+                $cookie=$_COOKIE['_SC_KO'];
+
+                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+                if ($shoppingCart!=null)
+                {
+                    return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s,'user'=>$user,'productsCart'=>$shoppingCart]);
+                }
+
+            }
+            return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s,'user'=>$user,'productsCart'=>null]);
         }
         $sizeAndNumber = $product->getSizes();
         $sizeAndNumber = explode(" ", $sizeAndNumber);
@@ -182,7 +207,7 @@ class HomeController extends AbstractController
 
 
 
-        return $this->render('commonFiles/contact.html.twig');
+        return $this->render('commonFiles/contact.html.twig',['productsCart'=>null]);
     }
 
 }
