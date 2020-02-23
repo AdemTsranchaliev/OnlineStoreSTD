@@ -175,11 +175,13 @@ class AjaxController extends AbstractController
             }
             $cookie=$_COOKIE['_SC_KO'];
 
-            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findOneBy(array('coocieId'=>$cookie));
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
 
             $id=$_POST['id'];
             $size=$_POST['sizeProduct'];
             $product=$this->getDoctrine()->getRepository(Product::class)->find($id);
+
+
 
 
             if($shoppingCart==null)
@@ -187,100 +189,32 @@ class AjaxController extends AbstractController
                 $shoppingCart=new ShoppingCart();
 
                 $shoppingCart->addCartProduct($product);
+                $shoppingCart->setProductId($product->getId());
+
                 $shoppingCart->setCoocieId($cookie);
-                $shoppingCart->setModelSize($product->getId().'?'.$size.'-1');
-                $shoppingCart->setPrice(0);
+                $shoppingCart->setModelSize($size);
+                $shoppingCart->setPrice($product->getPrice());
+                $shoppingCart->setQuantity(1);
 
             }
             else {
-                $products = $shoppingCart->getCartProduct();
+                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findOneBy(array('coocieId'=>$cookie,'modelSize'=>$size,'productId'=>$product->getId()));
+                if ($shoppingCart==null)
+                {
+                    $shoppingCart=new ShoppingCart();
 
-                $flag = false;
-                for ($i = 0; $i < count($products); $i++) {
-                    if (intval($id) == $products[$i]->getId()) {
-                        $product = $products[$i];
-                        $flag = true;
-                        break;
-                    }
+                    $shoppingCart->addCartProduct($product);
+                    $shoppingCart->setCoocieId($cookie);
+                    $shoppingCart->setModelSize($size);
+                    $shoppingCart->setPrice($product->getPrice());
+                    $shoppingCart->setQuantity(1);
+                    $shoppingCart->setProductId($product->getId());
                 }
-
-              if ($flag) {
-                    $modelSize=$shoppingCart->getModelSize();
-                  $separatedStr = explode('|',$modelSize );
-
-                  for ($j=0;$j<count($separatedStr);$j++)
-                  {
-                      $idSizes= explode('?', $separatedStr[$j]);
-                      $text='';
-                      if(strcmp($id,$idSizes[0])==0)
-                      {
-                          $sizeQuantity= explode(',', $idSizes[1]);
-                          $text2=$id.'?';
-                          $isFound=false;
-                          for ($i=0;$i<count($sizeQuantity);$i++)
-                          {
-                              $szQu=explode('-', $sizeQuantity[$i]);
-                              $isFound=true;
-                              if(strcmp($szQu[0],$size)==0)
-                              {
-
-                                  $quantity=intval($szQu[1])+1;
-                                  if ($i==0)
-                                  {
-                                      $text2.=$szQu[0].'-'.$quantity;
-                                  }
-                                  else
-                                  {
-                                      $text2.=','.$szQu[0].'-'.$quantity;
-                                  }
-                                  $isFound=true;
-                              }
-                              else
-                              {
-                                  if ($i==0)
-                                  {
-                                      $text2.=$sizeQuantity[$i];
-                                  }
-                                  else
-                                  {
-                                      $text2.=','.$sizeQuantity[$i];
-                                  }
-                              }
-                          }
-                          if ($isFound)
-                          {
-                              $text2.=','.$size.'-1';
-                          }
-                          if($j==0)
-                          {
-                              $text.=$text2;
-                          }
-                          else
-                          {
-                              $text.='|'.$text2;
-                          }
-                      }
-                      else
-                      {
-                          if($j==0)
-                          {
-                              $text.=$separatedStr[$j];
-                          }
-                          else
-                          {
-                              $text.='|'.$separatedStr[$j];
-                          }
-                      }
-                  }
-
-                  $shoppingCart->setModelSize($text);
-              }
-              else
-              {
-                  $text=$shoppingCart->getModelSize();
-                  $text.='|'.$id.'?'.$size.'-1';
-                  $shoppingCart->setModelSize($text);
-              }
+                else
+                {
+                    $shoppingCart->setPrice($product->getPrice()*2);
+                    $shoppingCart->setQuantity(2);
+                }
 
             }
 
@@ -315,4 +249,30 @@ class AjaxController extends AbstractController
             }
         }
     }
+
+    /**
+     * @Route("/sendMail")
+     */
+    public function sendMail(Request $request)
+    {
+
+
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+
+            $name=$_POST['name'];
+            $email=$_POST['email'];
+            $subject=$_POST['subject'];
+            $message=$_POST['message'];
+
+
+
+
+
+
+                return new Response("yes");
+
+        }
+    }
+
+
 }

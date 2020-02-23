@@ -69,7 +69,7 @@ $('#billing_address_2').blur(function () {
     }
 
 });
-$('#ademss2').blur(function () {
+$('#populatedPlace').blur(function () {
     if ($(this).val() == "Избери...") {
         $('#warning7').show();
     }
@@ -131,6 +131,7 @@ $('input#billing_email').blur(function () {
 
 
 $("#checkOut").submit(function (e) {
+
     if (!$.trim($('input#billing_first_name').val())) {
         $('#warning1').show();
         e.preventDefault();
@@ -139,38 +140,39 @@ $("#checkOut").submit(function (e) {
         $('#warning2').show();
         e.preventDefault();
     }
-    var conceptName = $('#ademss').find(":selected").text();
+
+
+
+
+
+
+    var conceptName = $('#populatedPlace').find(":selected").text();
     if (conceptName == "Избери...") {
+        $('#warning7').show();
+        e.preventDefault();
+    }
+
+    var conceptName2 = $('#ademss').find(":selected").text();
+    if (conceptName2 == "Избери...") {
         $('#warning3').show();
         e.preventDefault();
     }
 
-    if (conceptName == "Вземане лично от офис на куриер") {
-        conceptName = $('input#ademss2').find(":selected").text();
-        if (conceptName == "Избери...") {
-            $('#warning7').show();
-            e.preventDefault();
-        }
+    if (conceptName2 === "Вземане лично от офис на куриер") {
         if (!$.trim($('input#ademss3').val())) {
             $('#warning8').show();
             e.preventDefault();
         }
     }
-    else if (conceptName == "Доставка с куриер до адрес") {
-        if (!$.trim($('input#billing_city').val())) {
-            $('#warning4').show();
-            e.preventDefault();
-        }
-        if (!$.trim($('input#billing_postcode').val())) {
-            $('#warning5').show();
-            e.preventDefault();
-        }
-        if (!$.trim($('input#billing_address_2').val())) {
+    else if (conceptName === "Доставка с куриер до адрес") {
+        if (!$.trim($('#billing_address_2').val())) {
             $('#warning6').show();
-            $('#warning9Reg').hide();
             e.preventDefault();
         }
+
+
     }
+
     if (!$.trim($('input#billing_phone').val())) {
         $('#warning9').show();
         $('#warning9Reg').hide();
@@ -479,54 +481,6 @@ $('#changeInfoPhone').blur(function () {
     }
 
 });
-
-//$('#changeInfoEmail').blur(function () {
-//
-//    if ($(this).val().length == 0) {
-//
-//        $('#changeInfoEmailWarning').show();
-//
-//    }
-//    else
-//    {
-//        $('#changeInfoEmailWarning').hide();
-//        var strEmail = new RegExp('.+@.+');
-//        if (!strEmail.test($('input#changeInfoName').val())) {
-//
-//            $('#changeInfoEmailWarningInvalid').show();
-//        }
-//        else {
-//            $('#changeInfoEmailWarningInvalid').hide();
-//        }
-//    }
-//}); //
-
-
-
-//$('#changeInfoAddress').blur(function () {
-//
-//    if ($(this).val().length == 0) {
-//
-//        $('#changeInfoAddressWarning').show();
-//
-//    }
-//    else
-//    {
-//        $('#changeInfoAddressWarning').hide();
-//    }
-//});
-//$('#changeInfoPhone').blur(function () {
-//
-//    if ($(this).val().length == 0) {
-//
-//        $('#changeInfoPhoneWarning').show();
-//
-//    }
-//    else
-//    {
-//        $('#changeInfoPhoneWarning').hide();
-//    }
-//});
 
 $("#changeInfo").submit(function (e) {
     if ($("#changeInfoName").val().length == 0) {

@@ -99,10 +99,12 @@ class Product
      */
     private $shoppingCarts;
 
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->shoppingCarts = new ArrayCollection();
+        $this->shoppingCartI = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -336,4 +338,6 @@ class Product
 
         return $this;
     }
+
+
 }

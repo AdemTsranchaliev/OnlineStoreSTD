@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <!-- Contact -->
+    <section class="section-wrap pb-40">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-8">
+
+                    <h2 class="uppercase">Пишете ни</h2>
+                    <p>Имате прероръки, похвали или оплаквания, или Ви е нужна информация.</p>
+                    <div class=" alert alert-success" style="display: none" role="alert" id="successMessageSend">
+                        Съобщението беше изпратено успешно!
+                    </div>
+                    <!-- Contact Form -->
+
+                        <div class="contact-name">
+                            <label for="name">Име <abbr title="required" class="required">*</abbr></label>
+                            <input name="name" id="name" type="text">
+                        </div>
+                        <div class="contact-email">
+                            <label for="email">Email <abbr title="required" class="required">*</abbr></label>
+                            <input name="email" id="email" type="email">
+                        </div>
+                        <div class="contact-subject">
+                            <label for="email">Тема</label>
+                            <input name="subject" id="subject" type="text">
+                        </div>
+                        <div class="contact-message">
+                            <label for="message">Съобщение <abbr title="required" class="required">*</abbr></label>
+                            <textarea id="message" name="message" rows="7" required="required"></textarea>
+                        </div>
+
+                         <a href="#" class="btn btn-lg btn-color product-single__add-to-cart" id="submit-message">
+                             <span>Изпрати</span>
+                         </a>
+
+                        <div id="msg" class="message"></div>
+
+                </div> <!-- end col -->
+
+                <div class="col-lg-4">
+                    <div class="contact-info">
+                        <ul>
+                            <li class="contact-info__item">
+                                <h4 class="contact-info__title uppercase">Адрес</h4>
+
+                                <address class="address">област Пазарджик, община Пещера, ул. Симон Налбант 62</address>
+                            </li>
+                            <li class="contact-info__item">
+                                <h4 class="contact-info__title uppercase">Контакти</h4>
+                                <ul>
+                                    <li><span>Телефон: </span><a href="tel:+1-888-1554-456-123">+359 89 4788455</a></li>
+                                    <li><span>Email: </span><a href="mailto:themesupport@gmail.com">themesupport@gmail.com</a></li>
+                                </ul>
+                            </li>
+                            <li class="contact-info__item">
+                                <h4 class="contact-info__title uppercase">Работно време</h4>
+                                <ul>
+                                    <li>Понеделник – Петък: от 9 до 18:00</li>
+                                    <li>Събота:  от 10 до 16:00</li>
+                                    <li>Неделя: почивен ден</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section> <!-- end contact -->
+
+{% endblock %}

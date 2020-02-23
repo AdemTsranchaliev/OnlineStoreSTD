@@ -25,11 +25,13 @@ class UserController extends AbstractController
     public
     function buy($id,Request $request,\DateTimeInterface $date = null)
     {
-        $securityContext = $this->container->get('security.authorization_checker');
-        $user=new User();
-        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $user= $this->getUser();
+        $user = $this->getUser();
+
+        if ($user==null)
+        {
+            $user=new User();
         }
+
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
         if ($product === null) {
             return $this->render("commonFiles/404.html.twig");
@@ -60,29 +62,15 @@ class UserController extends AbstractController
             $order->setProduct($product);
 
 
-            /*
-                                $wayToDeliver = $_POST['wayToDelivery'];
-
-                                $modelNumber = $_POST['modelNumber'];
-                                $modelColor = $_POST['modelColor'];
-                                $modelTitle = $_POST['modelTitle'];
-                                $modelPrice = $_POST['modelPrice'];
-                                $Productize = $_POST['Productize'];
-
-                                if (strcmp($wayToDeliver, "Доставка с куриер до адрес") == 0) {
-                                    $order->setPopulatedPlace($townAdress);
-                                    $order->setPostalCode($postalCode);
-                                    $order->setAdress($adress);
-                                } else if (strcmp($wayToDeliver, "Вземане лично от офис на куриер") == 0) {
-                                    $order->setPopulatedPlace($townOfEkontOffice);
-                                    $order->setEcontOffice($ekontOffice);
-                                }
-                       */
-
 
             $order->setNewOrArchived(false);
             $order->setConfirmed(false);
-            $order->setUserId($user);
+
+            if ($user->getName()!=null)
+            {
+                $order->setUserId($user);
+
+            }
 
 
 

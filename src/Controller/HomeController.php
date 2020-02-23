@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
-
+use App\Entity\ShoppingCart;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,7 +57,22 @@ class HomeController extends AbstractController
         {
             array_push($lastOnes, $products[$i]);
         }
-            return $this->render('home/index.html.twig', ['lastOnes' => $lastOnes, 'bestSellers' => $bestSellers]);
+
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+
+                return $this->render('home/index.html.twig', ['lastOnes' => $lastOnes, 'bestSellers' => $bestSellers,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render('home/index.html.twig', ['lastOnes' => $lastOnes, 'bestSellers' => $bestSellers]);
 
     }
 
@@ -127,7 +142,47 @@ class HomeController extends AbstractController
         }
         $similar = $this->getDoctrine()->getRepository(Category::class)->findOneBy(array('tag'=>$product->getCategoryId()->getTag()));
 
-        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar->getProduct()]);
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar->getProduct(),'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar->getProduct(),'productsCart'=>null]);
+    }
+    /**
+     * @Route("/contact", name="contact")
+     */
+    public function contact()
+    {
+
+
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render('commonFiles/contact.html.twig',['productsCart'=>$shoppingCart]);
+            }
+
+        }
+
+
+
+
+
+        return $this->render('commonFiles/contact.html.twig');
     }
 
 }

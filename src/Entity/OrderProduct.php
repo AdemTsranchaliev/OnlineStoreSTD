@@ -42,7 +42,7 @@ class OrderProduct
     private $populatedPlace;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $office;
 
@@ -72,12 +72,12 @@ class OrderProduct
     private $additionalInfo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders",cascade={"persist"})
      */
     private $userId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orders",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;

@@ -39,7 +39,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderProduct", mappedBy="userId")
+     * @ORM\OneToMany(targetEntity="OrderProduct", mappedBy="userId",cascade={"persist"})
      */
     private $orders;
 

@@ -246,65 +246,70 @@
                         <!-- Wishlist -->
                         <a href="#" class="top-bar__item"><i class="ui-heart"></i></a>
 
-                        <div class="top-bar__item nav-cart">
-                            <a href="cart.html">
-                                <i class="ui-bag"></i>(2)
-                            </a>
-                            <div class="nav-cart__dropdown">
-                                <div class="nav-cart__items">
+                        <div class="top-bar__item nav-cart ">
+                            {% if productsCart is null %}
+                                <a href="cart.html">
+                                    <i class="ui-bag"></i>(0)
+                                </a>
+                                <div class="nav-cart__dropdown ">
+                                    <div class="nav-cart__items .overflow-auto">
 
-                                    <div class="nav-cart__item clearfix">
-                                        <div class="nav-cart__img">
-                                            <a href="#">
-                                                <img src="/img/shop/cart_small_1.jpg" alt="">
-                                            </a>
+                                              НЯМА ПРОДУКТИ
+                                    </div> <!-- end cart items -->
+
+                                </div>
+                                {% else %}
+                                    <a href="cart.html">
+                                        <i class="ui-bag"></i>({{ productsCart|length }})
+                                    </a>
+                                    <div class="nav-cart__dropdown ">
+                                        <div class="nav-cart__items .overflow-auto" style="overflow : scroll; height: 370px">
+                                            {% set sum = 0 %}
+                                            {% for product in productsCart %}
+                                                {% set sum =sum+ product.price %}
+                                                {% for product2 in product.getCartProduct() %}
+                                                    <div class="nav-cart__item clearfix">
+                                                        <div class="nav-cart__img">
+                                                            <a href="#">
+                                                                <img src="/img/uploads/{{ product2.getId() }}.0.jpg" height="100" width="60">
+                                                            </a>
+                                                        </div>
+                                                        <div class="nav-cart__title">
+                                                            <a href="#">
+                                                                {{ product2.getTitle() }}
+                                                            </a>
+                                                            <div class="nav-cart__price">
+                                                                <span>{{ product.quantity }} x</span>
+                                                                <span>{{ product2.price|number_format(2) }} лв</span>
+                                                            </div>
+                                                            <div class="nav-cart__price">
+                                                                <span>Размер: </span>
+                                                                <span>{{ product.modelSize }}</span>
+                                                            </div>
+                                                            <div class="nav-cart__price">
+                                                                <span>Общо: </span>
+                                                                <span>{{ product.price|number_format(2) }} лв</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="nav-cart__remove">
+                                                            <a href="#"><i class="ui-close"></i></a>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </div> <!-- end cart items -->
+
+                                        <div class="nav-cart__summary">
+                                            <span>Общо: </span>
+                                            <span class="nav-cart__total-price">{{ sum|number_format(2)}} лв </span>
                                         </div>
-                                        <div class="nav-cart__title">
-                                            <a href="#">
-                                                Classic White Tailored Shirt
-                                            </a>
-                                            <div class="nav-cart__price">
-                                                <span>1 x</span>
-                                                <span>19.99</span>
-                                            </div>
-                                        </div>
-                                        <div class="nav-cart__remove">
-                                            <a href="#"><i class="ui-close"></i></a>
+
+                                        <div class="nav-cart__actions mt-20">
+                                            <a href="shop-cart.html" class="btn btn-md btn-light"><span>View Cart</span></a>
+                                            <a href="shop-checkout.html" class="btn btn-md btn-color mt-10"><span>Proceed to Checkout</span></a>
                                         </div>
                                     </div>
-
-                                    <div class="nav-cart__item clearfix">
-                                        <div class="nav-cart__img">
-                                            <a href="#">
-                                                <img src="/img/shop/cart_small_2.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="nav-cart__title">
-                                            <a href="#">
-                                                Sport Hi Adidas
-                                            </a>
-                                            <div class="nav-cart__price">
-                                                <span>1 x</span>
-                                                <span>29.00</span>
-                                            </div>
-                                        </div>
-                                        <div class="nav-cart__remove">
-                                            <a href="#"><i class="ui-close"></i></a>
-                                        </div>
-                                    </div>
-
-                                </div> <!-- end cart items -->
-
-                                <div class="nav-cart__summary">
-                                    <span>Cart Subtotal</span>
-                                    <span class="nav-cart__total-price">$1799.00</span>
-                                </div>
-
-                                <div class="nav-cart__actions mt-20">
-                                    <a href="shop-cart.html" class="btn btn-md btn-light"><span>View Cart</span></a>
-                                    <a href="shop-checkout.html" class="btn btn-md btn-color mt-10"><span>Proceed to Checkout</span></a>
-                                </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -388,8 +393,7 @@
                                 <li class="nav__dropdown">
                                     <a href="#">За нас</a>
                                     <ul class="nav__dropdown-menu">
-                                        <li><a href="blog-standard.html">Blog Standard</a></li>
-                                        <li><a href="blog-single.html">Single Post</a></li>
+                                        <li><a href="{{ path('contact') }}">Контакти</a></li>
                                     </ul>
                                 </li>
                             {% if is_granted('ROLE_ADMIN')%}
@@ -569,17 +573,58 @@
             $(document).ready(function(){
                 $("#addToCart").on("click", function(event){
 
-                    var adem = $('#sorting')[0];
+                    if ($("#sizeSelected").find(":selected").text()==='Избери...')
+                    {
+                        $("#warningSize").show();
+                    }
+                    else
+                    {
+                        $.ajax({
+                            url:        '/ajaxAddToCart',
+                            type:       'POST',
+                            dataType:   'html',
+                            data: {'id':$("#productId").val(),'sizeProduct':$("select#sizeSelected :selected").val()},
+                            async:      true,
+
+                            success: function(data, status) {
+                                alert( data);
+
+                            },
+                            error : function(xhr, textStatus, errorThrown) {
+                                alert('Ajax request failed.');
+                            }
+                        });
+                    }
+
+                });
+            });
+            $(document).ready(function(){
+                $("#submit-message").on("click", function(event){
+
 
                     $.ajax({
-                        url:        '/ajaxAddToCart',
+                        url:        '/sendMail',
                         type:       'POST',
                         dataType:   'html',
-                        data: {'id':$("#productId").val(),'sizeProduct':$("select#sizeSelected :selected").val()},
+                        data: {'name':$("#name").val(),'email':$("#email").val(),'subject':$("#subject").val(),'message':$("#message").val()},
                         async:      true,
 
                         success: function(data, status) {
-                            alert( data);
+
+                            if(data==="yes")
+                            {
+                                location.href='http://127.0.0.1:8000/contact#';
+                                $("#name").val('');
+                                $("#subject").val('');
+                                $("#email").val('');
+                                $("#message").val('')
+                                $('#successMessageSend').show();
+                                var myVar = setInterval(myTimer, 6000);
+                                function myTimer() {
+                                    $('#successMessageSend').hide();
+                                }
+                            }
+s
 
                         },
                         error : function(xhr, textStatus, errorThrown) {
@@ -588,6 +633,7 @@
                     });
                 });
             });
+
 
         </script>
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
