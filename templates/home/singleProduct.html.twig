@@ -1,9 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
+
     <section class="section-wrap pb-20 product-single">
         <div class="container">
-
+            <!-- Modal HTML -->
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="icon-box">
+                                <i class="material-icons">&#xE876;</i>
+                            </div>
+                            <h4 class="modal-title">Успешно добавяне в количката!</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-center">Продъктът е добавен в количката.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Breadcrumbs -->
             <ol class="breadcrumbs">
                 <li>
@@ -162,8 +181,9 @@
 
 
                 </div> <!-- end col product description -->
+                    </span>
             </div> <!-- end row -->
-
+            </div>
         </div> <!-- end container -->
     </section> <!-- end single product -->
 
@@ -203,6 +223,7 @@
             {% endfor %}
 
             </div> <!-- end row -->
+
         </div> <!-- end container -->
     </section> <!-- end related products -->
 {% endblock %}

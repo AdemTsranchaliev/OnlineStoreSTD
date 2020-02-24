@@ -286,8 +286,8 @@ class AjaxController extends AbstractController
                 }
                 else
                 {
-                    $shoppingCart->setPrice($product->getPrice()*2);
-                    $shoppingCart->setQuantity(2);
+                    $shoppingCart->setPrice($product->getPrice()*($shoppingCart->getQuantity()+1));
+                    $shoppingCart->setQuantity($shoppingCart->getQuantity()+1);
                 }
 
             }
