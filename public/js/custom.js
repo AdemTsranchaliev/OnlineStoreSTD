@@ -211,6 +211,8 @@ $("#checkOut").submit(function (e) {
 ;
 $("#sendSubmitForBuying").submit(function (e) {
     var conceptName = $('#sizeSelected').find(":selected").text();
+    $("#addToCart").attr("disabled", false);
+
     if (conceptName === "Избери...") {
         $('#warningSize').show();
         e.preventDefault();

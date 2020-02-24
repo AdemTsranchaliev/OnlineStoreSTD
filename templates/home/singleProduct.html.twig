@@ -1,28 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-
-    <section class="section-wrap pb-20 product-single">
-        <div class="container">
-            <!-- Modal HTML -->
-            <div id="myModal" class="modal fade">
-                <div class="modal-dialog modal-confirm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div class="icon-box">
-                                <i class="material-icons">&#xE876;</i>
-                            </div>
-                            <h4 class="modal-title">Успешно добавяне в количката!</h4>
+    <!-- Modal HTML -->
+    <center>
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="icon-box">
+                            <i class="material-icons">&#xE876;</i>
                         </div>
-                        <div class="modal-body">
-                            <p class="text-center">Продъктът е добавен в количката.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
-                        </div>
+                        <h4 class="modal-title">Успешно добавяне в количката!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-center">Продъктът е добавен в количката.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
                     </div>
                 </div>
             </div>
+        </div>
+    </center>
+    <section class="section-wrap pb-20 product-single">
+        <div class="container">
+
             <!-- Breadcrumbs -->
             <ol class="breadcrumbs">
                 <li>
@@ -95,25 +97,14 @@
 
                         </div>
                         {% endif %}
-                        <div class="quantity">
-                            <label>Количество</label>
-                            <select name="quantity" id="quantity__select" class="quantity__select">
-                                  <option value="Избери...">Избери...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="row row-10 product-single__actions clearfix">
                         <div class="col">
-                            <a href="#" class="btn btn-lg btn-color product-single__add-to-cart" id="addToCart">
+                            <button type="button" class="btn btn-lg btn-color product-single__add-to-cart" id="addToCart"  onclick="this.disabled=true;">
                                 <i class="ui-bag"></i>
-                                <span>Добави към количка</span>
-                            </a>
+                                <span id="buttonAddToCartText">Добави към количка</span>
+                            </button>
                         </div>
                         <div class="col">
                             <button type="submit"  href="{{ path('buy',{ 'id':product.id}) }}" class="btn btn-lg btn-dark product-single__add-to-wishlist">

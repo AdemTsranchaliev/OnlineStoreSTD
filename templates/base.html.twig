@@ -24,7 +24,7 @@
 
         .modal-confirm {
 
-            width: 30%;
+            width: 325px;
         }
         .modal-confirm .modal-content {
             padding: 20px;
@@ -58,7 +58,7 @@
         .modal-confirm .icon-box {
             position: absolute;
             margin: 0 auto;
-            left: 0;
+            left: 10%;
             right: 0;
             top: -70px;
             width: 95px;
@@ -345,7 +345,7 @@
                                         {% for product in productsCart %}
                                             {% set sum =sum+ product.price %}
                                             {% for product2 in product.getCartProduct() %}
-                                                <div class="nav-cart__item clearfix">
+                                                <div class="nav-cart__item clearfix" id="{{ product.id }}_{{ product.modelSize }}">
                                                     <div class="nav-cart__img">
                                                         <a href="#">
                                                             <img src="/img/uploads/{{ product2.getId() }}.0.jpg" height="100" width="60">
@@ -356,8 +356,8 @@
                                                             {{ product2.getTitle() }}
                                                         </a>
                                                         <div class="nav-cart__price">
-                                                            <span>{{ product.quantity }} x</span>
-                                                            <span>{{ product2.price|number_format(2) }} лв</span>
+                                                            <span><span id="{{ product.id }}_{{ product.modelSize }}_quantity">{{ product.quantity }}</span> x</span>
+                                                            <span><span id="{{ product.id }}_{{ product.modelSize }}_price_one">{{ product2.price|number_format(2) }}</span> лв</span>
                                                         </div>
                                                         <div class="nav-cart__price">
                                                             <span>Размер: </span>
@@ -365,7 +365,7 @@
                                                         </div>
                                                         <div class="nav-cart__price">
                                                             <span>Общо: </span>
-                                                            <span>{{ product.price|number_format(2) }} лв</span>
+                                                            <span><span id="{{ product.id }}_{{ product.modelSize }}_price_total">{{ product.price|number_format(2) }}</span> лв</span>
                                                         </div>
                                                     </div>
                                                     <div class="nav-cart__remove">
@@ -381,7 +381,7 @@
 
                                     <div class="nav-cart__summary">
                                         <span>Общо: </span>
-                                        <span class="nav-cart__total-price">{{ sum|number_format(2)}} лв </span>
+                                        <span class="nav-cart__total-price"> <span id="total_price">{{ sum|number_format(2)}}</span> лв </span>
                                     </div>
 
                                     <div class="nav-cart__actions mt-20">
@@ -653,13 +653,20 @@
             });
             $(document).ready(function(){
                 $("#addToCart").on("click", function(event){
+                    $("#addToCart").attr("disabled", true);
+                    $('#warningSize').hide();
+
 
                     if ($("#sizeSelected").find(":selected").text()==='Избери...')
                     {
+
+                        $("#addToCart").attr("disabled", false);
                         $("#warningSize").show();
                     }
                     else
                     {
+
+                        $("#buttonAddToCartText").text("Добавяне...");
                         $.ajax({
                             url:        '/ajaxAddToCart',
                             type:       'POST',
@@ -669,32 +676,51 @@
 
                             success: function(data, status) {
                                 $('#myModal').modal('show');
-                                if ($('#cartProductCount').text==0)
+                                var res = data.split("_");
+
+                                if (res[0]==="noAddCount")
                                 {
-                                    $('#emptyCart').replaceWith(data);
-                                    $('#cartProductCount').text(1);
-                                    $.dialog({
-                                        "body": "jQueryScript.net!",
-                                        "title": "jQuery Dialog Plugin Demo",
-                                        "show": true,
-                                        "modal": true,
-                                        "closeOnMaskClick": false
-                                    });
+                                    alert(res[0])
+                                    var tempQuantity=res[1]+'_'+$("select#sizeSelected :selected").val()+'_quantity';
+                                    var tempPrice=res[1]+'_'+$("select#sizeSelected :selected").val()+'_price_total';
+                                    var tempPriceOne=res[1]+'_'+$("select#sizeSelected :selected").val()+'_price_one';
+
+
+                                    $("#"+tempQuantity).text(parseInt($("#"+tempQuantity).text())+1);
+                                    $("#"+tempPrice).text(parseInt($("#"+tempPrice).text())+$("#"+tempPriceOne).text());
+                                    $("#buttonAddToCartText").text("Добави към количка");
+                                    $("#addToCart").attr("disabled", false);
                                 }
                                 else
                                 {
+                                    if ($('#cartProductCount').text==0)
+                                    {
+                                        $('#emptyCart').replaceWith(data);
+                                        $('#cartProductCount').text(1);
+                                        $("#buttonAddToCartText").text("Добави към количка");
+                                        $("#addToCart").attr("disabled", false);
+                                    }
+                                    else
+                                    {
 
-                                    $('#insertCartProductHere').replaceWith(data);
-                                    var number=parseInt($('#cartProductCount').text())+1;
-                                    $('#cartProductCount').text(number);
+                                        $('#insertCartProductHere').replaceWith(data);
+                                        var number=parseInt($('#cartProductCount').text())+1;
+                                        $('#cartProductCount').text(number);
+                                        $("#buttonAddToCartText").text("Добави към количка");
+                                        $("#addToCart").attr("disabled", false);
+                                    }
                                 }
+
 
 
                             },
                             error : function(xhr, textStatus, errorThrown) {
+                                $("#buttonAddToCartText").text("Добави към количка");
+                                $("#addToCart").attr("disabled", false);
                                 alert('Ajax request failed.');
                             }
                         });
+
                     }
 
                 });

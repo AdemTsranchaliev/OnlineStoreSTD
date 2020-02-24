@@ -196,8 +196,8 @@ class AjaxController extends AbstractController
                 $shoppingCart->setPrice($product->getPrice());
                 $shoppingCart->setQuantity(1);
                 $response.="   <div class=\"nav-cart__dropdown \">
-                                    <div class=\"nav-cart__items .overflow-auto\" style=\"overflow : scroll; height: 370px\">
-                                                <div class=\"nav-cart__item clearfix\">
+                                    <div  class=\"nav-cart__items .overflow-auto\" style=\"overflow : scroll; height: 370px\">
+                                                <div id=\"".$product->getId()."_".$size."\" class=\"nav-cart__item clearfix\" >
                                                     <div class=\"nav-cart__img\">
                                                         <a href=\"#\">
                                                             <img src=\"/img/uploads/".$product->getId().".0.jpg\" height=\"100\" width=\"60\">
@@ -207,9 +207,9 @@ class AjaxController extends AbstractController
                                                         <a href=\"#\">
                                                            ".$product->getTitle()."
                                                         </a>
-                                                        <div class=\"nav-cart__price\">
-                                                            <span>1 x</span>
-                                                            <span>".$product->getPrice()." лв</span>
+                                                        <span class=\"nav-cart__price\">
+                                                            <span><span id=\"".$product->getId()."_".$size."_quantity\">1</span> x</span>
+                                                            <span><span id=\"".$product->getId()."_".$size."_price_one\">".$product->getPrice()."</span> лв</span>
                                                         </div>
                                                         <div class=\"nav-cart__price\">
                                                             <span>Размер: </span>
@@ -217,7 +217,7 @@ class AjaxController extends AbstractController
                                                         </div>
                                                         <div class=\"nav-cart__price\">
                                                             <span>Общо: </span>
-                                                            <span>".$product->getPrice()." лв</span>
+                                                            <span><span id=\"".$product->getId()."_".$size."_total\">".$product->getPrice()."</span> лв</span>
                                                         </div>
                                                     </div>
                                                     <div class=\"nav-cart__remove\">
@@ -233,7 +233,7 @@ class AjaxController extends AbstractController
 
                                     <div class=\"nav-cart__summary\">
                                         <span>Общо: </span>
-                                        <span class=\"nav-cart__total-price\" id='totalPrice'>".$product->getPrice()." лв </span>
+                                        <span class=\"nav-cart__total-price\" ><span id='totalPrice'>".$product->getPrice()."</span> лв </span>
                                     </div>
 
                                     <div class=\"nav-cart__actions mt-20\">
@@ -255,8 +255,8 @@ class AjaxController extends AbstractController
                     $shoppingCart->setPrice($product->getPrice());
                     $shoppingCart->setQuantity(1);
                     $shoppingCart->setProductId($product->getId());
-                    $response.="   
-                                                <div class=\"nav-cart__item clearfix\">
+                    $response.=" 
+                                                <div id=\"".$product->getId()."_".$size."\" class=\"nav-cart__item clearfix\" >
                                                     <div class=\"nav-cart__img\">
                                                         <a href=\"#\">
                                                             <img src=\"/img/uploads/".$product->getId().".0.jpg\" height=\"100\" width=\"60\">
@@ -267,8 +267,8 @@ class AjaxController extends AbstractController
                                                            ".$product->getTitle()."
                                                         </a>
                                                         <div class=\"nav-cart__price\">
-                                                            <span>1 x</span>
-                                                            <span>".$product->getPrice()." лв</span>
+                                                            <span><span id=\"".$product->getId()."_".$size."_quantity\">1</span> x</span>
+                                                            <span><span id=\"".$product->getId()."_".$size."_price_one\">".$product->getPrice()."</span> лв</span>
                                                         </div>
                                                         <div class=\"nav-cart__price\">
                                                             <span>Размер: </span>
@@ -276,18 +276,22 @@ class AjaxController extends AbstractController
                                                         </div>
                                                         <div class=\"nav-cart__price\">
                                                             <span>Общо: </span>
-                                                            <span>".$product->getPrice()." лв</span>
+                                                            <span><span id=\"".$product->getId()."_".$size."_total\">".$product->getPrice()."</span> лв</span>
                                                         </div>
                                                     </div>
                                                     <div class=\"nav-cart__remove\">
                                                         <a href=\"#\"><i class=\"ui-close\"></i></a>
                                                     </div>
-                                                </div>";
+                                                </div>
+                                                  <div id='insertCartProductHere'>
+
+                                    </div>";
                 }
                 else
                 {
                     $shoppingCart->setPrice($product->getPrice()*($shoppingCart->getQuantity()+1));
                     $shoppingCart->setQuantity($shoppingCart->getQuantity()+1);
+                    $response.='noAddCount_'.$shoppingCart->getId();
                 }
 
             }
