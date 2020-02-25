@@ -255,20 +255,24 @@ class AjaxController extends AbstractController
                     $shoppingCart->setPrice($product->getPrice());
                     $shoppingCart->setQuantity(1);
                     $shoppingCart->setProductId($product->getId());
-                    $response.=" 
-                                                <div id=\"".$product->getId()."_".$size."\" class=\"nav-cart__item clearfix\" >
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($shoppingCart);
+                    $em->flush();
+                    $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findOneBy(array('coocieId'=>$cookie,'modelSize'=>$size,'productId'=>$product->getId()));
+
+                    $response.=$product->getPrice()."&<div id=\"".$shoppingCart->getId()."_".$size."\" class=\"nav-cart__item clearfix\" >
                                                     <div class=\"nav-cart__img\">
                                                         <a href=\"#\">
-                                                            <img src=\"/img/uploads/".$product->getId().".0.jpg\" height=\"100\" width=\"60\">
+                                                            <img src=\"/img/uploads/".$shoppingCart->getId().".0.jpg\" height=\"100\" width=\"60\">
                                                         </a>
                                                     </div>
                                                     <div class=\"nav-cart__title\">
                                                         <a href=\"#\">
-                                                           ".$product->getTitle()."
+                                                           ".$shoppingCart->getTitle()."
                                                         </a>
                                                         <div class=\"nav-cart__price\">
-                                                            <span><span id=\"".$product->getId()."_".$size."_quantity\">1</span> x</span>
-                                                            <span><span id=\"".$product->getId()."_".$size."_price_one\">".$product->getPrice()."</span> лв</span>
+                                                            <span><span id=\"".$shoppingCart->getId()."_".$size."_quantity\">1</span> x</span>
+                                                            <span><span id=\"".$shoppingCart->getId()."_".$size."_price_one\">".$product->getPrice()."</span> лв</span>
                                                         </div>
                                                         <div class=\"nav-cart__price\">
                                                             <span>Размер: </span>
@@ -276,7 +280,7 @@ class AjaxController extends AbstractController
                                                         </div>
                                                         <div class=\"nav-cart__price\">
                                                             <span>Общо: </span>
-                                                            <span><span id=\"".$product->getId()."_".$size."_total\">".$product->getPrice()."</span> лв</span>
+                                                            <span><span id=\"".$shoppingCart->getId()."_".$size."_total\">".$product->getPrice()."</span> лв</span>
                                                         </div>
                                                     </div>
                                                     <div class=\"nav-cart__remove\">

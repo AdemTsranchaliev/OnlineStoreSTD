@@ -680,32 +680,42 @@
 
                                 if (res[0]==="noAddCount")
                                 {
-                                    alert(res[0])
+
                                     var tempQuantity=res[1]+'_'+$("select#sizeSelected :selected").val()+'_quantity';
                                     var tempPrice=res[1]+'_'+$("select#sizeSelected :selected").val()+'_price_total';
                                     var tempPriceOne=res[1]+'_'+$("select#sizeSelected :selected").val()+'_price_one';
 
+                                    alert($("#"+tempQuantity).text());
+                                    alert(parseFloat($("#"+tempPrice).text()));
+                                    alert(parseFloat($("#"+tempPriceOne).text()));
+                                    alert($('#total_price'));
 
-                                    $("#"+tempQuantity).text(parseInt($("#"+tempQuantity).text())+1);
-                                    $("#"+tempPrice).text(parseInt($("#"+tempPrice).text())+$("#"+tempPriceOne).text());
+                                    $("#"+tempQuantity).text(parseFloat($("#"+tempQuantity).text())+1);
+                                    $("#"+tempPrice).text(parseFloat($("#"+tempPrice).text())+parseFloat($("#"+tempPriceOne).text()));
+                                    $("#total_price").text(parseFloat($("#total_price").text())+parseFloat($("#"+tempPriceOne).text()));
                                     $("#buttonAddToCartText").text("Добави към количка");
                                     $("#addToCart").attr("disabled", false);
                                 }
                                 else
                                 {
-                                    if ($('#cartProductCount').text==0)
+                                    if ($('#cartProductCount').text()==0)
                                     {
                                         $('#emptyCart').replaceWith(data);
                                         $('#cartProductCount').text(1);
+
                                         $("#buttonAddToCartText").text("Добави към количка");
                                         $("#addToCart").attr("disabled", false);
                                     }
                                     else
                                     {
+                                        var res2 = data.split("&");
 
-                                        $('#insertCartProductHere').replaceWith(data);
+                                        $('#insertCartProductHere').replaceWith(res2[1]);
                                         var number=parseInt($('#cartProductCount').text())+1;
                                         $('#cartProductCount').text(number);
+                                        var price=parseFloat($("#total_price").text())+parseFloat(res2[0]);
+                                        alert(price);
+                                        $("#total_price").text(price);
                                         $("#buttonAddToCartText").text("Добави към количка");
                                         $("#addToCart").attr("disabled", false);
                                     }
