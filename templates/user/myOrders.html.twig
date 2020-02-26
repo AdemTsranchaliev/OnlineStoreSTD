@@ -43,8 +43,11 @@
                             </td>
                             <td class="product-price">
 
-
+                          {% if order.product is not null %}
                                 <span>{{ order.product.modelNumber }}</span>
+                                {% else %}
+                                    <span>Количка(виж за детайли)</span>
+                                    {% endif %}
 
                             </td>
                             <td class="product-quantity">

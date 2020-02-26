@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <!-- Page Title -->
+    <section class="page-title text-center">
+        <div class="container">
+            <h1 class=" heading page-title__title">Количка за пазаруване</h1>
+        </div>
+    </section> <!-- end page title -->
+
+
+    <!-- Cart -->
+    <section class="section-wrap cart pt-50 pb-40">
+        <div class="container relative">
+
+            <div class="table-wrap">
+                <table class="shop_table cart table">
+                    <thead>
+                    <tr>
+                        <th class="product-name" colspan="2">Продукт</th>
+                        <th class="product-price">Цена</th>
+                        <th class="product-quantity">Количество</th>
+                        <th class="product-subtotal" colspan="2">Общо</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set sum=0 %}
+                    {% for product in productsCart %}
+                        {% set sum= sum+product.price%}
+                    <tr class="cart_item">
+                        <td class="product-thumbnail">
+                            <a href="#">
+                                <img src="/img/uploads/{{ product.getCartProduct()[0].getId() }}.0.jpg" alt="">
+                            </a>
+                        </td>
+                        <td class="product-name">
+                            <a href="#">{{ product.getCartProduct()[0].getTitle() }}</a>
+                            <ul>
+                                <li>Размер: {{ product.modelSize }}</li>
+                                <li>Цвят: {{ product.getCartProduct()[0].getColor() }}</li>
+                            </ul>
+                        </td>
+                        <td class="product-price">
+                            <span class="amount">{{ product.getCartProduct()[0].getPrice()|number_format(2) }}лв.</span>
+                        </td>
+                        <td class="product-quantity">
+                            <div class="quantity buttons_added">
+
+                                  <span class="amount">{{ product.quantity }}</span>
+
+                            </div>
+                        </td>
+                        <td class="product-subtotal">
+                            <span class="amount">{{ product.price|number_format(2) }}лв.</span>
+                        </td>
+                        <td class="product-remove">
+                            <a href="#" class="remove" title="Remove this item">
+                                <i class="ui-close"></i>
+                            </a>
+                        </td>
+                    </tr>
+                   {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+       {% if productsCart is not null %}
+
+            <div class="row mb-30">
+                <div class="col-lg-5">
+                    <div class="coupon">
+
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="actions">
+
+                        <div class="wc-proceed-to-checkout">
+                            <a href="checkout.html" class="btn btn-md btn-color btn-button"><span>Към поръчка</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-between">
+                <div class="col-lg-6 shipping-calculator-form">
+                    <h2 class="uppercase mb-30"></h2>
+                    <p class="form-row form-row-wide">
+
+                    </p>
+
+                    <div class="row row-24">
+                        <div class="col-md-6">
+                            <p class="form-row form-row-wide">
+
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="form-row form-row-wide">
+
+                            </p>
+                        </div>
+                    </div>
+
+                    <p>
+
+                    </p>
+                </div> <!-- end col shipping calculator -->
+
+                <div class="col-lg-4">
+                    <div class="cart_totals">
+                        <h2 class="uppercase mb-20">Общо за количката</h2>
+
+                        <table class="table shop_table">
+                            <tbody>
+                            <tr class="shipping">
+                                <th>Shipping</th>
+                                <td>
+                                    <span>Free Shipping</span>
+                                </td>
+                            </tr>
+                            <tr class="order-total">
+                                <th>Oбщо за количката</th>
+                                <td>
+                                    <strong><span class="amount">{{ sum|number_format(2) }}</span></strong>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div> <!-- end col cart totals -->
+
+            </div> <!-- end row -->
+{% endif %}
+
+        </div> <!-- end container -->
+    </section> <!-- end cart -->
+{% endblock %}

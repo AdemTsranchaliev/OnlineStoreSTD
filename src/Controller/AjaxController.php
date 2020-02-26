@@ -184,6 +184,7 @@ class AjaxController extends AbstractController
 
             $response='';
 
+
             if($shoppingCart==null)
             {
                 $shoppingCart=new ShoppingCart();
@@ -195,52 +196,7 @@ class AjaxController extends AbstractController
                 $shoppingCart->setModelSize($size);
                 $shoppingCart->setPrice($product->getPrice());
                 $shoppingCart->setQuantity(1);
-                $response.="   <div class=\"nav-cart__dropdown \">
-                                    <div  class=\"nav-cart__items .overflow-auto\" style=\"overflow : scroll; height: 370px\">
-                                                <div id=\"".$product->getId()."_".$size."\" class=\"nav-cart__item clearfix\" >
-                                                    <div class=\"nav-cart__img\">
-                                                        <a href=\"#\">
-                                                            <img src=\"/img/uploads/".$product->getId().".0.jpg\" height=\"100\" width=\"60\">
-                                                        </a>
-                                                    </div>
-                                                    <div class=\"nav-cart__title\">
-                                                        <a href=\"#\">
-                                                           ".$product->getTitle()."
-                                                        </a>
-                                                        <span class=\"nav-cart__price\">
-                                                            <span><span id=\"".$product->getId()."_".$size."_quantity\">1</span> x</span>
-                                                            <span><span id=\"".$product->getId()."_".$size."_price_one\">".$product->getPrice()."</span> лв</span>
-                                                        </div>
-                                                        <div class=\"nav-cart__price\">
-                                                            <span>Размер: </span>
-                                                            <span>".$size."</span>
-                                                        </div>
-                                                        <div class=\"nav-cart__price\">
-                                                            <span>Общо: </span>
-                                                            <span><span id=\"".$product->getId()."_".$size."_total\">".$product->getPrice()."</span> лв</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class=\"nav-cart__remove\">
-                                                        <a href=\"#\"><i class=\"ui-close\"></i></a>
-                                                    </div>
-                                                </div>
-                                                  <div id='insertCartProductHere'>
 
-                                    </div>
-                                    </div> <!-- end cart items -->
-                                    
-                                 
-
-                                    <div class=\"nav-cart__summary\">
-                                        <span>Общо: </span>
-                                        <span class=\"nav-cart__total-price\" ><span id='totalPrice'>".$product->getPrice()."</span> лв </span>
-                                    </div>
-
-                                    <div class=\"nav-cart__actions mt-20\">
-                                        <a href=\"shop-cart.html\" class=\"btn btn-md btn-light\"><span>View Cart</span></a>
-                                        <a href=\"shop-checkout.html\" class=\"btn btn-md btn-color mt-10\"><span>Proceed to Checkout</span></a>
-                                    </div>
-                                </div>";
 
             }
             else {
@@ -260,42 +216,12 @@ class AjaxController extends AbstractController
                     $em->flush();
                     $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findOneBy(array('coocieId'=>$cookie,'modelSize'=>$size,'productId'=>$product->getId()));
 
-                    $response.=$product->getPrice()."&<div id=\"".$shoppingCart->getId()."_".$size."\" class=\"nav-cart__item clearfix\" >
-                                                    <div class=\"nav-cart__img\">
-                                                        <a href=\"#\">
-                                                            <img src=\"/img/uploads/".$shoppingCart->getId().".0.jpg\" height=\"100\" width=\"60\">
-                                                        </a>
-                                                    </div>
-                                                    <div class=\"nav-cart__title\">
-                                                        <a href=\"#\">
-                                                           ".$shoppingCart->getTitle()."
-                                                        </a>
-                                                        <div class=\"nav-cart__price\">
-                                                            <span><span id=\"".$shoppingCart->getId()."_".$size."_quantity\">1</span> x</span>
-                                                            <span><span id=\"".$shoppingCart->getId()."_".$size."_price_one\">".$product->getPrice()."</span> лв</span>
-                                                        </div>
-                                                        <div class=\"nav-cart__price\">
-                                                            <span>Размер: </span>
-                                                            <span>".$size."</span>
-                                                        </div>
-                                                        <div class=\"nav-cart__price\">
-                                                            <span>Общо: </span>
-                                                            <span><span id=\"".$shoppingCart->getId()."_".$size."_total\">".$product->getPrice()."</span> лв</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class=\"nav-cart__remove\">
-                                                        <a href=\"#\"><i class=\"ui-close\"></i></a>
-                                                    </div>
-                                                </div>
-                                                  <div id='insertCartProductHere'>
-
-                                    </div>";
                 }
                 else
                 {
                     $shoppingCart->setPrice($product->getPrice()*($shoppingCart->getQuantity()+1));
                     $shoppingCart->setQuantity($shoppingCart->getQuantity()+1);
-                    $response.='noAddCount_'.$shoppingCart->getId();
+
                 }
 
             }
@@ -304,6 +230,77 @@ class AjaxController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($shoppingCart);
             $em->flush();
+
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            $response.="<div class=\"top-bar__item nav-cart\" id=\"cartIdnt\">                
+                <a href=\"/seeShoppingCart\">
+                  <i class=\"ui-bag\"></i>(".count($shoppingCart).")
+                </a>
+                <div class=\"nav-cart__dropdown\">
+                  <div class=\"nav-cart__items\" style=\"overflow : scroll; scrollbar-width: thin; height: 370px\">";
+
+
+                 $total=0;
+                 foreach ($shoppingCart as $product2)
+                 {
+                     $total+=$product2->getPrice();
+                     $response.="<div class=\"nav-cart__item clearfix\">
+                      <div class=\"nav-cart__img\">
+                        <a href=\"#\">
+                          <img src=\"/img/uploads/".$product2->getCartProduct()[0]->getId().".0.jpg\" height=\"100\" width=\"60\" alt=\"\">
+                        </a>
+                      </div>
+                      <div class=\"nav-cart__title\">
+                        <a href=\"#\">
+                          ".$product2->getCartProduct()[0]->getTitle()."
+                        </a>
+                        <div class=\"nav-cart__price\">
+                          <span>".$product2->getQuantity()." x</span>
+                          <span>  ".number_format($product2->getCartProduct()[0]->getPrice(),2)."лв.</span>
+                        </div>
+                         <div class=\"nav-cart__price\">
+                             <span>Размер: </span>
+                             <span>".$product2->getModelSize()."</span>
+                         </div>
+                         <div class=\"nav-cart__price\">
+                             <span>Общо: </span>
+                             <span>".$product2->getPrice()." лв.</span>
+                         </div>
+                      </div>
+                      <div class=\"nav-cart__remove\">
+                        <a href=\"#\"><i class=\"ui-close\"></i></a>
+                      </div>
+                    </div>
+";
+                 }
+
+
+
+
+            $response.="   </div> <!-- end cart items -->
+
+                  <div class=\"nav-cart__summary\">
+                    <span>Общо за количка: </span>
+                    <span class=\"nav-cart__total-price\">".number_format($total,2)."лв</span>
+                  </div>
+
+                  <div class=\"nav-cart__actions mt-20\">
+                    <a href=\"/seeShoppingCart\" class=\"btn btn-md btn-light\"><span>Виж количката</span></a>
+                    <a href=\"shop-checkout.html\" class=\"btn btn-md btn-color mt-10\"><span>Proceed to Checkout</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>";
+
+
+
+
+
+
+
             return new Response($response);
         }
 

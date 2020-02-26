@@ -78,9 +78,14 @@ class OrderProduct
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orders",cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $product;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $coocieId;
 
 
     public function __construct()
@@ -244,6 +249,18 @@ class OrderProduct
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getCoocieId(): ?string
+    {
+        return $this->coocieId;
+    }
+
+    public function setCoocieId(?string $coocieId): self
+    {
+        $this->coocieId = $coocieId;
 
         return $this;
     }

@@ -221,22 +221,7 @@ class UserController extends AbstractController
             return $this->redirect('myOrders');
         }
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-            if($order->getConfirmed()==0)
-            {
-                $order->setConfirmed(true);
-            }
-            else
-            {
-                $order->setNewOrArchived(true);
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($order);
-            $em->flush();
-
-        }
         if (isset($_COOKIE['_SC_KO']))
         {
             $cookie=$_COOKIE['_SC_KO'];
@@ -246,11 +231,108 @@ class UserController extends AbstractController
 
             if ($shoppingCart!=null)
             {
-                return $this->render("admin/seeOrder.html.twig",['productsCart'=>$shoppingCart,'order' => $order]);
+                $shoppingCart2=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$order->getCoocieId()));
+
+                return $this->render("admin/seeOrder.html.twig",['productsCart'=>$shoppingCart,'order' => $order,'shoppingCart'=>$shoppingCart2]);
             }
 
         }
-        return $this->render("admin/seeOrder.html.twig",['productsCart'=>null,'order' => $order]);
+
+
+        $shoppingCart2=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$order->getCoocieId()));
+
+
+        return $this->render("admin/seeOrder.html.twig",['productsCart'=>null,'order' => $order,'shoppingCart'=>$shoppingCart2]);
+
+    }
+    /**
+     * @Route("/seeShoppingCart", name="seeShoppingCart")
+     */
+    public function seeShoppingCart(Request $request)
+    {
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("user/seeCart.html.twig",['productsCart'=>$shoppingCart]);
+            }
+
+            return $this->render("user/seeCart.html.twig",['productsCart'=>$shoppingCart]);
+
+        }
+        return $this->render("user/seeCart.html.twig",['productsCart'=>null]);
+    }
+    /**
+     * @Route("/ordering", name="ordering")
+     */
+    public
+    function ordering(Request $request)
+    {
+        $user = $this->getUser();
+
+        if ($user==null)
+        {
+            $user=new User();
+        }
+        $cookie='';
+        if (isset($_COOKIE['_SC_KO'])) {
+            $cookie = $_COOKIE['_SC_KO'];
+        }
+        $shoppingCart = $this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+        if ($shoppingCart === null) {
+            return $this->render("commonFiles/404.html.twig");
+        }
+
+        $order= new OrderProduct();
+        $form = $this->createForm(Orders::class, $order);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+
+
+            $order->setCoocieId($cookie);
+            $order->setNewOrArchived(false);
+            $order->setConfirmed(false);
+
+            if ($user->getName()!=null)
+            {
+                $order->setUserId($user);
+
+            }
+
+
+
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($order);
+            $em->flush();
+            setcookie("_SC_KO", time() - 3600);
+            if (isset($_COOKIE['_SC_KO']))
+            {
+                $cookie=$_COOKIE['_SC_KO'];
+
+                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+                if ($shoppingCart!=null)
+                {
+                    return $this->render('user/succesfullOrder.html.twig',['productsCart'=>$shoppingCart,'user'=>$user]);
+
+                }
+
+            }
+
+            return $this->render('user/succesfullOrder.html.twig',['productsCart'=>null,'user'=>$user]);
+        }
+
+
+        return $this->render('user/buyProductCart.html.twig', ['productsCart'=>$shoppingCart,'user'=>$user]);
 
     }
 

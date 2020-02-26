@@ -323,9 +323,9 @@
                         <!-- Wishlist -->
                         <a href="#" class="top-bar__item"><i class="ui-heart"></i></a>
 
-                        <div class="top-bar__item nav-cart ">
+                        <div class="top-bar__item nav-cart " id="cartIdnt">
                             {% if productsCart is null %}
-                                <a href="cart.html">
+                                <a href="{{ path('seeShoppingCart') }}">
                                     <i class="ui-bag"></i>(<span id="cartProductCount">0</span>)
                                 </a>
                                 <div class="nav-cart__dropdown " id="emptyCart">
@@ -336,11 +336,11 @@
 
                                 </div>
                             {% else %}
-                                <a href="cart.html">
+                                <a href="{{ path('seeShoppingCart') }}">
                                     <i class="ui-bag"></i>(<span id="cartProductCount">{{ productsCart|length }}</span>)
                                 </a>
                                 <div class="nav-cart__dropdown ">
-                                    <div class="nav-cart__items .overflow-auto" style="overflow : scroll; height: 370px">
+                                    <div class="nav-cart__items .overflow-auto" style="overflow : scroll; scrollbar-width: thin; height: 370px">
                                         {% set sum = 0 %}
                                         {% for product in productsCart %}
                                             {% set sum =sum+ product.price %}
@@ -385,7 +385,7 @@
                                     </div>
 
                                     <div class="nav-cart__actions mt-20">
-                                        <a href="shop-cart.html" class="btn btn-md btn-light"><span>View Cart</span></a>
+                                        <a href="{{ path('seeShoppingCart') }}" class="btn btn-md btn-light"><span>Виж количката</span></a>
                                         <a href="shop-checkout.html" class="btn btn-md btn-color mt-10"><span>Proceed to Checkout</span></a>
                                     </div>
                                 </div>
@@ -676,50 +676,11 @@
 
                             success: function(data, status) {
                                 $('#myModal').modal('show');
-                                var res = data.split("_");
 
-                                if (res[0]==="noAddCount")
-                                {
 
-                                    var tempQuantity=res[1]+'_'+$("select#sizeSelected :selected").val()+'_quantity';
-                                    var tempPrice=res[1]+'_'+$("select#sizeSelected :selected").val()+'_price_total';
-                                    var tempPriceOne=res[1]+'_'+$("select#sizeSelected :selected").val()+'_price_one';
-
-                                    alert($("#"+tempQuantity).text());
-                                    alert(parseFloat($("#"+tempPrice).text()));
-                                    alert(parseFloat($("#"+tempPriceOne).text()));
-                                    alert($('#total_price'));
-
-                                    $("#"+tempQuantity).text(parseFloat($("#"+tempQuantity).text())+1);
-                                    $("#"+tempPrice).text(parseFloat($("#"+tempPrice).text())+parseFloat($("#"+tempPriceOne).text()));
-                                    $("#total_price").text(parseFloat($("#total_price").text())+parseFloat($("#"+tempPriceOne).text()));
+                                     $("#cartIdnt").replaceWith(data);
                                     $("#buttonAddToCartText").text("Добави към количка");
                                     $("#addToCart").attr("disabled", false);
-                                }
-                                else
-                                {
-                                    if ($('#cartProductCount').text()==0)
-                                    {
-                                        $('#emptyCart').replaceWith(data);
-                                        $('#cartProductCount').text(1);
-
-                                        $("#buttonAddToCartText").text("Добави към количка");
-                                        $("#addToCart").attr("disabled", false);
-                                    }
-                                    else
-                                    {
-                                        var res2 = data.split("&");
-
-                                        $('#insertCartProductHere').replaceWith(res2[1]);
-                                        var number=parseInt($('#cartProductCount').text())+1;
-                                        $('#cartProductCount').text(number);
-                                        var price=parseFloat($("#total_price").text())+parseFloat(res2[0]);
-                                        alert(price);
-                                        $("#total_price").text(price);
-                                        $("#buttonAddToCartText").text("Добави към количка");
-                                        $("#addToCart").attr("disabled", false);
-                                    }
-                                }
 
 
 

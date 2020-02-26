@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\ShoppingCart;
 use App\Entity\User;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -165,7 +166,51 @@ class HomeController extends AbstractController
                 array_push($size, $test[0]);
             }
         }
-        $similar = $this->getDoctrine()->getRepository(Category::class)->findOneBy(array('tag'=>$product->getCategoryId()->getTag()));
+        $allProducts = $this->getDoctrine()->getRepository(Category::class)->findOneBy(array('tag'=>$product->getCategoryId()->getTag()));
+           $similar=Array();
+
+        foreach ($allProducts->getProduct() as $prd)
+        {
+            if ($prd->getId()!=intval($id))
+            {
+                array_push($similar,$prd);
+            }
+
+            if (count($similar)==6)
+            {
+                break;
+            }
+        }
+
+        if (count($similar)<6)
+        {
+        while(count($similar)!=6) {
+    $rand = rand(2, 8);
+
+    if ($rand == $product->getCategoryId()->getId()) {
+        $rand = rand(2, 8);
+        while ($rand != $product->getCategoryId()->getId()) {
+            $rand = rand(1, 8);
+        }
+    }
+    $allProducts2 = $this->getDoctrine()->getRepository(Category::class)->find($rand);
+
+    foreach ($allProducts2->getProduct() as $item) {
+        if (count($similar) == 6) {
+            break;
+        } else {
+            array_push($similar, $item);
+
+        }
+
+
+    }
+
+}
+
+
+        }
+
 
         if (isset($_COOKIE['_SC_KO']))
         {
@@ -176,11 +221,11 @@ class HomeController extends AbstractController
 
             if ($shoppingCart!=null)
             {
-                return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar->getProduct(),'productsCart'=>$shoppingCart]);
+                return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar,'productsCart'=>$shoppingCart]);
             }
 
         }
-        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar->getProduct(),'productsCart'=>null]);
+        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size,'similar'=>$similar,'productsCart'=>null]);
     }
     /**
      * @Route("/contact", name="contact")

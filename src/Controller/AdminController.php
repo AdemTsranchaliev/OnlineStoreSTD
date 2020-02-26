@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\OrderProduct;
+use App\Entity\ShoppingCart;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +30,20 @@ class AdminController extends AbstractController
     {
 
         $models = $this->getDoctrine()->getRepository(Product::class)->findAll();
-        return $this->render("admin/adminPanel.html.twig", ['models' => $models]);
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("admin/adminPanel.html.twig", ['models' => $models,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("admin/adminPanel.html.twig",  ['models' => $models,'productsCart'=>null]);
 
     }
 
@@ -204,8 +218,20 @@ class AdminController extends AbstractController
         }
 
 
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
 
-        return $this->render("admin/seeOrders.html.twig", ['orders' => $newOrders,'title'=>$title]);
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("admin/seeOrders.html.twig", ['orders' => $newOrders,'title'=>$title,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("admin/seeOrders.html.twig", ['orders' => $newOrders,'title'=>$title,'productsCart'=>null]);
 
     }
 
@@ -214,7 +240,7 @@ class AdminController extends AbstractController
      * @Route("/seeOrderAdmin/{id}", name="seeOrderAdmin")
      * @param $id
      */
-    public function seeOrder(Request $request, $id)
+    public function seeOrderAdmin(Request $request, $id)
     {
 
         $order = $this->getDoctrine()->getRepository(OrderProduct::class)->find($id);
@@ -240,7 +266,24 @@ class AdminController extends AbstractController
             $em->flush();
 
         }
-        return $this->render("admin/seeOrder.html.twig", ['order' => $order]);
+
+        $shoppingCart2=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$order->getCoocieId()));
+
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("admin/seeOrder.html.twig", ['order' => $order,'productsCart'=>$shoppingCart,'shoppingCart'=>$shoppingCart2]);
+
+            }
+
+        }
+        return $this->render("admin/seeOrder.html.twig", ['order' => $order,'shoppingCart'=>$shoppingCart2,'productsCart'=>null]);
 
     }
 

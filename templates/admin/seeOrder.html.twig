@@ -16,7 +16,7 @@
 
                 <div class="ecommerce col">
                     <form name="checkout" class="checkout ecommerce-checkout row" method="post"
-                          action="{{ path('seeOrder',{ 'id':order.id}) }}" >
+                          action="{{ path('seeOrderAdmin',{ 'id':order.id}) }}" >
                         <div class="col-lg-7" id="customer_details">
                             <div>
                                 <h2 class="uppercase mb-30">Данни за поръчката</h2>
@@ -137,6 +137,7 @@
                     <h2 class="uppercase">ПОРЪЧКА</h2>
                     <table class="table shop_table ecommerce-checkout-review-order-table">
                         <tbody>
+                        {% if order.coocieId is  null %}
                         <tr>
                             <th>Модел №</th>
                             <td>
@@ -167,6 +168,55 @@
                                 <strong><span class="amount">лв.</span></strong>
                             </td>
                         </tr>
+                        {% else %}
+                            {% set sum=0 %}
+                            {% for product in shoppingCart %}
+                                {% set sum=sum+product.price %}
+                                <tr>
+                                    <th><strong>Модел №</strong></th>
+                                    <td >
+                                        <input type="hidden" name="modelNumber" value="{{ product.getCartProduct()[0].modelNumber }}">
+                                        <span class="amount">{{ product.getCartProduct()[0].modelNumber }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Номер:</th>
+                                    <td >
+                                        <input type="hidden" name="modelSize"  value="{{ product.modelSize }}">
+                                        <span class="amount">{{ product.modelSize}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th >Цвят:</th>
+                                    <td>
+                                        <input type="hidden" name="modelColor"  value="{{ product.getCartProduct()[0].color }}">
+                                        <span class="amount">{{ product.getCartProduct()[0].color }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <input type="hidden" name="modelTitle"  value="{{ product.getCartProduct()[0].title }}">
+                                    <input type="hidden" name="modelPrice"  value="{{ product.getCartProduct()[0].price|number_format(2)  }}">
+                                    <th  >{{ product.getCartProduct()[0].price }}<span class="count"> x {{ product.quantity }}</span></th>
+                                    <td >
+                                        <span class="amount">{{ (product.getCartProduct()[0].price)*product.quantity|number_format(2)  }} лв.</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr class="shipping">
+                                <th>Доставка</th>
+                                <td>
+                                    <span>Цената на доставката се заплаща от клиента и не е включена в общата сума!</span>
+                                </td>
+                            </tr>
+                            <tr class="order-total">
+                                <th><strong>Общо за поръчка</strong></th>
+                                <td>
+                                    <strong><span class="amount">{{ sum }} лв.</span></strong>
+                                </td>
+                            </tr>
+
+                        {% endif %}
                         </tbody>
                     </table>
                     {% if is_granted('ROLE_ADMIN') %}
