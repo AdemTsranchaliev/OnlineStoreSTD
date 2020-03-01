@@ -144,12 +144,14 @@
                                 <span class="amount">{{ order.product.modelNumber }}</span>
                             </td>
                         </tr>
+                            {% if order.modelSize is not null %}
                         <tr>
-                            <th>Номер:</th>
+                            <th>Размер:</th>
                             <td>
-                                <span class="amount"></span>
+                                <span class="amount"> {{ order.modelSize }}</span>
                             </td>
                         </tr>
+                                {% endif %}
                         <tr>
                             <th>Цена:</th>
                             <td>
@@ -159,13 +161,13 @@
                         <tr class="shipping">
                             <th>ModelId</th>
                             <td>
-                                <span></span>
+                                <span>{{ order.product.modelNumber }}</span>
                             </td>
                         </tr>
                         <tr class="order-total">
                             <th><strong>Общо</strong></th>
                             <td>
-                                <strong><span class="amount">лв.</span></strong>
+                                <strong><span class="amount">{{ order.product.price }} лв.</span></strong>
                             </td>
                         </tr>
                         {% else %}

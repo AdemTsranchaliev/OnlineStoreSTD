@@ -87,6 +87,11 @@ class OrderProduct
      */
     private $coocieId;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $modelSize;
+
 
     public function __construct()
     {
@@ -261,6 +266,18 @@ class OrderProduct
     public function setCoocieId(?string $coocieId): self
     {
         $this->coocieId = $coocieId;
+
+        return $this;
+    }
+
+    public function getModelSize(): ?string
+    {
+        return $this->modelSize;
+    }
+
+    public function setModelSize(?string $modelSize): self
+    {
+        $this->modelSize = $modelSize;
 
         return $this;
     }

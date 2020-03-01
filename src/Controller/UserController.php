@@ -262,7 +262,7 @@ class UserController extends AbstractController
                 return $this->render("user/seeCart.html.twig",['productsCart'=>$shoppingCart]);
             }
 
-            return $this->render("user/seeCart.html.twig",['productsCart'=>$shoppingCart]);
+            return $this->render("user/seeCart.html.twig",['productsCart'=>null]);
 
         }
         return $this->render("user/seeCart.html.twig",['productsCart'=>null]);

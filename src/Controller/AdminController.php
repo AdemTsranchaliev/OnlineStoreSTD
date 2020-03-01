@@ -55,7 +55,23 @@ class AdminController extends AbstractController
     {
 
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-        return $this->render("admin/seeUsers.html.twig", ['users' => $users]);
+
+
+
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("admin/seeUsers.html.twig", ['users' => $users,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("admin/seeUsers.html.twig", ['users' => $users,'productsCart'=>null]);
 
     }
 
@@ -124,9 +140,35 @@ class AdminController extends AbstractController
                     $img++;
                 }
             }
-            return $this->render("admin/addModel.html.twig", ['user' => $user]);
+            if (isset($_COOKIE['_SC_KO']))
+            {
+                $cookie=$_COOKIE['_SC_KO'];
+
+                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+                if ($shoppingCart!=null)
+                {
+                    return $this->render("admin/addModel.html.twig", ['user' => $user,'productsCart'=>$shoppingCart]);
+                }
+
+            }
+            return $this->render("admin/addModel.html.twig", ['user' => $user,'productsCart'=>null]);
         };
-        return $this->render("admin/addModel.html.twig", ['user' => $user]);
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("admin/addModel.html.twig", ['user' => $user,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("admin/addModel.html.twig", ['user' => $user,'productsCart'=>null]);
 
     }
     /**
@@ -168,7 +210,20 @@ class AdminController extends AbstractController
             $em->flush();
             return $this->redirectToRoute("adminPanel");
         };
-        return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit]);
+        if (isset($_COOKIE['_SC_KO']))
+        {
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+
+
+            if ($shoppingCart!=null)
+            {
+                return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit,'productsCart'=>$shoppingCart]);
+            }
+
+        }
+        return $this->render("admin/editProduct.html.twig", ['producttoEdit' => $producttoEdit,'productsCart'=>null]);
 
     }
 

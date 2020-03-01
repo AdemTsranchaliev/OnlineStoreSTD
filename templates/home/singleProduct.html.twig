@@ -186,7 +186,7 @@
             <div class="heading-row">
                 <div class="text-center">
                     <h2 class="heading bottom-line">
-                        Shop the look
+                        ПОДОБНИ ПРОДУКТИ
                     </h2>
                 </div>
             </div>
@@ -197,9 +197,9 @@
                 <div class="col-lg-2 col-sm-4 product">
                     <div class="product__img-holder">
                         <a href="{{ path('singleProduct',{ 'id':simProduct.id}) }}" class="product__link">
-                            <img src="/img/uploads/{{ simProduct.id }}.0.jpg" alt="" class="product__img" id="img_1B" >
+                            <img src="/img/uploads/{{ simProduct.id }}.0.jpg" alt="" class="product__img" id="img_1B" height="300"  >
                             {% if simProduct.photoCount>1 %}
-                                <img src="/img/uploads/{{ simProduct.id }}.1.jpg" alt="" class="product__img-back" id="img_1S" >
+                                <img src="/img/uploads/{{ simProduct.id }}.1.jpg" alt="" class="product__img-back" id="img_1S" height="300"  >
                             {% endif %}
                         </a>
 

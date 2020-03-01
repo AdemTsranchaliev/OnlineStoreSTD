@@ -178,7 +178,12 @@ class AjaxController extends AbstractController
             $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
 
             $id=$_POST['id'];
-            $size=$_POST['sizeProduct'];
+            $size=null;
+            if (isset($_POST['sizeProduct']))
+            {
+                $size=$_POST['sizeProduct'];
+            }
+
             $product=$this->getDoctrine()->getRepository(Product::class)->find($id);
 
 

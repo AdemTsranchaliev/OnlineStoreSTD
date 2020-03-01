@@ -574,15 +574,15 @@ $('#addProductColor').blur(function () {
 });
 $('#addProductCategory').blur(function () {
 
-    if ($("#addProductCategory").val().length == 0) {
+    if ($("#addProductCategory").find(":selected").text() == 'Изберете...') {
 
-        $('#changeInfoNameWarning').show();
+        $('#addProductCategoryWarning').show();
 
 
     }
     else
     {
-        $('#changeInfoNameWarning').hide();
+        $('#addProductCategoryWarning').hide();
     }
 
 });
@@ -635,6 +635,15 @@ $("#addModel").submit(function (e) {
     {
         $('#addProductColorWarning').hide();
     }
+    if ($("#addProductCategory").find(":selected").text() == 'Изберете...') {
 
+        $('#addProductCategoryWarning').show();
+
+
+    }
+    else
+    {
+        $('#addProductCategoryWarning').hide();
+    }
 
 });

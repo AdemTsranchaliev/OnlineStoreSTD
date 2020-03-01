@@ -56,7 +56,7 @@
                                         <span class="amount" style="color: red">НЕПОТВЪРДЕНА</span>
                                     {% endif %}
                                     {% if order.confirmed==1 and order.newOrArchived==0 %}
-                                        <span class="amount" style="color: yellow">НЕПОТВЪРДЕНА</span>
+                                        <span class="amount" style="color: yellow">НЕИЗПЪЛНЕНА</span>
                                     {% endif %}
                                     {% if order.confirmed==1 and order.newOrArchived==1 %}
                                         <span class="amount" style="color: green">ИЗПЪЛНЕНА</span>
