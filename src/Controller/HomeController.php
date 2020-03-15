@@ -20,7 +20,7 @@ class HomeController extends AbstractController
     public function index()
     {
 
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $products = $this->getDoctrine()->getRepository(Product::class)->findBy(array("isDetelet"=>0));
         $bestSellers = Array();
         $lastOnes = Array();
 
@@ -83,10 +83,16 @@ class HomeController extends AbstractController
             }
         }
         if ($category->getId() == null) {
-            return $this->render('commonFiles/404.html.twig');
+            return $this->redirectToRoute('404');
         }
 
-
+        for ($i=0;$i<count($category->getProduct());$i++)
+        {
+            if ($category->getProduct()[$i]->getIsDetelet()==1)
+            {
+                unset($category->getProduct()[$i]);
+            }
+        }
         if (isset($_COOKIE['_SC_KO'])) {
             $cookie = $_COOKIE['_SC_KO'];
 
@@ -113,12 +119,16 @@ class HomeController extends AbstractController
 
         }
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-        if ($product === null) {
-            return $this->render('commonFiles/404.html.twig');
+        if ($product === null||$product->getIsDetelet()==1) {
+            return $this->redirectToRoute('404');
         }
-        if (isset($_POST['size__select'])) {
+        if (isset($_POST['size__select'])||isset($_POST['noSize'])) {
+$s='';
+            if (isset($_POST['size__select']))
+            {
+                $s = $_POST['size__select'];
 
-            $s = $_POST['size__select'];
+            }
             $user = $this->getUser();
             if ($user == null) {
                 $user = new User();
@@ -151,7 +161,7 @@ class HomeController extends AbstractController
         $similar = Array();
         $similarIndexes = Array();
         foreach ($allProducts->getProduct() as $prd) {
-            if ($prd->getId() != intval($id)) {
+            if ($prd->getId() != intval($id)&&$prd->getIsDetelet() ) {
                 array_push($similarIndexes, strval($prd->getId()));
                 array_push($similar, $prd);
             }
@@ -232,7 +242,7 @@ class HomeController extends AbstractController
      */
     public function search()
     {
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(array("isDetelet"=>0));
         $findedProducts = Array();
         $products = Array();
         if (isset($_GET['forSearch'])) {

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content="">
-    <title>{% block title %}STD{% endblock %}</title>
+    <title>{% block title %}IRAPELL{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/font-icons.css') }}">
@@ -13,7 +13,7 @@
         <link rel="stylesheet"
               href="http://fonts.googleapis.com/css?family=Questrial:400%7CMontserrat:300,400,700,700i">
     {% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('/shoes.ico') }}"/>
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/iraa.ico') }}"/>
     <link rel="apple-touch-icon" href="{{ asset('/img/apple-touch-icon.png') }}"/>
     <link rel="apple-touch-icon" href="{{ asset('/img/apple-touch-icon-72x72.png') }}"/>
     <link rel="apple-touch-icon" href="{{ asset('/img/apple-touch-icon-114x114.pn') }}"/>
@@ -123,24 +123,7 @@
     <nav>
         <ul class="sidenav__menu" role="menubar">
             <li>
-                <a href="#" class="sidenav__menu-link">Мъжки</a>
-                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
-                <ul class="sidenav__menu-dropdown">
-                    <li><a href="{{ path('catalog',{ 'categoryName':'manOfficialShoes'}) }}" class="sidenav__menu-link">Официални обувки</a></li>
-                    <li><a href="{{ path('catalog',{ 'categoryName':'manSportShoes'}) }}" class="sidenav__menu-link">Спортни обувки</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#" class="sidenav__menu-link">Дамски</a>
-                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
-                <ul class="sidenav__menu-dropdown">
-                    <li><a href="{{ path('catalog',{ 'categoryName':'womenSportShoes'}) }}" class="sidenav__menu-link">Спортни обувки</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#" class="sidenav__menu-link">Аксесоари</a>
+                <a href="#" class="sidenav__menu-link">Кожени изделия</a>
                 <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
                 <ul class="sidenav__menu-dropdown">
                     <li>
@@ -153,6 +136,9 @@
                             <li>
                                 <a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}" class="sidenav__menu-link">Гривни</a>
                             </li>
+                            <li>
+                                <a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}" class="sidenav__menu-link">Портфейли</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -161,19 +147,33 @@
                         <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
                         <ul class="sidenav__menu-dropdown">
                             <li>
-                                <a href="#" class="sidenav__menu-link">Портфейли</a>
+                                <a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}" class="sidenav__menu-link">Колани</a>
                             </li>
                             <li>
                                 <a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}" class="sidenav__menu-link">Гривни</a>
                             </li>
                             <li>
-                                <a href="#" class="sidenav__menu-link">Колани</a>
+                                <a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}" class="sidenav__menu-link">Обици</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}" class="sidenav__menu-link">Колиета</a>
                             </li>
                         </ul>
                     </li>
 
                 </ul>
             </li>
+
+            <li>
+                <a href="#" class="sidenav__menu-link">Продукти от дърво</a>
+                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                <ul class="sidenav__menu-dropdown">
+                    <li><a href="{{ path('catalog',{ 'categoryName':'womenSportShoes'}) }}" class="sidenav__menu-link">Спортни обувки</a></li>
+                    <li><a href="{{ path('catalog',{ 'categoryName':'womenSportShoes'}) }}" class="sidenav__menu-link">Спортни обувки</a></li>
+
+                </ul>
+            </li>
+
 
             <li>
                 <a href="#" class="sidenav__menu-link">За нас</a>
@@ -185,7 +185,13 @@
 
             <li>
                 {% if app.user %}
-                    <a href="#" class="sidenav__menu-link">{{ app.user.email }}</a>
+                    {% if app.user.email|length >=16 %}
+
+                        <a href="#" class="sidenav__menu-link">{{ app.user.email|slice(0,16)}}...</a>
+                    {% else %}
+                        <a href="#" class="sidenav__menu-link">{{ app.user.email}}</a>
+
+                    {% endif %}
                     <a href="{{ path('myOrders') }}" class="sidenav__menu-link">Моите поръчки</a>
                     <a href="{{ path('myInformation') }}" class="sidenav__menu-link">Моята информация</a>
                     <a href="{{ path('app_logout') }}" class="sidenav__menu-link">Смяна на парола</a>
@@ -224,7 +230,7 @@
                     </ul>
 
                     <!-- Promo -->
-                    <p class="top-bar__promo text-center">Безплатна доставка за покупки над 50лв.</p>
+                    <p class="top-bar__promo text-center">Безплатна доставка за покупки над 100лв.</p>
 
                     <!-- Sign in / Wishlist / Cart -->
                     <div class="top-bar__right">
@@ -233,16 +239,22 @@
                         {% if app.user %}
 
                             <li class="top-bar__language">
-                            <a  href="#" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email }}</a>
-                            <div class="top-bar__language-dropdown">
-                                <ul>
-                                    <li><a href="{{ path('myOrders') }}">Моите поръчки</a></li>
-                                    <li><a href="{{ path('myInformation') }}">Моята информация</a></li>
-                                    <li><a href="{{ path('app_logout') }}">Смяна на парола</a></li>
-                                    <li><a href="{{ path('app_logout') }}">Изход</a></li>
+                                {% if app.user.email|length >=16 %}
+                                    <a  href="#" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email|slice(0,16)}}...</a>
+                                {% else %}
+                                    <a  href="#" class="top-bar__item top-bar__sign-in" ><i class="ui-user"></i>{{ app.user.email}}</a>
 
-                                </ul>
-                            </div>
+                                {% endif %}
+
+                                <div class="top-bar__language-dropdown">
+                                    <ul>
+                                        <li><a href="{{ path('myOrders') }}">Моите поръчки</a></li>
+                                        <li><a href="{{ path('myInformation') }}">Моята информация</a></li>
+                                        <li><a href="{{ path('app_logout') }}">Смяна на парола</a></li>
+                                        <li><a href="{{ path('app_logout') }}">Изход</a></li>
+
+                                    </ul>
+                                </div>
                             </li>
 
                         {% else %}
@@ -288,10 +300,10 @@
                                                             <span><span id="{{ product.id }}_{{ product.modelSize }}_price_one">{{ product2.price|number_format(2) }}</span> лв</span>
                                                         </div>
                                                         {% if product.modelSize is not null %}
-                                                        <div class="nav-cart__price">
-                                                            <span>Размер: </span>
-                                                            <span>{{ product.modelSize }}</span>
-                                                        </div>
+                                                            <div class="nav-cart__price">
+                                                                <span>Размер: </span>
+                                                                <span>{{ product.modelSize }}</span>
+                                                            </div>
                                                         {% endif %}
                                                         <div class="nav-cart__price">
                                                             <span>Общо: </span>
@@ -299,7 +311,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="nav-cart__remove">
-                                                        <a href="#"><i class="ui-close"></i></a>
+                                                        <a href="#" onclick="deleteProd({{ product2.getId() }})"><i class="ui-close"></i></a>
                                                     </div>
                                                 </div>
                                             {% endfor %}
@@ -336,7 +348,7 @@
 
                     <!-- Logo -->
                     <a  href="{{ path('index') }}" class="logo">
-                        <img class="logo__img" src="/img/logo_light.png" alt="logo">
+                        <img class="logo__img" src="/img/logo1.png" alt="logo" style="max-height: 30px">
                     </a>
 
                     <!-- Nav-wrap -->
@@ -344,68 +356,63 @@
                         <ul class="nav__menu">
 
 
-                                <li class="nav__dropdown active">
-                                    <a href="#">Мъжки</a>
-                                    <ul class="nav__dropdown-menu">
-                                        <li><a href="{{ path('catalog',{ 'categoryName':'manSportShoes'}) }}">Спортни обувки</a></li>
-                                        <li><a href="{{ path('catalog',{ 'categoryName':'manOfficialShoes'}) }}">Официални обувки</a></li>
-
-                                    </ul>
-                                </li>
-
-                                <li class="nav__dropdown">
-                                    <a href="#">Дамски</a>
-                                    <ul class="nav__dropdown-menu">
-                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenSportShoes'}) }}">Спортни обувки</a></li>
-
-                                    </ul>
-                                </li>
-
-                                <li class="nav__dropdown">
-                                    <a href="#">Аксесоари</a>
-                                    <ul class="nav__dropdown-menu nav__megamenu">
-                                        <li>
-                                            <div class="nav__megamenu-wrap">
-                                                <div class="row">
+                            <li class="nav__dropdown">
+                                <a href="#">Кожени изделия</a>
+                                <ul class="nav__dropdown-menu nav__megamenu">
+                                    <li>
+                                        <div class="nav__megamenu-wrap">
+                                            <div class="row">
 
 
-                                                    <div class="col nav__megamenu-item">
-                                                        <a href="#" class="nav__megamenu-title">За нея</a>
-                                                        <ul class="nav__megamenu-list">
-                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">Колани</a></li>
-                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">Гривни</a></li>
+                                                <div class="col nav__megamenu-item">
+                                                    <a href="#" class="nav__megamenu-title">За нея</a>
+                                                    <ul class="nav__megamenu-list">
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">Колани</a></li>
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">Гривни</a></li>
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'wallets'}) }}">Портфейли</a></li>
 
-                                                        </ul>
-                                                    </div>
+                                                    </ul>
+                                                </div>
 
-                                                    <div class="col nav__megamenu-item">
-                                                        <a href="#" class="nav__megamenu-title">За него</a>
-                                                        <ul class="nav__megamenu-list">
-                                                            <li><a href="{{ path('catalog',{ 'categoryName':'wallets'}) }}">Портфейли</a></li>
-                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">Гривни</a></li>
-                                                            <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">Колани</a></li>
-
-                                                        </ul>
-                                                    </div>
-
-
-
-                                                    <div class="col nav__megamenu-item">
-                                                        <a href="#"><img src="/img/shop/megamenu_banner.png" alt=""></a>
-                                                    </div>
-
+                                                <div class="col nav__megamenu-item">
+                                                    <a href="#" class="nav__megamenu-title">За него</a>
+                                                    <ul class="nav__megamenu-list">
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenBracelet'}) }}">Гривни</a></li>
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenNecklace'}) }}">Колиета</a></li>
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenBelts'}) }}">Колани</a></li>
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenEarings'}) }}">Обици</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                        </li>
-                                    </ul>
-                                </li>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
 
-                                <li class="nav__dropdown">
-                                    <a href="#">За нас</a>
-                                    <ul class="nav__dropdown-menu">
-                                        <li><a href="{{ path('contact') }}">Контакти</a></li>
-                                    </ul>
-                                </li>
+
+                            <li class="nav__dropdown">
+                                <a href="#">Продукти от дърво</a>
+                                <ul class="nav__dropdown-menu">
+                                    <li><a href="{{ path('catalog',{ 'categoryName':'woodBoxes'}) }}">Кутии</a></li>
+                                    <li><a href="{{ path('catalog',{ 'categoryName':'woodWall'}) }}">Аксесоари за стена</a></li>
+
+                                </ul>
+                            </li>
+
+                            <li class="nav__dropdown">
+                                <a href="#">Аксесоари</a>
+                                <ul class="nav__dropdown-menu">
+                                    <li><a href="{{ path('catalog',{ 'categoryName':'womenSportShoes'}) }}">Ключодържатели</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav__dropdown">
+                                <a href="#">За нас</a>
+                                <ul class="nav__dropdown-menu">
+                                    <li><a href="{{ path('contact') }}">Контакти</a></li>
+                                </ul>
+                            </li>
                             {% if is_granted('ROLE_ADMIN')%}
 
                                 <li class="nav__dropdown">
@@ -415,8 +422,6 @@
                                         <li><a href="{{ path('addProduct') }}">Добави модел</a></li>
                                         <li><a href="{{ path('seeOrders',{ 'func':'new'}) }}">Поръчки</a></li>
                                         <li><a href="{{ path('seeUsers') }}">Потребители</a></li>
-
-
                                     </ul>
                                 </li>
                             {% endif %}
@@ -472,7 +477,10 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="widget widget__about">
                                 <h4 class="widget-title white">за нас</h4>
-                                <p class="widget__about-text">Namira is a very slick and clean e-commerce template with endless possibilities.</p>
+                                <p class="widget__about-text">Създадена през 2018 г., фирма „Фешън Стил 2010 еоод” е тясно специализирана в
+                                    производството и търговията на кожени изделия и аксесоари. Ние сме безспорен лидер на
+                                    българския пазар в производството на кожени колани, ключодържатели, портфейли,гривни и
+                                    др.</p>
                             </div>
                         </div>
 
@@ -536,7 +544,7 @@
                         <div class="col-md-6 text-sm-center">
               <span class="copyright">
 
-                &copy; 2020 STD Всички права запазени. Създадено от  <a href="#">ADTS</a>
+                &copy; 2020 IRAPELL Всички права запазени. Създадено от  <a href="#">ADTS</a>
               </span>
                         </div>
 
@@ -604,9 +612,9 @@
                                 $('#myModal').modal('show');
 
 
-                                     $("#cartIdnt").replaceWith(data);
-                                    $("#buttonAddToCartText").text("Добави към количка");
-                                    $("#addToCart").attr("disabled", false);
+                                $("#cartIdnt").replaceWith(data);
+                                $("#buttonAddToCartText").text("Добави към количка");
+                                $("#addToCart").attr("disabled", false);
 
 
 
@@ -637,7 +645,8 @@
 
                             if(data==="yes")
                             {
-                                location.href='http://127.0.0.1:8000/contact#';
+                                $('#dangerMessageSend').hide();
+
                                 $("#name").val('');
                                 $("#subject").val('');
                                 $("#email").val('');
@@ -648,7 +657,12 @@
                                     $('#successMessageSend').hide();
                                 }
                             }
-s
+                            else
+                            {
+                                $('#dangerMessageSend').show();
+
+                            }
+                            s
 
                         },
                         error : function(xhr, textStatus, errorThrown) {
@@ -657,25 +671,43 @@ s
                     });
                 });
             });
+            function deleteProd(prdId)
+            {
+                $.ajax({
+                    url:        '/deleteProd',
+                    type:       'POST',
+                    dataType:   'html',
+                    data: {'id':prdId},
+                    async:      true,
 
+                    success: function(data, status) {
+                        $("#cartIdnt").replaceWith(data);
+
+
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        alert('Ajax request failed.');
+                    }
+                });
+            }
 
         </script>
 
-    <script src="{{ asset('/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('/js/easing.min.js') }}"></script>
-    <script src="{{ asset('/js/jquery.magnific-popup.min.js') }}"></script>
+        <script src="{{ asset('/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('/js/easing.min.js') }}"></script>
+        <script src="{{ asset('/js/jquery.magnific-popup.min.js') }}"></script>
 
-    <script src="{{ asset('/js/owl-carousel.min.js') }}"></script>
-    <script src="{{ asset('/js/price-slider.js') }}"></script>
-    <script src="{{ asset('/js/flickity.pkgd.min.js') }}"></script>
-    <script src="{{ asset('/js/modernizr.min.js') }}"></script>
-    <script src="{{ asset('http://maps.google.com/maps/api/js?key=AIzaSyB25gBtcmj-6mFmckZBxpCl7QTwBCHdt2A') }}"></script>
-    <script src="{{ asset('/js/gmap3.min.js') }}"></script>
-    <script src="{{ asset('/js/scripts.js') }}"></script>
-    <script src="{{ asset('/js/custom.js') }}"></script>
+        <script src="{{ asset('/js/owl-carousel.min.js') }}"></script>
+        <script src="{{ asset('/js/price-slider.js') }}"></script>
+        <script src="{{ asset('/js/flickity.pkgd.min.js') }}"></script>
+        <script src="{{ asset('/js/modernizr.min.js') }}"></script>
+        <script src="{{ asset('http://maps.google.com/maps/api/js?key=AIzaSyB25gBtcmj-6mFmckZBxpCl7QTwBCHdt2A') }}"></script>
+        <script src="{{ asset('/js/gmap3.min.js') }}"></script>
+        <script src="{{ asset('/js/scripts.js') }}"></script>
+        <script src="{{ asset('/js/custom.js') }}"></script>
 
-{% endblock %}
-    </main>
-    </body>
-    </html>
+    {% endblock %}
+</main>
+</body>
+</html>

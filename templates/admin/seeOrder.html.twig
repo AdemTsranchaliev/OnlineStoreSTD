@@ -141,7 +141,7 @@
                         <tr>
                             <th>Модел №</th>
                             <td>
-                                <span class="amount">{{ order.product.modelNumber }}</span>
+                                <a href="{{ path('singleProduct',{ 'id':order.product.id}) }}"> <span class="amount">{{ order.product.modelNumber }}</span></a>
                             </td>
                         </tr>
                             {% if order.modelSize is not null %}
@@ -178,7 +178,7 @@
                                     <th><strong>Модел №</strong></th>
                                     <td >
                                         <input type="hidden" name="modelNumber" value="{{ product.getCartProduct()[0].modelNumber }}">
-                                        <span class="amount">{{ product.getCartProduct()[0].modelNumber }}</span>
+                                        <a href="{{ path('singleProduct',{ 'id':product.getCartProduct()[0].id}) }}">  <span class="amount">{{ product.getCartProduct()[0].modelNumber }}</span></a>
                                     </td>
                                 </tr>
                                 <tr>

@@ -183,7 +183,7 @@ class AdminController extends AbstractController
 
          if ($producttoEdit==null)
          {
-             return $this->render("commonFiles/404.html.twig");
+             return $this->redirectToRoute('404');
          }
 
         $product = new Product();
@@ -303,7 +303,7 @@ class AdminController extends AbstractController
 
         if ($order==null)
         {
-            return $this->render("commonFiles/404.html.twig");
+            return $this->redirectToRoute('404');
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 

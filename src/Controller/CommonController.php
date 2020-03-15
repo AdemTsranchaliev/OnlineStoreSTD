@@ -14,7 +14,7 @@ class CommonController extends AbstractController
 {
 
     /**
-     * @Route("/404", name="404")
+     * @Route("/error404", name="404")
      */
     public function error404()
     {
@@ -73,7 +73,7 @@ class CommonController extends AbstractController
 
             if ($shoppingCart != null) {
 
-                return $this->render('commonFilez/termsAndConditions.html.twig', ['productsCart' => $shoppingCart]);
+                return $this->render('commonFiles/termsAndConditions.html.twig', ['productsCart' => $shoppingCart]);
             }
 
         }

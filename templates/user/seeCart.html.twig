@@ -55,9 +55,7 @@
                             <span class="amount">{{ product.price|number_format(2) }}лв.</span>
                         </td>
                         <td class="product-remove">
-                            <a href="#" class="remove" title="Remove this item">
-                                <i class="ui-close"></i>
-                            </a>
+
                         </td>
                     </tr>
                    {% endfor %}
@@ -78,7 +76,7 @@
                     <div class="actions">
 
                         <div class="wc-proceed-to-checkout">
-                            <a href="checkout.html" class="btn btn-md btn-color btn-button"><span>Към поръчка</span></a>
+                            <a href="{{ path('ordering') }}" class="btn btn-md btn-color btn-button"><span>Към поръчка</span></a>
                         </div>
                     </div>
                 </div>
@@ -115,12 +113,7 @@
 
                         <table class="table shop_table">
                             <tbody>
-                            <tr class="shipping">
-                                <th>Shipping</th>
-                                <td>
-                                    <span>Free Shipping</span>
-                                </td>
-                            </tr>
+
                             <tr class="order-total">
                                 <th>Oбщо за количката</th>
                                 <td>

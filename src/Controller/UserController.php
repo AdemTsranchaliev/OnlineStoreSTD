@@ -34,8 +34,8 @@ class UserController extends AbstractController
         }
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-        if ($product === null) {
-            return $this->render("commonFiles/404.html.twig");
+        if ($product === null||$product->getIsDetelet()==1) {
+            return $this->redirectToRoute('404');
         }
         $price = $product->getPrice();
 
@@ -46,7 +46,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted()) {
 
             $searchForProduct=$_POST['productId'];
-            $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+            $products = $this->getDoctrine()->getRepository(Product::class)->findBy(array("isDetelet"=>0));
             $product=new Product();
             foreach ($products as $value)
             {
@@ -58,7 +58,7 @@ class UserController extends AbstractController
             }
             if ($product->getId()==null)
             {
-                return $this->render('commonFiles/404.html.twig');
+                return $this->redirectToRoute('404');
             }
             $order->setProduct($product);
 
@@ -210,11 +210,11 @@ class UserController extends AbstractController
         $user = $this->getUser();
         if ($order==null)
         {
-            return $this->render('commonFiles/404.html.twig');
+            return $this->redirectToRoute('404');
         }
         if ($order->getUserId()==null)
         {
-            return $this->render('commonFiles/404.html.twig');
+            return $this->redirectToRoute('404');
         }
         if ($order->getUserId()->getId()!=$user->getId())
         {
@@ -286,7 +286,7 @@ class UserController extends AbstractController
         $shoppingCart = $this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
 
         if ($shoppingCart === null) {
-            return $this->render("commonFiles/404.html.twig");
+            return $this->redirectToRoute('404');
         }
 
         $order= new OrderProduct();
@@ -313,6 +313,17 @@ class UserController extends AbstractController
             $em->persist($order);
             $em->flush();
             setcookie("_SC_KO", time() - 3600);
+
+
+            // Always set content-type when sending HTML email
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+            $message="<a href=\"www.irapell.com/seeOrderAdmin/".$order->getId()()."\">Виж поръчки</a>";
+
+            mail("ademcran4aliew@gmail.com","Нова поръчка",$message,$headers);
+
+
             if (isset($_COOKIE['_SC_KO']))
             {
                 $cookie=$_COOKIE['_SC_KO'];

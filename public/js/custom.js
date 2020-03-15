@@ -572,6 +572,7 @@ $('#addProductColor').blur(function () {
         $('#addProductColorWarning').hide();
     }
 });
+
 $('#addProductCategory').blur(function () {
 
     if ($("#addProductCategory").find(":selected").text() == 'Изберете...') {
@@ -586,6 +587,21 @@ $('#addProductCategory').blur(function () {
     }
 
 });
+
+$('#size').blur(function () {
+
+    var strSize = new RegExp('([0-9]+-[0-9]+)+');
+    if (!strSize.test($('#size').val()) && $.trim($('#size').val())) {
+        $('#sizeWarning').show();
+
+    }
+    else
+    {
+        $('#sizeWarning').hide();
+    }
+
+});
+
 $("#addModel").submit(function (e) {
     if ($("#addProductName").val().length == 0) {
 
@@ -644,6 +660,16 @@ $("#addModel").submit(function (e) {
     else
     {
         $('#addProductCategoryWarning').hide();
+    }
+
+    var strSize = new RegExp('([0-9]+-[0-9]+)+');
+    if (!strSize.test($('#size').val()) && $.trim($('#size').val())) {
+        $('#sizeWarning').show();
+        e.preventDefault();
+    }
+    else
+    {
+        $('#sizeWarning').hide();
     }
 
 });

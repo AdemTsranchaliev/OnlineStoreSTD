@@ -70,10 +70,10 @@
                         </ins>
                         {% else %}
                         <ins>
-                          <span class="amount" style="color: red">{{ (product.discountPrice)|number_format(2) }} лв.</span>
+                          <span class="amount" style="color: red">{{ (product.price)|number_format(2) }} лв.</span>
                         </ins>
                         <del>
-                           <span >{{ (product.price)|number_format(2) }} лв.</span>
+                           <span >{{ (product.discountPrice)|number_format(2) }} лв.</span>
                         </del>
                          {% endif %}
                         <form action="{{ path('singleProduct', { 'id':product.id} )}}" method="post" id="sendSubmitForBuying">
@@ -107,6 +107,7 @@
                             </button>
                         </div>
                         <div class="col">
+                            <input type="hidden" name="noSize" value="">
                             <button type="submit"  href="{{ path('buy',{ 'id':product.id}) }}" class="btn btn-lg btn-dark product-single__add-to-wishlist">
                                 <i class="ui-heart"></i>
                                 <span>Купи сега</span>
@@ -141,36 +142,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="accordion__panel">
-                            <div class="accordion__heading" id="headingTwo">
-                                <a data-toggle="collapse" href="#collapseTwo" class="accordion__link accordion--is-closed" aria-expanded="false" aria-controls="collapseTwo">Информация<span class="accordion__toggle">&nbsp;</span>
-                                </a>
-                            </div>
-                            <div id="collapseTwo" class="collapse" data-parent="#accordion" role="tabpanel" aria-labelledby="headingTwo">
-                                <div class="accordion__body">
-                                    <table class="table shop_attributes">
-                                        <tbody>
-                                        <tr>
-                                            <th>Size:</th>
-                                            <td>EU 41 (US 8), EU 42 (US 9), EU 43 (US 10), EU 45 (US 12)</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Colors:</th>
-                                            <td>Violet, Black, Blue</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Fabric:</th>
-                                            <td>Cotton (100%)</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-
-
                 </div> <!-- end col product description -->
                     </span>
             </div> <!-- end row -->

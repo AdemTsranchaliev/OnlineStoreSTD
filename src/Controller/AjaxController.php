@@ -28,7 +28,7 @@ class AjaxController extends AbstractController
             $command=$_POST['command'];
             $category=$_POST['categoryName'];
 
-            $arr=[];
+            $arr2=[];
             $categories = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->findAll();
@@ -36,10 +36,19 @@ class AjaxController extends AbstractController
             foreach ($categories as $prd) {
 
                 if (strcmp($category, $prd->getName()) == 0) {
-                    $arr = $prd->getProduct();
+                    $arr2 = $prd->getProduct();
                     break;
                 }
             }
+            $arr=[];
+            for ($i=0;$i<count($arr2);$i++)
+            {
+                if ($arr2[$i]->getIsDetelet()==0)
+                {
+                    array_push($arr,$arr2[$i]) ;
+                }
+            }
+
             if(strcmp($command,"price-low-to-high")==0)
             {
                 for ($i = 0; $i < count($arr); $i++) {
@@ -276,7 +285,7 @@ class AjaxController extends AbstractController
                          </div>
                       </div>
                       <div class=\"nav-cart__remove\">
-                        <a href=\"#\"><i class=\"ui-close\"></i></a>
+                        <a href=\"#\" onclick=\"deleteProd(".$product2->getCartProduct()[0]->getId().")\"><i class=\"ui-close\"></i></a>
                       </div>
                     </div>
 ";
@@ -293,16 +302,12 @@ class AjaxController extends AbstractController
                   </div>
 
                   <div class=\"nav-cart__actions mt-20\">
-                    <a href=\"/seeShoppingCart\" class=\"btn btn-md btn-light\"><span>Виж количката</span></a>
-                    <a href=\"shop-checkout.html\" class=\"btn btn-md btn-color mt-10\"><span>Proceed to Checkout</span></a>
+                      <a href=\"/seeShoppingCart\" class=\"btn btn-md btn-light\"><span>Виж количката</span></a>
+                      <a href=\"/ordering\" class=\"btn btn-md btn-color mt-10\"><span>Към поръчка</span></a>
                   </div>
                 </div>
               </div>
             </div>";
-
-
-
-
 
 
 
@@ -343,18 +348,155 @@ class AjaxController extends AbstractController
 
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
 
-            $name=$_POST['name'];
-            $email=$_POST['email'];
-            $subject=$_POST['subject'];
-            $message=$_POST['message'];
+
+            if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['message'])) {
+
+
+                $name = $_POST['name'];
+                $email = $_POST['email'];
+                $subject = $_POST['subject'];
+                $messagee = $_POST['message'];
+
+
+                $to = "ademcran4aliew@gmail.com";
+
+
+                $message = "
+              <html>
+              <head>
+              <title>Email от контактна форма</title>
+              </head>
+              <body>
+              <h1>Съобщение</h1>
+              <p>" . $messagee . "</p>
+              <table>
+              <tr>
+              <th>Име</th>
+              <th>Email</th>
+              </tr>
+              <tr>
+              <td>" . $name . "</td>
+              <td>" . $email . "</td>
+              
+              </tr>
+              </table>
+              </body>
+              </html>
+              ";
+
+// Always set content-type when sending HTML email
+                $headers = "MIME-Version: 1.0" . "\r\n";
+                $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 
 
-
+                mail($to, $subject, $message, $headers);
 
 
                 return new Response("yes");
 
+            }
+        }
+        return new Response("no");
+
+    }
+
+    /**
+     * @Route("/deleteProd")
+     */
+    public function deleteProd(Request $request)
+    {
+
+
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+
+            $id=$_POST['id'];
+
+
+            $cookie=$_COOKIE['_SC_KO'];
+
+            $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findOneBy(array('coocieId'=>$cookie,'productId'=>$id));
+
+            if ($shoppingCart!=null)
+            {
+                $entityManager=$this->getDoctrine()->getManager();
+                $entityManager->remove($shoppingCart);
+                $entityManager->flush();
+
+                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findBy(array('coocieId'=>$cookie));
+                $response='';
+
+                $response.="<div class=\"top-bar__item nav-cart\" id=\"cartIdnt\">                
+                <a href=\"/seeShoppingCart\">
+                  <i class=\"ui-bag\"></i>(".count($shoppingCart).")
+                </a>
+                <div class=\"nav-cart__dropdown\">
+                  <div class=\"nav-cart__items\" style=\"overflow : scroll; scrollbar-width: thin; height: 370px\">";
+
+
+                $total=0;
+                foreach ($shoppingCart as $product2)
+                {
+                    $total+=$product2->getPrice();
+                    $response.="<div class=\"nav-cart__item clearfix\">
+                      <div class=\"nav-cart__img\">
+                        <a href=\"#\">
+                          <img src=\"/img/uploads/".$product2->getCartProduct()[0]->getId().".0.jpg\" height=\"100\" width=\"60\" alt=\"\">
+                        </a>
+                      </div>
+                      <div class=\"nav-cart__title\">
+                        <a href=\"#\">
+                          ".$product2->getCartProduct()[0]->getTitle()."
+                        </a>
+                        <div class=\"nav-cart__price\">
+                          <span>".$product2->getQuantity()." x</span>
+                          <span>  ".number_format($product2->getCartProduct()[0]->getPrice(),2)."лв.</span>
+                        </div>
+                         <div class=\"nav-cart__price\">
+                             <span>Размер: </span>
+                             <span>".$product2->getModelSize()."</span>
+                         </div>
+                         <div class=\"nav-cart__price\">
+                             <span>Общо: </span>
+                             <span>".$product2->getPrice()." лв.</span>
+                         </div>
+                      </div>
+                      <div class=\"nav-cart__remove\">
+                        <a href=\"#\" onclick=\"deleteProd(".$product2->getCartProduct()[0]->getId().")\"><i class=\"ui-close\"></i></a>
+                      </div>
+                    </div>
+";
+                }
+
+
+
+
+                $response.="   </div> <!-- end cart items -->
+
+                  <div class=\"nav-cart__summary\">
+                    <span>Общо за количка: </span>
+                    <span class=\"nav-cart__total-price\">".number_format($total,2)."лв</span>
+                  </div>
+
+                  <div class=\"nav-cart__actions mt-20\">
+                      <a href=\"/seeShoppingCart\" class=\"btn btn-md btn-light\"><span>Виж количката</span></a>
+                      <a href=\"/ordering\" class=\"btn btn-md btn-color mt-10\"><span>Към поръчка</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>";
+
+
+
+
+
+
+
+                return new Response($response);
+            }
+
+
+            return new Response("yes");
         }
     }
 

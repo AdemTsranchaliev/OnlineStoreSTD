@@ -3128,7 +3128,7 @@ abbr.required {
 /* Logo
 -------------------------------------------------------*/
 .logo__img {
-  max-height: 21px; }
+  max-height: 29px; }
 
 /* Nav Flexbox
 -------------------------------------------------------*/
@@ -3738,7 +3738,7 @@ input.nav__search-input:-ms-input-placeholder {
     margin-left: 20px;
     line-height: 1; }
     .logo__img {
-      max-height: 16px; } }
+      max-height: 29px; } }
 
 /*-------------------------------------------------------*/
 /* Footer
