@@ -85,12 +85,12 @@ class HomeController extends AbstractController
         if ($category->getId() == null) {
             return $this->redirectToRoute('404');
         }
-
+        $product=Array();
         for ($i=0;$i<count($category->getProduct());$i++)
         {
-            if ($category->getProduct()[$i]->getIsDetelet()==1)
+            if ($category->getProduct()[$i]->getIsDetelet()==0)
             {
-                unset($category->getProduct()[$i]);
+                array_push($product,$category->getProduct()[$i]);
             }
         }
         if (isset($_COOKIE['_SC_KO'])) {
@@ -100,11 +100,11 @@ class HomeController extends AbstractController
 
 
             if ($shoppingCart != null) {
-                return $this->render('home/catalog.html.twig', ['products' => $category->getProduct(), 'category' => $category->getName(), 'allCategories' => $categories, 'productsCart' => $shoppingCart]);
+                return $this->render('home/catalog.html.twig', ['products' => $product, 'category' => $category->getName(), 'allCategories' => $categories, 'productsCart' => $shoppingCart]);
             }
 
         }
-        return $this->render('home/catalog.html.twig', ['products' => $category->getProduct(), 'category' => $category->getName(), 'allCategories' => $categories, 'productsCart' => null]);
+        return $this->render('home/catalog.html.twig', ['products' => $product, 'category' => $category->getName(), 'allCategories' => $categories, 'productsCart' => null]);
     }
 
     /**
@@ -161,7 +161,7 @@ $s='';
         $similar = Array();
         $similarIndexes = Array();
         foreach ($allProducts->getProduct() as $prd) {
-            if ($prd->getId() != intval($id)&&$prd->getIsDetelet() ) {
+            if ($prd->getId() != intval($id)&&$prd->getIsDetelet()==0 ) {
                 array_push($similarIndexes, strval($prd->getId()));
                 array_push($similar, $prd);
             }
@@ -188,7 +188,7 @@ $s='';
                     if (count($similar) == 6) {
                         break;
                     } else {
-                        if (!in_array(strval($item->getId()), $similarIndexes)) {
+                        if (!in_array(strval($item->getId()), $similarIndexes)&&$item->getIsDetelet()==0 ) {
                             array_push($similar, $item);
                             array_push($similarIndexes, $item->getId());
                         }
@@ -242,14 +242,12 @@ $s='';
      */
     public function search()
     {
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(array("isDetelet"=>0));
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
         $findedProducts = Array();
         $products = Array();
         if (isset($_GET['forSearch'])) {
             $search = $_GET['forSearch'];
-            $products = $this->getDoctrine()->getRepository(Product::class)->findBy(array('title'=>$search));
-
-
+            $products = $this->getDoctrine()->getRepository(Product::class)->findBy(array('title'=>$search,"isDetelet"=>0));
 
         }
         if (isset($_COOKIE['_SC_KO'])) {

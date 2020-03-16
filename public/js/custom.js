@@ -551,11 +551,19 @@ $('#addProductPrice').blur(function () {
 
         $('#addProductPriceWarning').show();
 
-
     }
     else
     {
         $('#addProductPriceWarning').hide();
+
+        var strSizePrice = new RegExp('^-?(?:\\d+|\\d*\\.\\d+)$');
+        if (!strSizePrice.test($('#addProductPrice').val()) && $.trim($('#addProductPrice').val())) {
+            $('#priceInvalid').show();
+        }
+        else
+        {
+            $('#priceInvalid').hide();
+        }
     }
 
 });
@@ -590,7 +598,7 @@ $('#addProductCategory').blur(function () {
 
 $('#size').blur(function () {
 
-    var strSize = new RegExp('([0-9]+-[0-9]+)+');
+    var strSize = new RegExp('^(([0-9]+-[0-9]+) ?)+$');
     if (!strSize.test($('#size').val()) && $.trim($('#size').val())) {
         $('#sizeWarning').show();
 
@@ -601,6 +609,9 @@ $('#size').blur(function () {
     }
 
 });
+
+
+
 
 $("#addModel").submit(function (e) {
     if ($("#addProductName").val().length == 0) {
@@ -630,17 +641,18 @@ $("#addModel").submit(function (e) {
     else
     {
         $('#addProductPriceWarning').hide();
+        var strSizePrice = new RegExp('^-?(?:\\d+|\\d*\\.\\d+)$');
+        if (!strSizePrice.test($('#addProductPrice').val()) && $.trim($('#addProductPrice').val())) {
+            $('#priceInvalid').show();
+            e.preventDefault();
+        }
+        else
+        {
+            $('#priceInvalid').hide();
+        }
     }
-    if ($("#addProductPrice").val().length == 0) {
 
-        $('#addProductPriceWarning').show();
-        e.preventDefault();
 
-    }
-    else
-    {
-        $('#addProductPriceWarning').hide();
-    }
     if ($("#addProductColor").val().length == 0) {
 
         $('#addProductColorWarning').show();
@@ -671,5 +683,6 @@ $("#addModel").submit(function (e) {
     {
         $('#sizeWarning').hide();
     }
+
 
 });

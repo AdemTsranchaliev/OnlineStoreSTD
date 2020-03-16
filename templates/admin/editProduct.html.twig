@@ -9,30 +9,33 @@
         <h1>Редактиране на ПРОДУКТ</h1>
 
 
-        <form action="{{ path('editModel', { 'id':producttoEdit.id}) }}" method="post" id="editProduct">
+        <form action="{{ path('editModel', { 'id':producttoEdit.id}) }}" method="post" id="addModel">
             <label>Заглавие</label>
-            <label style="display: none; color: red" id="productToEditTitle">Това поле е задължително</label>
-            <input type="text" id="productToEditTitle" name="products[title]" value="{{ producttoEdit.title }}">
+            <label style="display: none; color: red" id="addProductNameWarning">Това поле е задължително</label>
+            <input type="text" id="addProductName" name="products[title]" value="{{ producttoEdit.title }}">
             <label>Модел №</label>
-            <input type="text" id="productToEditModelNumber" name="products[modelNumber]" value="{{ producttoEdit.modelNumber }}">
+            <label style="display: none; color: red" id="addProductModelNumberWarning">*Това поле е задължително</label>
+            <input type="text" id="addProductModelNumber" name="products[modelNumber]" value="{{ producttoEdit.modelNumber }}">
             <label>Цена</label>
-            <input type="text"id="productToEditPrice" name="products[price]"  value="{{ producttoEdit.price }}" >
-            <label>Размери</label>
+            <label style="display: none; color: red" id="addProductPriceWarning">*Това поле е задължително</label>
+            <label style="display: none; color: red" id="priceInvalid">*Невалиден формат. Цената трябва да е цяло число напр 50 или реално разделено с точка 129.99</label>
 
-            <label>Цвят</label>
-            <input type="text" id="productToEditColor" name="products[color]" value="{{ producttoEdit.color }}">
+            <input type="text"id="addProductPrice" name="products[price]"  value="{{ producttoEdit.price }}" >
+            <label>Размери</label>
+            <label style="display: none; color: red" id="addProductColorWarning">*Това поле е задължително</label>
+            <input type="text" id="addProductColor" name="products[color]" value="{{ producttoEdit.color }}">
             <label>Размери-наличност</label>
-            <input type="text" id="productToEditSizes" name="products[Sizes]" value="{{ producttoEdit.Sizes }}">
+            <label style="display: none; color: red" id="sizeWarning">*Невалидни входни данни, правилният формат е номер-число(0 или 1) ПРИМЕР 36-1</label>
+
+            <input type="text" id="size" name="products[Sizes]" value="{{ producttoEdit.Sizes }}">
             <label>Категория</label>
-            <select name="products[category]" >
+            <label style="display: none; color: red" id="addProductCategoryWarning">*Това поле е задължително</label>
+
+            <select name="products[category]" id="addProductCategory">
                 <option value="{{ producttoEdit.categoryId.tag }}" selected>{{ producttoEdit.categoryId.name }}</option>
-                <option value="womenSportShoes">дамски спортни обувки</option>
-                <option value="manSportShoes">мъжки спортни обувки</option>
-                <option value="manOfficialShoes">мъжки официални обувки</option>
-                <option value="womenBracelet">дамски гривни</option>
-                <option value="manBelts">мъжки колани</option>
-                <option value="wallets">портфейли</option>
-                <option value="manBracelet">мъжки гривни</option>
+                {% for category in categories %}
+                    <option value="{{ category.tag }}">{{ category.name }}</option>
+                {% endfor %}
             </select>
             <label>Промоция</label>
             <div class="checkbox mb-3">

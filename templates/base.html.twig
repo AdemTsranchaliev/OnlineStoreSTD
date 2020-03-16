@@ -365,7 +365,7 @@
 
 
                                                 <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">За нея</a>
+                                                    <a href="#" class="nav__megamenu-title">За него</a>
                                                     <ul class="nav__megamenu-list">
                                                         <li><a href="{{ path('catalog',{ 'categoryName':'manBelts'}) }}">Колани</a></li>
                                                         <li><a href="{{ path('catalog',{ 'categoryName':'manBracelet'}) }}">Гривни</a></li>
@@ -375,12 +375,12 @@
                                                 </div>
 
                                                 <div class="col nav__megamenu-item">
-                                                    <a href="#" class="nav__megamenu-title">За него</a>
+                                                    <a href="#" class="nav__megamenu-title">За нея</a>
                                                     <ul class="nav__megamenu-list">
                                                         <li><a href="{{ path('catalog',{ 'categoryName':'womenBracelet'}) }}">Гривни</a></li>
                                                         <li><a href="{{ path('catalog',{ 'categoryName':'womenNecklace'}) }}">Колиета</a></li>
                                                         <li><a href="{{ path('catalog',{ 'categoryName':'womenBelts'}) }}">Колани</a></li>
-                                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenEarings'}) }}">Обици</a></li>
+                                                        <li><a href="{{ path('catalog',{ 'categoryName':'womenEarings'}) }}">Обеци</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -394,7 +394,7 @@
                                 <a href="#">Продукти от дърво</a>
                                 <ul class="nav__dropdown-menu">
                                     <li><a href="{{ path('catalog',{ 'categoryName':'woodBoxes'}) }}">Кутии</a></li>
-                                    <li><a href="{{ path('catalog',{ 'categoryName':'woodWall'}) }}">Аксесоари за стена</a></li>
+                                    <li><a href="{{ path('catalog',{ 'categoryName':'woodWall'}) }}">Декорации</a></li>
 
                                 </ul>
                             </li>
@@ -447,9 +447,9 @@
                     </a>
 
                     <!-- Mobile Cart -->
-                    <a href="cart.html" class="nav__mobile-cart d-lg-none">
+                    <a href="{{ path("seeShoppingCart") }}" class="nav__mobile-cart d-lg-none">
                         <i class="ui-bag"></i>
-                        <span class="nav__mobile-cart-amount">(2)</span>
+                        <span class="nav__mobile-cart-amount">({{ productsCart|length }})</span>
                     </a>
 
                 </div> <!-- end flex-parent -->
@@ -496,25 +496,22 @@
                                 </form>
 
                                 <div class="socials socials--white mt-20">
-                                    <a href="#" class="facebook" aria-label="facebook"><i class="ui-facebook"></i></a>
+                                    <a href="https://www.facebook.com/Irapell-336961067144974/?__tn__=%2Cd%2CP-R&eid=ARDmyiyoBYI4E8mHaQ4LDwkJ2Da61LzlBAI-go-eBDzC4Ku4mcZQAXYpeWR4iwK8tEem8ItrEgSr0eSn" class="facebook" aria-label="facebook"><i class="ui-facebook"></i></a>
                                     <a href="#" class="twitter" aria-label="twitter"><i class="ui-twitter"></i></a>
-                                    <a href="#" class="snapchat" aria-label="snapchat"><i class="ui-snapchat"></i></a>
                                     <a href="#" class="instagram" aria-label="instagram"><i class="ui-instagram"></i></a>
-                                    <a href="#" class="pinterest" aria-label="pinterest"><i class="ui-pinterest"></i></a>
+                                    <a href="https://www.pinterest.ca/irapell/" class="pinterest" aria-label="pinterest"><i class="ui-pinterest"></i></a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-lg-2 col-md-6">
                             <div class="widget widget_nav_menu">
-                                <h4 class="widget-title white">help</h4>
+                                <h4 class="widget-title white">Помощ</h4>
                                 <ul>
-                                    <li><a href="#">Contact Us</a></li>
-                                    <li><a href="#">Tract Order</a></li>
-                                    <li><a href="#">Returns &amp; Refunds</a></li>
-                                    <li><a href="#">Private Policy</a></li>
-                                    <li><a href="#">Shipping Info</a></li>
-                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="{{ path('contact') }}">Свържи се с нас</a></li>
+                                    <li><a href="{{ path('termsAndCotions') }}">Общи условия</a></li>
+                                    <li><a href="{{ path('termsAndCotions') }}">Гаранция и рекламации</a></li>
+
                                 </ul>
                             </div>
                         </div>
@@ -524,12 +521,7 @@
                                 <h4 class="widget-title white">Карта на сайта</h4>
                                 <ul>
 
-                                    <li><a href="#">Our Stores</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="#">Delivery Info</a></li>
-                                    <li><a href="#">Terms &amp; Conditions</a></li>
-                                    <li><a href="#">Site Map</a></li>
-                                    <li><a href="#">Namira Reviews</a></li>
+
                                 </ul>
                             </div>
                         </div>

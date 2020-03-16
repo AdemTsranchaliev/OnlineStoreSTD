@@ -18,6 +18,8 @@
             <input type="text" name="products[modelNumber]" id="addProductModelNumber">
             <label>Цена</label>
             <label style="display: none; color: red" id="addProductPriceWarning">*Това поле е задължително</label>
+            <label style="display: none; color: red" id="priceInvalid">*Невалиден формат. Цената трябва да е цяло число напр 50 или реално разделено с точка 129.99</label>
+
             <input type="text" name="products[price]" id="addProductPrice">
             <label>Размери</label>
             <label style="display: none; color: red" id="sizeWarning">*Невалидни входни данни, правилният формат е номер-число(0 или 1) ПРИМЕР 36-1</label>
@@ -29,13 +31,9 @@
             <label style="display: none; color: red" id="addProductCategoryWarning">*Това поле е задължително</label>
             <select name="products[category]" id="addProductCategory">
                 <option value="choice">Изберете...</option>
-                <option value="womenSportShoes">дамски спортни обувки</option>
-                <option value="manSportShoes">мъжки спортни обувки</option>
-                <option value="manOfficialShoes">мъжки официални обувки</option>
-                <option value="womenBracelet">дамски гривни</option>
-                <option value="manBelts">мъжки колани</option>
-                <option value="wallets">портфейли</option>
-                <option value="manBracelet">мъжки гривни</option>
+                {% for category in categories %}
+                <option value="{{ category.tag }}">{{ category.name }}</option>
+               {% endfor %}
             </select>
             <label>Описание</label>
             <textarea type="text" name="products[description]"></textarea>
