@@ -65,17 +65,17 @@
 
                     <span class="product-single__price">
                         {%  if not product.isPromotion %}
-                        <ins>
+                            <ins>
                           <span class="amount">{{ (product.price)|number_format(2) }} лв.</span>
                         </ins>
                         {% else %}
-                        <ins>
+                            <ins>
                           <span class="amount" style="color: red">{{ (product.price)|number_format(2) }} лв.</span>
                         </ins>
-                        <del>
+                            <del>
                            <span >{{ (product.discountPrice)|number_format(2) }} лв.</span>
                         </del>
-                         {% endif %}
+                        {% endif %}
                         <form action="{{ path('singleProduct', { 'id':product.id} )}}" method="post" id="sendSubmitForBuying">
                     <div class="colors clearfix">
                         <span class="colors__label">Цвят: <span class="colors__label-selected">{{ product.color }} </span></span>
@@ -84,7 +84,7 @@
 
                     <div class="size-quantity clearfix">
                         {% if size is not empty %}
-                        <div class="size">
+                            <div class="size">
                             <label>Налични размери</label>
                             <label style="display: none; color: red" id="warningSize">*Изберете номер</label>
 
@@ -92,6 +92,20 @@
                                   <option value="Избери...">Избери...</option>
                                 {% for siz in size %}
                                     <option value="{{ siz }}">{{ siz }}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+                        {% endif %}
+                        {% if colors is not empty %}
+                            <div class="size">
+                            <label>Налични цветове</label>
+                            <label style="display: none; color: red" id="warningColor">*Изберете цвят</label>
+
+                            <select id="colorSelected" class="size__select" name="color__select">
+                                  <option value="Избери...">Избери...</option>
+                                {% for color in colors %}
+                                    <option value="{{ color }}">{{ color }}</option>
                                 {% endfor %}
                             </select>
 
@@ -121,9 +135,6 @@
                                 <span class="product-code">Код на продукта: <span>{{ product.modelNumber }}</span></span>
                             </li>
                             <li>
-                                <span class="product-material">Материали: <span>Cotton 100%</span></span>
-                            </li>
-                            <li>
                                 <span class="product-country">Държава: <span>Произведено в България</span></span>
                             </li>
                         </ul>
@@ -142,9 +153,22 @@
                                 </div>
                             </div>
                         </div>
+                        {% if 'Belts' in product.category %}
+                            <div class="accordion__panel">
+                            <div class="accordion__heading" id="headingTwo">
+                                <a data-toggle="collapse" href="#collapseTwo" class="accordion__link accordion--is-open" aria-expanded="true" aria-controls="collapseOne">Оразмеряване<span class="accordion__toggle">&nbsp;</span>
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="collapse show" data-parent="#accordion" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="accordion__body">
+                                   <img src="/img/beltSizes.jpg">
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                 </div> <!-- end col product description -->
                     </span>
-            </div> <!-- end row -->
+                </div> <!-- end row -->
             </div>
         </div> <!-- end container -->
     </section> <!-- end single product -->
@@ -165,24 +189,24 @@
             <div class="row row-8">
 
                 {% for simProduct in similar %}
-                <div class="col-lg-2 col-sm-4 product">
-                    <div class="product__img-holder">
-                        <a href="{{ path('singleProduct',{ 'id':simProduct.id}) }}" class="product__link">
-                            <img src="/img/uploads/{{ simProduct.id }}.0.jpg" alt="" class="product__img" id="img_1B" height="300"  >
-                            {% if simProduct.photoCount>1 %}
-                                <img src="/img/uploads/{{ simProduct.id }}.1.jpg" alt="" class="product__img-back" id="img_1S" height="300"  >
-                            {% endif %}
-                        </a>
+                    <div class="col-lg-2 col-sm-4 product">
+                        <div class="product__img-holder">
+                            <a href="{{ path('singleProduct',{ 'id':simProduct.id}) }}" class="product__link">
+                                <img src="/img/uploads/{{ simProduct.id }}.0.jpg" alt="" class="product__img" id="img_1B" height="250"  >
+                                {% if simProduct.photoCount>1 %}
+                                    <img src="/img/uploads/{{ simProduct.id }}.1.jpg" alt="" class="product__img-back" id="img_1S" height="250"  >
+                                {% endif %}
+                            </a>
 
-                    </div>
+                        </div>
 
-                    <div class="product__details">
-                        <h3 class="product__title">
-                            <a href="{{ path('singleProduct',{ 'id':simProduct.id}) }}">{{ simProduct.title }}</a>
-                        </h3>
+                        <div class="product__details">
+                            <h3 class="product__title">
+                                <a href="{{ path('singleProduct',{ 'id':simProduct.id}) }}">{{ simProduct.title }}</a>
+                            </h3>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
 
             </div> <!-- end row -->
 

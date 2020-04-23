@@ -34,6 +34,7 @@ class UserController extends AbstractController
         }
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
         if ($product === null||$product->getIsDetelet()==1) {
             return $this->redirectToRoute('404');
         }
@@ -61,7 +62,8 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('404');
             }
             $order->setProduct($product);
-
+            $color=$_POST['modelColor'];
+            $order->setColor($color);
 
 
             $order->setNewOrArchived(false);
@@ -316,12 +318,12 @@ class UserController extends AbstractController
 
 
             // Always set content-type when sending HTML email
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            //  $headers = "MIME-Version: 1.0" . "\r\n";
+            //  $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
-            $message="<a href=\"www.irapell.com/seeOrderAdmin/".$order->getId()()."\">Виж поръчки</a>";
+            // $message="<a href=\"www.irapell.com/seeOrderAdmin/".$order->getId()()."\">Виж поръчки</a>";
 
-            mail("ademcran4aliew@gmail.com","Нова поръчка",$message,$headers);
+            // mail("ademcran4aliew@gmail.com","Нова поръчка",$message,$headers);
 
 
             if (isset($_COOKIE['_SC_KO']))
@@ -346,6 +348,5 @@ class UserController extends AbstractController
         return $this->render('user/buyProductCart.html.twig', ['productsCart'=>$shoppingCart,'user'=>$user]);
 
     }
-
 
 }

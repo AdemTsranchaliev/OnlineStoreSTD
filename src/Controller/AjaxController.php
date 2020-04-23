@@ -192,7 +192,11 @@ class AjaxController extends AbstractController
             {
                 $size=$_POST['sizeProduct'];
             }
-
+            $color=null;
+            if (isset($_POST['colorProduct']))
+            {
+                $color=$_POST['colorProduct'];
+            }
             $product=$this->getDoctrine()->getRepository(Product::class)->find($id);
 
 
@@ -205,7 +209,7 @@ class AjaxController extends AbstractController
 
                 $shoppingCart->addCartProduct($product);
                 $shoppingCart->setProductId($product->getId());
-
+                $shoppingCart->setColor($color);
                 $shoppingCart->setCoocieId($cookie);
                 $shoppingCart->setModelSize($size);
                 $shoppingCart->setPrice($product->getPrice());
@@ -214,13 +218,14 @@ class AjaxController extends AbstractController
 
             }
             else {
-                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findOneBy(array('coocieId'=>$cookie,'modelSize'=>$size,'productId'=>$product->getId()));
+                $shoppingCart=$this->getDoctrine()->getRepository(ShoppingCart::class)->findOneBy(array('coocieId'=>$cookie,'modelSize'=>$size,'color'=>$color,'productId'=>$product->getId()));
                 if ($shoppingCart==null)
                 {
                     $shoppingCart=new ShoppingCart();
 
                     $shoppingCart->addCartProduct($product);
                     $shoppingCart->setCoocieId($cookie);
+                    $shoppingCart->setColor($color);
                     $shoppingCart->setModelSize($size);
                     $shoppingCart->setPrice($product->getPrice());
                     $shoppingCart->setQuantity(1);
@@ -251,7 +256,7 @@ class AjaxController extends AbstractController
 
             $response.="<div class=\"top-bar__item nav-cart\" id=\"cartIdnt\">                
                 <a href=\"/seeShoppingCart\">
-                  <i class=\"ui-bag\"></i>(".count($shoppingCart).")
+                  <i class=\"ui-bag\"></i>(<span id=\"cartProductCount\">".count($shoppingCart)."</span>)
                 </a>
                 <div class=\"nav-cart__dropdown\">
                   <div class=\"nav-cart__items\" style=\"overflow : scroll; scrollbar-width: thin; height: 370px\">";

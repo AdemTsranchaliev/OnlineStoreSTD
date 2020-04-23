@@ -2,7 +2,7 @@
 
 
 namespace App\Controller;
-
+use App\Entity\ImageResize;
 use App\Entity\Category;
 use App\Entity\OrderProduct;
 use App\Entity\ShoppingCart;
@@ -136,10 +136,25 @@ class AdminController extends AbstractController
             for ($i = 0; $i < count($_FILES['file']['tmp_name']); $i++) {
                 $targetfile = $img1 . $product->getId() . "." . $i . ".jpg";
                 if ($_FILES['file']['tmp_name'][$i] != '') {
+
                     move_uploaded_file($_FILES['file']['tmp_name'][$img], $targetfile);
                     $img++;
                 }
             }
+
+            $filename1 = "D:/OnlineStoreSTD/public/img/uploads/".$product->getId().".0.jpg";
+            $filedestination1 = "D:/OnlineStoreSTD/public/img/uploads/".$product->getId().".0.jpg";
+            $filename2 = "D:/OnlineStoreSTD/public/img/uploads/".$product->getId().".1.jpg";
+            $filedestination2 = "D:/OnlineStoreSTD/public/img/uploads/".$product->getId().".1.jpg";
+
+            $image = new ImageResize($filename1);
+            $image->resizeToBestFit(1000, 1000);
+            $image->save($filedestination1);
+
+            $image2 = new ImageResize($filename2);
+            $image2->resizeToBestFit(1000, 1000);
+            $image2->save($filedestination2);
+
             if (isset($_COOKIE['_SC_KO']))
             {
                 $cookie=$_COOKIE['_SC_KO'];
@@ -205,6 +220,97 @@ $categories=$this->getDoctrine()->getRepository(Category::class)->findAll();
             $category = $this->getDoctrine()->getRepository(Category::class)-> findOneBy(array('tag' => $product->getCategory()));
 
             $producttoEdit->setCategoryId($category);
+            $img1 = "D:/OnlineStoreSTD/public/img/uploads/";
+
+            $count=0;
+            if(isset($_FILES['file1']['tmp_name'])&&$_FILES['file1']['tmp_name']!= '')
+            {
+                $targetfile = $img1 . $producttoEdit->getId() . "." . 0 . ".jpg";
+                if (file_exists($targetfile)==1) {
+                    $delete=$img1 . $producttoEdit->getId() . "." . 0 . "deleted.jpg";
+                    rename($targetfile,$delete);
+                    unlink($delete);
+                }
+                else
+                {
+                    $count++;
+
+                }
+
+
+                move_uploaded_file($_FILES['file1']['tmp_name'], $targetfile);
+            }
+            if(isset($_FILES['file2']['tmp_name'])&&$_FILES['file2']['tmp_name']!= '')
+            {
+                $targetfile = $img1 . $producttoEdit->getId() . "." . 1 . ".jpg";
+
+                if (file_exists($targetfile)==1) {
+                    $delete=$img1 . $producttoEdit->getId() . "." . 1 . "deleted.jpg";
+                    rename($targetfile,$delete);
+                    unlink($delete);
+                }
+                else
+                {
+                    $count++;
+
+                }
+
+                move_uploaded_file($_FILES['file2']['tmp_name'], $targetfile);
+            }
+            if(isset($_FILES['file3']['tmp_name'])&&$_FILES['file3']['tmp_name']!= '')
+            {
+                $targetfile = $img1 . $producttoEdit->getId() . "." . 2 . ".jpg";
+
+                if (file_exists($targetfile)==1) {
+                    $delete=$img1 . $producttoEdit->getId() . "." . 2 . "deleted.jpg";
+                    rename($targetfile,$delete);
+                    unlink($delete);
+                }
+                else
+                {
+                    $count++;
+
+                }
+
+                move_uploaded_file($_FILES['file3']['tmp_name'], $targetfile);
+            }
+            if(isset($_FILES['file4']['tmp_name'])&&$_FILES['file4']['tmp_name']!= '')
+            {
+                $targetfile = $img1 . $producttoEdit->getId() . "." . 3 . ".jpg";
+
+                if (file_exists($targetfile)==1) {
+                    $delete=$img1 . $producttoEdit->getId() . "." . 3 . "deleted.jpg";
+                    rename($targetfile,$delete);
+                    unlink($delete);
+
+                }
+                else
+                {
+                    $count++;
+
+                }
+
+                move_uploaded_file($_FILES['file4']['tmp_name'], $targetfile);
+            }
+            if(isset($_FILES['file5']['tmp_name'])&&$_FILES['file5']['tmp_name']!= '')
+            {
+                $targetfile = $img1 . $producttoEdit->getId() . "." . 4 . ".jpg";
+
+                if (file_exists($targetfile)==1) {
+                    $delete=$img1 . $producttoEdit->getId() . "." . 4 . "deleted.jpg";
+                    rename($targetfile,$delete);
+                    unlink($delete);
+                }  else
+                {
+                    $count++;
+
+                }
+
+                move_uploaded_file($_FILES['file5']['tmp_name'], $targetfile);
+            }
+
+            $producttoEdit->setPhotoCount($producttoEdit->getPhotoCount()+$count);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($producttoEdit);
             $em->flush();
@@ -367,152 +473,36 @@ $categories=$this->getDoctrine()->getRepository(Category::class)->findAll();
 
 
     /**
-     * @Route("/student/ajax")
+     * @Route("/resize")
      */
-    public function ajaxAction(Request $request) {
+    public function resizeAllImages(Request $request)
+    {
 
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
 
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+        for ($i=0;$i<count($products);$i++)
+        {
 
-            $command=$_POST['command'];
-            $category=$_POST['categoryName'];
+            $filename1 = "D:/OnlineStoreSTD/public/img/uploads/".$products[$i]->getId().".0.jpg";
+            $filedestination1 = "D:/OnlineStoreSTD/public/img/small/".$products[$i]->getId().".0.jpg";
 
-            $arr=[];
-            $categories = $this->getDoctrine()
-                ->getRepository(Category::class)
-                ->findAll();
-
-            foreach ($categories as $prd) {
-
-                if (strcmp($category, $prd->getName()) == 0) {
-                    $arr = $prd->getProduct();
-                    break;
-                }
-            }
-            if(strcmp($command,"price-low-to-high")==0)
+            $image = new ImageResize($filename1);
+            $image->resizeToBestFit(259, 194);
+            $image->save($filedestination1);
+            if($products[$i]->getPhotoCount()>=2)
             {
-                for ($i = 0; $i < count($arr); $i++) {
-
-                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
-                    {
-                        if( $arr[$j]->getPrice() < $arr[$j+1]->getPrice() )
-                        {
-                            $temp = $arr[$j];
-                            $arr[$j]=$arr[$j+1];
-                            $arr[$j+1]=$temp;
-
-                        }
-
-                    }
-
-                }
-            }
-            if(strcmp($command,"price-high-to-low")==0)
-            {
-                for ($i = 0; $i < count($arr); $i++) {
-
-                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
-                    {
-                        if( $arr[$j]->getPrice() > $arr[$j+1]->getPrice() )
-                        {
-                            $temp = $arr[$j];
-                            $arr[$j]=$arr[$j+1];
-                            $arr[$j+1]=$temp;
-
-                        }
-
-                    }
-
-                }
-            }
-            if(strcmp($command,"by-popularity")==0)
-            {
-                for ($i = 0; $i < count($arr); $i++) {
-
-                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
-                    {
-                        if( $arr[$j]->getBoughtCounter() < $arr[$j+1]->getBoughtCounter() )
-                        {
-                            $temp = $arr[$j];
-                            $arr[$j]=$arr[$j+1];
-                            $arr[$j+1]=$temp;
-
-                        }
-
-                    }
-
-                }
-            }
-            if(strcmp($command,"date")==0)
-            {
-                for ($i = 0; $i < count($arr); $i++) {
-
-                    for ($j = 0; $j < count($arr) - $i - 1; $j++)
-                    {
-                        if( $arr[$j]->getId() < $arr[$j+1]->getId() )
-                        {
-                            $temp = $arr[$j];
-                            $arr[$j]=$arr[$j+1];
-                            $arr[$j+1]=$temp;
-
-                        }
-
-                    }
-
-                }
+                $filename1 = "D:/OnlineStoreSTD/public/img/uploads/".$products[$i]->getId().".1.jpg";
+                $filedestination1 = "D:/OnlineStoreSTD/public/img/small/".$products[$i]->getId().".1.jpg";
+                $image = new ImageResize($filename1);
+                $image->resizeToBestFit(259, 194);
+                $image->save($filedestination1);
             }
 
-
-            $ready='';
-
-            $ready.=" <div class=\"row row-8\" id=\"divSort\">";
-
-            $i=1;
-            foreach ($arr as $prd) {
-
-                $ready.="   <div class=\"col-md-4 col-sm-6 product\" >
-                            <div class=\"product__img-holder\">
-                                <a href=\"\singleProduct".$prd->getId()."\" class=\"product__link\">
-                                    <img src=\"/img/uploads/".$prd->getId().".0.jpg\" alt=\"\" class=\"product__img\" id=\"img_1B\" height=\"300px\"> ";
-                              if ($prd->getPhotoCount()>1)
-                              {
-                                  $ready.="  <img src=\"/img/uploads/".$prd->getId().".1.jpg\" alt=\"\" class=\"product__img-back\" id=\"img_1S\" height=\"300px\">";
-                              }
-                           $ready.="    </a>
-                                <div class=\"product__actions\">
-                                    <a href=\"quickview.html\" class=\"product__quickview\">
-                                        <i class=\"ui-eye\"></i>
-                                        <span>Quick View</span>
-                                    </a>
-                                    <a href=\"#\" class=\"product__add-to-wishlist\">
-                                        <i class=\"ui-heart\"></i>
-                                        <span>Wishlist</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class=\"product__details\">
-                                <h3 class=\"product__title\">
-                                    <a href=\"\singleProduct\\".$prd->getId()."\">".$prd->getTitle()."</a>
-                                </h3>
-                            </div>
-
-                            <span class=\"product__price\">
-                  <ins>
-                    <span class=\"amount\">".(number_format($prd->getPrice(), 2))."лв.</span>
-                  </ins>
-                </span>
-                        </div> <!-- end product -->";
-
-                $i++;
-
-            }
-            $ready.=" </div>";
-            file_put_contents('C:\Users\Asus\Desktop\untitled1\text.txt', $ready);
-            return new Response($ready);
-        } else {
-            return $this->render('student/ajax.html.twig');
         }
+
+        return $this->redirect("adminPanel");
     }
+
+
 
 }

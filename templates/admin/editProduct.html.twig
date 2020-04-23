@@ -9,7 +9,7 @@
         <h1>Редактиране на ПРОДУКТ</h1>
 
 
-        <form action="{{ path('editModel', { 'id':producttoEdit.id}) }}" method="post" id="addModel">
+        <form action="{{ path('editModel', { 'id':producttoEdit.id}) }}" method="post" id="addModel" enctype="multipart/form-data">
             <label>Заглавие</label>
             <label style="display: none; color: red" id="addProductNameWarning">Това поле е задължително</label>
             <input type="text" id="addProductName" name="products[title]" value="{{ producttoEdit.title }}">
@@ -53,6 +53,23 @@
 
             <label>Описание</label>
             <textarea type="text" name="products[description]" >{{ producttoEdit.description }} </textarea>
+            <h3>Редактиране на снимки</h3>
+        <br>
+            {% for i in 1..producttoEdit.photoCount %}
+                <img src="/img/uploads/{{ producttoEdit.id }}.{{ i-1 }}.jpg"  height="100px" width="100px">
+                <label>Снимка {{ i }}</label>
+                <input type="file" name="file{{ i }}">
+            {% endfor %}
+            <br>
+            {% if producttoEdit.photoCount<5 %}
+            <h3>Добавяне на снимки</h3>
+            <hr>
+
+            {% for i in producttoEdit.photoCount+1..5 %}
+                <label>Снимка {{ i }}</label>
+                <input type="file" name="file{{ i }}">
+            {% endfor %}
+            {% endif %}
             <input type="submit" value="Редактирай">
         </form>
     <hr style="solid-color: red">

@@ -159,9 +159,9 @@
                             </td>
                         </tr>
                         <tr class="shipping">
-                            <th>ModelId</th>
+                            <th>Цвят</th>
                             <td>
-                                <span>{{ order.product.modelNumber }}</span>
+                                <span>{{ order.color }}</span>
                             </td>
                         </tr>
                         <tr class="order-total">
@@ -191,8 +191,8 @@
                                 <tr>
                                     <th >Цвят:</th>
                                     <td>
-                                        <input type="hidden" name="modelColor"  value="{{ product.getCartProduct()[0].color }}">
-                                        <span class="amount">{{ product.getCartProduct()[0].color }}</span>
+                                        <input type="hidden" name="modelColor"  value="{{ product.color }}">
+                                        <span class="amount">{{ product.color }}</span>
                                     </td>
                                 </tr>
                                 <tr>

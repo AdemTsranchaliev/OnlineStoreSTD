@@ -69,8 +69,8 @@ $('#billing_address_2').blur(function () {
     }
 
 });
-$('#populatedPlace').blur(function () {
-    if ($(this).val() == "Избери...") {
+$('#myInput').blur(function () {
+    if ($(this).val().length < 1) {
         $('#warning7').show();
     }
     else {
@@ -146,8 +146,7 @@ $("#checkOut").submit(function (e) {
 
 
 
-    var conceptName = $('#populatedPlace').find(":selected").text();
-    if (conceptName == "Избери...") {
+    if (!$.trim($('input#myInput').val())) {
         $('#warning7').show();
         e.preventDefault();
     }
@@ -211,10 +210,16 @@ $("#checkOut").submit(function (e) {
 ;
 $("#sendSubmitForBuying").submit(function (e) {
     var conceptName = $('#sizeSelected').find(":selected").text();
+    var conceptColorName = $('#colorSelected').find(":selected").text();
+
     $("#addToCart").attr("disabled", false);
 
     if (conceptName === "Избери...") {
         $('#warningSize').show();
+        e.preventDefault();
+    }
+    if (conceptColorName === "Избери...") {
+        $('#warningColor').show();
         e.preventDefault();
     }
 

@@ -66,9 +66,9 @@
                     <div class="col-lg-2 col-sm-4 product">
                         <div class="product__img-holder">
                             <a href="{{ path('singleProduct',{ 'id':product.id}) }}" class="product__link" aria-label="Product">
-                                <img height="300" src="img/uploads/{{ product.id }}.0.jpg" alt="" class="product__img">
+                                <img height="240" src="img/uploads/{{ product.id }}.0.jpg" alt="" class="product__img">
                                 {% if product.photoCount>1 %}
-                                    <img height="300" src="/img/uploads/{{ product.id }}.1.jpg" alt="" class="product__img-back">
+                                    <img height="240" src="/img/uploads/{{ product.id }}.1.jpg" alt="" class="product__img-back">
                                 {% endif %}
                             </a>
                         </div>
@@ -118,9 +118,9 @@
                     <div class="col-lg-2 col-sm-4 product">
                         <div class="product__img-holder">
                             <a href="{{ path('singleProduct',{ 'id':product.id}) }}" class="product__link" aria-label="Product">
-                                <img  height="300" src="img/uploads/{{ product.id }}.0.jpg" alt="" class="product__img">
+                                <img   src="/img/small/{{ product.id }}.0.jpg" alt="" class="product__img">
                                 {% if product.photoCount>1 %}
-                                    <img height="300" src="/img/uploads/{{ product.id }}.1.jpg" alt="" class="product__img-back">
+                                    <img  src="/img/small/{{ product.id }}.1.jpg" alt="" class="product__img-back">
                                 {% endif %}
                             </a>
 
@@ -172,29 +172,12 @@
                         <div class="testimonial">
                             <div class="testimonial__rating text-center">
                                 <span class="rating"></span>
-                                <span class="rating__time">20 days ago</span>
+
                             </div>
-                            <p class="testimonial__text">I’am amazed, I should say thank you so much for your awesome template. Design is so good and neat, every detail has been taken care these team are realy amazing and talented!</p>
-                            <span class="testimonial__author">Camille Ragpa</span>
+                            <p class="testimonial__text">Удивен съм, трябва да ви кажа много благодаря за страхотните ви изделия. Дизайнът им толкова добър и чист, всеки детайл е изпипан, екипа на IRAPELL са наистина невероятни и талантливи!</p>
+                            <span class="testimonial__author">Габриел Трендафилов</span>
                         </div>
 
-                        <div class="testimonial">
-                            <div class="testimonial__rating text-center">
-                                <span class="rating"></span>
-                                <span class="rating__time">20 days ago</span>
-                            </div>
-                            <p class="testimonial__text">I’am amazed, I should say thank you so much for your awesome template. Design is so good and neat, every detail has been taken care these team are realy amazing and talented!</p>
-                            <span class="testimonial__author">Camille Ragpa</span>
-                        </div>
-
-                        <div class="testimonial">
-                            <div class="testimonial__rating text-center">
-                                <span class="rating"></span>
-                                <span class="rating__time">20 days ago</span>
-                            </div>
-                            <p class="testimonial__text">I’am amazed, I should say thank you so much for your awesome template. Design is so good and neat, every detail has been taken care these team are realy amazing and talented!</p>
-                            <span class="testimonial__author">Camille Ragpa</span>
-                        </div>
 
                     </div> <!-- end carousel -->
                 </div>

@@ -123,10 +123,16 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('404');
         }
         if (isset($_POST['size__select'])||isset($_POST['noSize'])) {
-$s='';
+             $s='';
+             $c='';
             if (isset($_POST['size__select']))
             {
                 $s = $_POST['size__select'];
+
+            }
+            if (isset($_POST['color__select']))
+            {
+                $c = $_POST['color__select'];
 
             }
             $user = $this->getUser();
@@ -140,11 +146,11 @@ $s='';
 
 
                 if ($shoppingCart != null) {
-                    return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s, 'user' => $user, 'productsCart' => $shoppingCart]);
+                    return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s, 'color'=>$c,'user' => $user, 'productsCart' => $shoppingCart]);
                 }
 
             }
-            return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s, 'user' => $user, 'productsCart' => null]);
+            return $this->render('user/buyProduct.html.twig', ['product' => $product, 'size' => $s,'color'=>$c, 'user' => $user, 'productsCart' => null]);
         }
         $sizeAndNumber = $product->getSizes();
         $sizeAndNumber = explode(" ", $sizeAndNumber);
@@ -157,6 +163,11 @@ $s='';
                 array_push($size, $test[0]);
             }
         }
+
+        $colors=   $sizeAndNumber = explode("/", $product->getColor());;
+
+
+
         $allProducts = $this->getDoctrine()->getRepository(Category::class)->findOneBy(array('tag' => $product->getCategoryId()->getTag()));
         $similar = Array();
         $similarIndexes = Array();
@@ -208,11 +219,11 @@ $s='';
 
 
             if ($shoppingCart != null) {
-                return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size, 'similar' => $similar, 'productsCart' => $shoppingCart]);
+                return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size, 'similar' => $similar, 'productsCart' => $shoppingCart,'colors'=>$colors]);
             }
 
         }
-        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size, 'similar' => $similar, 'productsCart' => null]);
+        return $this->render('home/singleProduct.html.twig', ['product' => $product, 'size' => $size, 'similar' => $similar, 'productsCart' => null,'colors'=>$colors]);
     }
 
     /**
